@@ -36,7 +36,7 @@ public class LightTimeResponse
 
     @Override
     public String toString() {
-        return "LightTimeResponse{" +
+        return "LightThemeClientResponse{" +
                 "results=" + results +
                 ", status='" + status + '\'' +
                 '}';
