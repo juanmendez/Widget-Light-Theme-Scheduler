@@ -30,14 +30,8 @@ public class DroidLocationService implements LocationService {
 
     @Override
     public boolean isGranted() {
-
-        return ActivityCompat.checkSelfPermission(rootContext, Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(rootContext, Manifest.permission.ACCESS_COARSE_LOCATION) ==
-                        PackageManager.PERMISSION_GRANTED;
+        return isLocationGranted(rootContext);
     }
-
-
 
     @SuppressLint("MissingPermission")
     @Override
@@ -62,5 +56,12 @@ public class DroidLocationService implements LocationService {
         }
 
         return null;
+    }
+
+    public static boolean isLocationGranted( Context context ){
+        return ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED;
     }
 }

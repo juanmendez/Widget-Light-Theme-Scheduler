@@ -1,9 +1,8 @@
 package info.juanmendez.daynightthemescheduler.services;
 
-import org.joda.time.DateTime;
-
-import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
+import info.juanmendez.daynightthemescheduler.models.LightTime;
+import info.juanmendez.daynightthemescheduler.models.LightTimeStatus;
 import info.juanmendez.daynightthemescheduler.models.Response;
 import info.juanmendez.daynightthemescheduler.utils.LightTimeUtils;
 import info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils;
@@ -17,7 +16,6 @@ import info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils;
 public class ProxyLightTimeApi implements LightTimeApi {
     LightThemeModule m;
     LightTime appLightTime;
-
 
     public ProxyLightTimeApi(LightThemeModule module, LightTime lightTime  ) {
         m = module;
@@ -34,14 +32,14 @@ public class ProxyLightTimeApi implements LightTimeApi {
     @Override
     public void generateTodayTimeLight(Response<LightTime> response) {
         //we check if what we have is already cached
-        if(LocalTimeUtils.isSameDay( appLightTime.getSunrise(), DateTime.now().toString() )){
+        if(LocalTimeUtils.isSameDay( appLightTime.getSunrise(), m.getNow().toDateTimeToday().toString() )){
             response.onResult( LightTimeUtils.clone(appLightTime) );
         }else if( m.getNetworkService().isOnline() && m.getLocationService().isGranted() ){
              m.getLightTimeApi().generateTodayTimeLight( response );
         }else if( LightTimeUtils.isValid(appLightTime)){
-            response.onResult( LightTimeUtils.cloneForAnotherDay(appLightTime, 0 ) );
+            response.onResult( LightTimeUtils.clonedAsGuessed(appLightTime, 0 ) );
         }else{
-            response.onResult( new LightTime() );
+            response.onResult( getErrorLightTime() );
         }
     }
 
@@ -56,9 +54,20 @@ public class ProxyLightTimeApi implements LightTimeApi {
         if( m.getNetworkService().isOnline() && m.getLocationService().isGranted() ){
             m.getLightTimeApi().generateTomorrowTimeLight( response );
         }else if( LightTimeUtils.isValid(appLightTime)){
-            response.onResult( LightTimeUtils.cloneForAnotherDay(appLightTime, 1 ) );
+            response.onResult( LightTimeUtils.clonedAsGuessed(appLightTime, 1 ) );
         }else{
-            response.onResult( new LightTime() );
+            response.onResult( getErrorLightTime() );
         }
+    }
+
+    private LightTime getErrorLightTime(){
+        LightTime lightTime = new LightTime();
+
+        if( !m.getNetworkService().isOnline()  )
+            lightTime.setStatus(LightTimeStatus.NO_INTERNET);
+        else if( !m.getLocationService().isGranted()  )
+            lightTime.setStatus(LightTimeStatus.NO_LOCATION_PERMISSION );
+
+        return lightTime;
     }
 }

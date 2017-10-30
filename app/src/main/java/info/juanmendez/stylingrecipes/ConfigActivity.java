@@ -3,7 +3,6 @@ package info.juanmendez.stylingrecipes;
 import android.Manifest;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -13,6 +12,8 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.sharedpreferences.Pref;
+
+import info.juanmendez.stylingrecipes.services.DroidLocationService;
 
 
 /**
@@ -41,10 +42,7 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     private void checkPermissions(){
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                        PackageManager.PERMISSION_GRANTED) {
+        if (DroidLocationService.isLocationGranted(this)) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, "We need your location to make the widget turn to daylight and sunlight")){
 
@@ -69,7 +67,6 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     private void onPermissionResult( boolean thereIsPermission ){
-        themePrefs.isLocationGranted().put( thereIsPermission );
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();

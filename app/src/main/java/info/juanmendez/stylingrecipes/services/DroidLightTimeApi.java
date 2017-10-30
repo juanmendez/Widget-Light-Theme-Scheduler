@@ -6,6 +6,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
 import info.juanmendez.daynightthemescheduler.models.LightTime;
+import info.juanmendez.daynightthemescheduler.models.LightTimeStatus;
 import info.juanmendez.daynightthemescheduler.models.Response;
 import info.juanmendez.daynightthemescheduler.services.LightTimeApi;
 import info.juanmendez.stylingrecipes.services.api.sunrise.LightTimeCalls;
@@ -52,7 +53,10 @@ public class DroidLightTimeApi implements LightTimeApi {
 
         if( location == null ){
             Timber.e( "There is no location found!");
-            response.onResult( new LightTime() );
+
+            LightTime errorLightTime = new LightTime();
+            errorLightTime.setStatus(LightTimeStatus.NO_LOCATION_AVAILABLE );
+            response.onResult( errorLightTime );
             return;
         }
 

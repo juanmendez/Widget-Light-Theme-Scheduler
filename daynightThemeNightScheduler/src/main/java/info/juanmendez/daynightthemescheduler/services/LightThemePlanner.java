@@ -22,7 +22,7 @@ public class LightThemePlanner {
     public static final int TOMORROW_SCHEDULE = 3;
 
     private ProxyLightTimeApi apiProxy;
-    private LocalTime now  = LocalTime.now();
+    private LightThemeModule m;
 
     /**
      * @param module
@@ -30,6 +30,7 @@ public class LightThemePlanner {
      */
     public LightThemePlanner(LightThemeModule module, LightTime lightTime ) {
         apiProxy = new ProxyLightTimeApi( module, lightTime );
+        m = module;
     }
 
     public void provideNextTimeLight(Response<LightTime> response){
@@ -43,7 +44,7 @@ public class LightThemePlanner {
                 LocalTime sunrise = LocalTimeUtils.getLocalTime( lightTimeResult.getSunrise() );
                 LocalTime sunset = LocalTimeUtils.getLocalTime( lightTimeResult.getSunset() );
 
-                int when = whatSchedule( now, sunrise, sunset );
+                int when = whatSchedule( m.getNow() , sunrise, sunset );
 
                 if( when == SUNRISE_SCHEDULE ){
                     lightTimeResult.setNextSchedule( lightTimeResult.getSunrise() );

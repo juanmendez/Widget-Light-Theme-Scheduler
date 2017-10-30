@@ -8,13 +8,12 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.junit.Before;
 import org.junit.Test;
-import org.powermock.reflect.Whitebox;
 
-import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
+import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.Response;
-import info.juanmendez.daynightthemescheduler.services.LightTimeApi;
 import info.juanmendez.daynightthemescheduler.services.LightThemePlanner;
+import info.juanmendez.daynightthemescheduler.services.LightTimeApi;
 import info.juanmendez.daynightthemescheduler.services.LocationService;
 import info.juanmendez.daynightthemescheduler.services.NetworkService;
 import info.juanmendez.daynightthemescheduler.services.ProxyLightTimeApi;
@@ -74,7 +73,8 @@ public class LightThemePlannerTest {
         m = LightThemeModule.create()
                 .applyLighTimeApi( apiRetro )
                 .applyLocationService(locationService)
-                .applyNetworkService(networkService);
+                .applyNetworkService(networkService)
+                .applyNow( LocalTime.parse("14:45:00"));
 
         planner = new LightThemePlanner( m, appLightTime );
     }
@@ -134,6 +134,7 @@ public class LightThemePlannerTest {
         //what if we need tomorrows appLightTime instead?
         twistApiTomorrow.setSunrise( "2017-10-28T12:07:26+00:00" );
         twistApiTomorrow.setSunset( "2017-10-28T23:03:42+00:00" );
+
         apiRetro.generateTomorrowTimeLight(result -> {
             appLightTime.setSunrise( result.getSunrise());
             appLightTime.setSunset( result.getSunset());
@@ -151,17 +152,18 @@ public class LightThemePlannerTest {
         twistApiTomorrow.setSunrise( "2017-10-28T12:07:26+00:00" );
         twistApiTomorrow.setSunset( "2017-10-28T23:03:42+00:00" );
 
-        Whitebox.setInternalState( planner, "now", LocalTime.parse( "00:40:00") );
+        m.applyNow( LocalTime.parse( "00:40:00" ) );
         planner.provideNextTimeLight(result -> {
             assertEquals(twistApiToday.getSunrise(), result.getNextSchedule());
         });
 
-        Whitebox.setInternalState( planner, "now", LocalTime.parse( "16:40:00") );
+
+        m.applyNow( LocalTime.parse( "16:40:00" ) );
         planner.provideNextTimeLight(result -> {
             assertEquals(twistApiToday.getSunset(), result.getNextSchedule());
         });
 
-        Whitebox.setInternalState( planner, "now", LocalTime.parse( "23:00:00") );
+        m.applyNow( LocalTime.parse( "23:00:00" ) );
         planner.provideNextTimeLight(result -> {
             assertEquals( result.getSunrise(), twistApiTomorrow.getSunrise() );
             assertEquals( result.getSunset(), twistApiTomorrow.getSunset() );

@@ -1,4 +1,4 @@
-package info.juanmendez.daynightthemescheduler.services;
+package info.juanmendez.daynightthemescheduler;
 
 import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;

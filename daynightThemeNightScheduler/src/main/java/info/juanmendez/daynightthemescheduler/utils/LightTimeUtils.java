@@ -1,6 +1,7 @@
 package info.juanmendez.daynightthemescheduler.utils;
 
 import info.juanmendez.daynightthemescheduler.models.LightTime;
+import info.juanmendez.daynightthemescheduler.models.LightTimeStatus;
 
 /**
  * Created by Juan Mendez on 10/28/2017.
@@ -15,10 +16,11 @@ public class LightTimeUtils {
         return clone;
     }
 
-    public static LightTime cloneForAnotherDay(LightTime appLighttime, int daysFromToday) {
+    public static LightTime clonedAsGuessed(LightTime appLighttime, int daysFromToday) {
         LightTime clone = new LightTime();
         clone.setSunrise( LocalTimeUtils.getDayAsString( appLighttime.getSunrise(), daysFromToday ));
         clone.setSunset( LocalTimeUtils.getDayAsString( appLighttime.getSunset(), daysFromToday ));
+        clone.setStatus(LightTimeStatus.LIGHTTIME_GUESSED);
         return clone;
     }
 

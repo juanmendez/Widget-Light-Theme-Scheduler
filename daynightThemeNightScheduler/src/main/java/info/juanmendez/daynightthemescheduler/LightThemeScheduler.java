@@ -1,6 +1,5 @@
 package info.juanmendez.daynightthemescheduler;
 
-import info.juanmendez.daynightthemescheduler.services.LightThemeClient;
 import info.juanmendez.daynightthemescheduler.services.LightThemePlanner;
 
 /**
@@ -14,8 +13,8 @@ class LightThemeScheduler {
     LightThemeClient client;
     LightThemePlanner planner;
 
-    public LightThemeScheduler(LightThemeClient lightTimeOwner) {
-        client = lightTimeOwner;
+    public LightThemeScheduler(LightThemeClient lightThemeClient) {
+        client = lightThemeClient;
         planner = new LightThemePlanner( client.getLightTimeModule(), client.getAppLightTime() );
     }
 }

@@ -5,7 +5,7 @@ import org.androidannotations.annotations.EBean;
 
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
 import info.juanmendez.daynightthemescheduler.models.LightTime;
-import info.juanmendez.daynightthemescheduler.services.LightThemeClient;
+import info.juanmendez.daynightthemescheduler.LightThemeClient;
 
 
 /**

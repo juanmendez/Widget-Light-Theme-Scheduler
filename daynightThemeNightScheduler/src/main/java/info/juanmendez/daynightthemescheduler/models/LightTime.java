@@ -12,6 +12,7 @@ public class LightTime {
     private String sunrise = "";
     private String sunset = "";
     private String nextSchedule = "";
+    private int status;
 
     public LightTime(@NonNull String sunrise, @NonNull String sunset) {
         this.sunrise = sunrise;
@@ -43,6 +44,14 @@ public class LightTime {
 
     public void setNextSchedule(String nextSchedule) {
         this.nextSchedule = nextSchedule;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Override

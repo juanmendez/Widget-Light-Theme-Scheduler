@@ -1,5 +1,7 @@
 package info.juanmendez.daynightthemescheduler.models;
 
+import org.joda.time.LocalTime;
+
 import info.juanmendez.daynightthemescheduler.services.LightTimeApi;
 import info.juanmendez.daynightthemescheduler.services.LocationService;
 import info.juanmendez.daynightthemescheduler.services.NetworkService;
@@ -15,6 +17,7 @@ public class LightThemeModule {
     NetworkService networkService;
     LocationService locationService;
     LightTimeApi lightTimeApi;
+    LocalTime now;
     int observersCount;
 
     public static LightThemeModule create(){
@@ -41,6 +44,11 @@ public class LightThemeModule {
         return this;
     }
 
+    public LightThemeModule applyNow( LocalTime now ){
+        this.now = now;
+        return this;
+    }
+
     public NetworkService getNetworkService() {
         return networkService;
     }
@@ -55,5 +63,9 @@ public class LightThemeModule {
 
     public int getObserversCount() {
         return observersCount;
+    }
+
+    public LocalTime getNow() {
+        return now;
     }
 }
