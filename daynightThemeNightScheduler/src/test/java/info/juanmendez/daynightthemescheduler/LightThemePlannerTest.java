@@ -74,9 +74,10 @@ public class LightThemePlannerTest {
                 .applyLighTimeApi( apiRetro )
                 .applyLocationService(locationService)
                 .applyNetworkService(networkService)
-                .applyNow( LocalTime.parse("14:45:00"));
+                .applyNow( LocalTime.parse("14:45:00"))
+                .applyLightTime( appLightTime );
 
-        planner = new LightThemePlanner( m, appLightTime );
+        planner = new LightThemePlanner( m );
     }
 
     private void generateNetworkService() {
@@ -229,7 +230,7 @@ public class LightThemePlannerTest {
         appLightTime.setSunrise( yesterdaySunrise );
         appLightTime.setSunset( yesterdaySunset );
 
-        ProxyLightTimeApi proxy = new ProxyLightTimeApi( m, appLightTime );
+        ProxyLightTimeApi proxy = new ProxyLightTimeApi( m );
         final LightTime[] proxyResult = new LightTime[1];
 
         Response<LightTime> response = result -> {
@@ -265,7 +266,7 @@ public class LightThemePlannerTest {
         appLightTime.setSunrise( yesterdaySunrise );
         appLightTime.setSunset( yesterdaySunset );
 
-        ProxyLightTimeApi proxy = new ProxyLightTimeApi(m, appLightTime );
+        ProxyLightTimeApi proxy = new ProxyLightTimeApi( m );
 
         final LightTime[] proxyResult = new LightTime[1];
 

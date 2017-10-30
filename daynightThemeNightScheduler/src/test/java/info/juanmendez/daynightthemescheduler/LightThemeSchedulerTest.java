@@ -65,15 +65,12 @@ public class LightThemeSchedulerTest {
                 .applyLighTimeApi( apiRetro )
                 .applyLocationService(locationService)
                 .applyNetworkService(networkService)
-                .applyObserversCount( 0 )
+                .applyLightTime( appLightTime )
                 .applyNow( LocalTime.now() );
     }
 
     private void generateClient() {
-        client = mock(LightThemeClient.class);
 
-        doAnswer(invocation -> appLightTime ).when( client ).getAppLightTime();
-        doAnswer(invocation -> m ).when( client ).getLightTimeModule();
     }
 
     private void generateNetworkService() {
@@ -111,7 +108,7 @@ public class LightThemeSchedulerTest {
 
     @Test
     public void testScheduler(){
-        LightThemeScheduler scheduler = new LightThemeScheduler(client);
+        LightThemeScheduler scheduler = new LightThemeScheduler();
 
         LightThemePlanner planner = Whitebox.getInternalState( scheduler, "planner");
 
@@ -120,8 +117,6 @@ public class LightThemeSchedulerTest {
         Response<LightTime> response = result -> {
             proxyResult[0] = result;
         };
-
-        m.applyObserversCount(1);
 
         twistApiToday.setSunrise( "2017-10-27T12:07:26+00:00" );
         twistApiToday.setSunset( "2017-10-27T23:03:42+00:00" );

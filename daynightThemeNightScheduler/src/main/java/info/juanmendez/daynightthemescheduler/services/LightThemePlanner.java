@@ -26,10 +26,9 @@ public class LightThemePlanner {
 
     /**
      * @param module
-     * @param lightTime
      */
-    public LightThemePlanner(LightThemeModule module, LightTime lightTime ) {
-        apiProxy = new ProxyLightTimeApi( module, lightTime );
+    public LightThemePlanner(LightThemeModule module ) {
+        apiProxy = new ProxyLightTimeApi( module );
         m = module;
     }
 

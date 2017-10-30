@@ -15,11 +15,9 @@ import info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils;
 
 public class ProxyLightTimeApi implements LightTimeApi {
     LightThemeModule m;
-    LightTime appLightTime;
 
-    public ProxyLightTimeApi(LightThemeModule module, LightTime lightTime  ) {
+    public ProxyLightTimeApi(LightThemeModule module  ) {
         m = module;
-        this.appLightTime = lightTime;
     }
 
     /**
@@ -32,6 +30,8 @@ public class ProxyLightTimeApi implements LightTimeApi {
     @Override
     public void generateTodayTimeLight(Response<LightTime> response) {
         //we check if what we have is already cached
+        LightTime appLightTime = m.getLightTime();
+
         if(LocalTimeUtils.isSameDay( appLightTime.getSunrise(), m.getNow().toDateTimeToday().toString() )){
             response.onResult( LightTimeUtils.clone(appLightTime) );
         }else if( m.getNetworkService().isOnline() && m.getLocationService().isGranted() ){
@@ -51,6 +51,8 @@ public class ProxyLightTimeApi implements LightTimeApi {
      */
     @Override
     public void generateTomorrowTimeLight(Response<LightTime> response) {
+        LightTime appLightTime = m.getLightTime();
+
         if( m.getNetworkService().isOnline() && m.getLocationService().isGranted() ){
             m.getLightTimeApi().generateTomorrowTimeLight( response );
         }else if( LightTimeUtils.isValid(appLightTime)){

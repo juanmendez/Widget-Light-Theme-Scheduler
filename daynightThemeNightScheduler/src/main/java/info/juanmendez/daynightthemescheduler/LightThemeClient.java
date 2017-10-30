@@ -1,7 +1,8 @@
 package info.juanmendez.daynightthemescheduler;
 
-import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
+import info.juanmendez.daynightthemescheduler.services.LightThemeAlarmService;
+import info.juanmendez.daynightthemescheduler.services.LightWidgetService;
 
 /**
  * Created by Juan Mendez on 10/29/2017.
@@ -9,11 +10,28 @@ import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
  * contact@juanmendez.info
  */
 
-public interface LightThemeClient {
-    void cancelIfRunning(); //cancel alarmService if it's running
-    void scheduleNext(LightTime lightTime ); //provide next schedule
-    void setLightMode( int type );
+public class LightThemeClient {
+    private LightThemeModule m;
+    private LightWidgetService widgetService;
+    private LightThemeScheduler scheduler;
+    private LightThemeAlarmService alarmService;
 
-    LightTime getAppLightTime(); //provide last stored data for sunrise/sunset & schedule time
-    LightThemeModule getLightTimeModule();
+
+    public LightThemeClient( LightThemeModule module, LightWidgetService widgetService, LightThemeAlarmService alarmService) {
+        this.m = module;
+        this.widgetService = widgetService;
+        this.alarmService = alarmService;
+    }
+
+    public void  planNextSchedule(){
+        if( widgetService.getObserversCount() > 0 ){
+
+        }else{
+
+        }
+    }
+
+    public LightThemeModule getLightThemeModule() {
+        return m;
+    }
 }

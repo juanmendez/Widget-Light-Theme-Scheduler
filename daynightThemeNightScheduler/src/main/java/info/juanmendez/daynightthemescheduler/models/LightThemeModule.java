@@ -17,8 +17,8 @@ public class LightThemeModule {
     NetworkService networkService;
     LocationService locationService;
     LightTimeApi lightTimeApi;
+    LightTime lightTime;
     LocalTime now;
-    int observersCount;
 
     public static LightThemeModule create(){
         return new LightThemeModule();
@@ -39,8 +39,8 @@ public class LightThemeModule {
         return this;
     }
 
-    public LightThemeModule applyObserversCount(int count) {
-        this.observersCount = count;
+    public LightThemeModule applyLightTime(LightTime lightTime) {
+        this.lightTime = lightTime;
         return this;
     }
 
@@ -61,8 +61,8 @@ public class LightThemeModule {
         return lightTimeApi;
     }
 
-    public int getObserversCount() {
-        return observersCount;
+    public LightTime getLightTime() {
+        return lightTime;
     }
 
     public LocalTime getNow() {
