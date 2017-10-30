@@ -18,6 +18,4 @@ public interface LightTimePrefs {
 
     @DefaultString("")
     String nextSchedule();
-
-    int status();
 }

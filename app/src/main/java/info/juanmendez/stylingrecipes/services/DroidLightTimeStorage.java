@@ -13,7 +13,7 @@ import info.juanmendez.stylingrecipes.LightTimePrefs_;
  * www.juanmendez.info
  * contact@juanmendez.info
  *
- * This class is a setter and getter for sharePreferences which mirror the
+ * This class is a setter and getter for sharePreferences which mirrors the
  * attribute names in LightTime class. In this way LightThemeClient has a hold of the values.
  */
 @EBean

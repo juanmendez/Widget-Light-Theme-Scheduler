@@ -15,6 +15,7 @@ import info.juanmendez.daynightthemescheduler.services.LightNetworkService;
  */
 @EBean
 public class DroidNetworkService implements LightNetworkService {
+
     @SystemService
     ConnectivityManager cm;
 

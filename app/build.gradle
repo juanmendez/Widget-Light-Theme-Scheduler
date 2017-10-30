@@ -41,4 +41,6 @@ dependencies {
 
     annotationProcessor "org.androidannotations:androidannotations:${aaVersion}"
     implementation "org.androidannotations:androidannotations-api:${aaVersion}"
+
+    implementation  'joda-time:joda-time:2.9.4'
 }
