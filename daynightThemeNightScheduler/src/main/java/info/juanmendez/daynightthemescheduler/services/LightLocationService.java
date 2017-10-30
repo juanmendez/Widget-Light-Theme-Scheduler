@@ -8,7 +8,7 @@ import android.location.Location;
  * contact@juanmendez.info
  */
 
-public interface LocationService {
+public interface LightLocationService {
     boolean isGranted();
     Location getLastKnownLocation();
 }

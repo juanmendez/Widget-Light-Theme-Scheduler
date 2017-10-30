@@ -8,7 +8,7 @@ import info.juanmendez.daynightthemescheduler.models.LightTime;
  * contact@juanmendez.info
  */
 
-public interface LightThemeAlarmService {
+public interface LightAlarmService {
     void cancelIfRunning(); //cancel alarmService if it's running
     void scheduleNext(LightTime lightTime ); //provide next schedule
 }

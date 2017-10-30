@@ -2,9 +2,9 @@ package info.juanmendez.daynightthemescheduler.models;
 
 import org.joda.time.LocalTime;
 
-import info.juanmendez.daynightthemescheduler.services.LightTimeApi;
-import info.juanmendez.daynightthemescheduler.services.LocationService;
-import info.juanmendez.daynightthemescheduler.services.NetworkService;
+import info.juanmendez.daynightthemescheduler.services.LightThemeApi;
+import info.juanmendez.daynightthemescheduler.services.LightLocationService;
+import info.juanmendez.daynightthemescheduler.services.LightThemeNetworkService;
 
 /**
  * Created by Juan Mendez on 10/29/2017.
@@ -14,9 +14,9 @@ import info.juanmendez.daynightthemescheduler.services.NetworkService;
 
 public class LightThemeModule {
 
-    NetworkService networkService;
-    LocationService locationService;
-    LightTimeApi lightTimeApi;
+    LightThemeNetworkService networkService;
+    LightLocationService locationService;
+    LightThemeApi lightTimeApi;
     LightTime lightTime;
     LocalTime now;
 
@@ -24,17 +24,17 @@ public class LightThemeModule {
         return new LightThemeModule();
     }
 
-    public LightThemeModule applyNetworkService(NetworkService networkService) {
+    public LightThemeModule applyNetworkService(LightThemeNetworkService networkService) {
         this.networkService = networkService;
         return this;
     }
 
-    public LightThemeModule applyLocationService(LocationService locationService) {
+    public LightThemeModule applyLocationService(LightLocationService locationService) {
         this.locationService = locationService;
         return this;
     }
 
-    public LightThemeModule applyLighTimeApi(LightTimeApi lightTimeApi) {
+    public LightThemeModule applyLighTimeApi(LightThemeApi lightTimeApi) {
         this.lightTimeApi = lightTimeApi;
         return this;
     }
@@ -49,15 +49,15 @@ public class LightThemeModule {
         return this;
     }
 
-    public NetworkService getNetworkService() {
+    public LightThemeNetworkService getNetworkService() {
         return networkService;
     }
 
-    public LocationService getLocationService() {
+    public LightLocationService getLocationService() {
         return locationService;
     }
 
-    public LightTimeApi getLightTimeApi() {
+    public LightThemeApi getLightTimeApi() {
         return lightTimeApi;
     }
 

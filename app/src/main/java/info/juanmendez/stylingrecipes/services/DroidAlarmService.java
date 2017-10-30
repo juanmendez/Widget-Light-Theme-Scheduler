@@ -1,7 +1,7 @@
 package info.juanmendez.stylingrecipes.services;
 
 import info.juanmendez.daynightthemescheduler.models.LightTime;
-import info.juanmendez.daynightthemescheduler.services.LightThemeAlarmService;
+import info.juanmendez.daynightthemescheduler.services.LightAlarmService;
 
 
 /**
@@ -10,7 +10,7 @@ import info.juanmendez.daynightthemescheduler.services.LightThemeAlarmService;
  * contact@juanmendez.info
  */
 
-public class DroidThemeAlarmService implements LightThemeAlarmService {
+public class DroidAlarmService implements LightAlarmService {
     @Override
     public void cancelIfRunning() {
 

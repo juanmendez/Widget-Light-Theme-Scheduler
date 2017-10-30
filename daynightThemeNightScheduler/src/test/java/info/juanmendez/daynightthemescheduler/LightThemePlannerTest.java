@@ -12,11 +12,11 @@ import org.junit.Test;
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
 import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.Response;
+import info.juanmendez.daynightthemescheduler.services.CoreLightThemeApi;
 import info.juanmendez.daynightthemescheduler.services.LightThemePlanner;
-import info.juanmendez.daynightthemescheduler.services.LightTimeApi;
-import info.juanmendez.daynightthemescheduler.services.LocationService;
-import info.juanmendez.daynightthemescheduler.services.NetworkService;
-import info.juanmendez.daynightthemescheduler.services.ProxyLightTimeApi;
+import info.juanmendez.daynightthemescheduler.services.LightThemeApi;
+import info.juanmendez.daynightthemescheduler.services.LightLocationService;
+import info.juanmendez.daynightthemescheduler.services.LightThemeNetworkService;
 import info.juanmendez.daynightthemescheduler.utils.LightTimeUtils;
 import info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils;
 
@@ -36,14 +36,14 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doAnswer;
 
 /**
- * These tests were made in order to make the functionality needed in ProxyLightTimeApi
+ * These tests were made in order to make the functionality needed in CoreLightThemeApi
  */
 public class LightThemePlannerTest {
 
     LocalTime twistSunrise;
     LocalTime twistSunset;
 
-    LightTimeApi apiRetro;
+    LightThemeApi apiRetro;
 
     LightTime appLightTime;
     LightTime twistApiToday;
@@ -53,8 +53,8 @@ public class LightThemePlannerTest {
 
     boolean twistIsOnline = true;
     private boolean twistLocationGranted = true;
-    NetworkService networkService;
-    LocationService locationService;
+    LightThemeNetworkService networkService;
+    LightLocationService locationService;
     LightThemeModule m;
 
     @Before
@@ -81,13 +81,13 @@ public class LightThemePlannerTest {
     }
 
     private void generateNetworkService() {
-        networkService = mock( NetworkService.class );
+        networkService = mock( LightThemeNetworkService.class );
         doAnswer(invocation -> twistIsOnline).when( networkService ).isOnline();
     }
 
     private void generateProxy() {
         //chicago.. https://api.sunrise-sunset.org/json?lat=41.8500300&lng=-87.6500500&formatted=0
-        apiRetro = mock( LightTimeApi.class );
+        apiRetro = mock( LightThemeApi.class );
 
         doAnswer(invocation -> {
             Response<LightTime> response = invocation.getArgumentAt(0, Response.class);
@@ -103,7 +103,7 @@ public class LightThemePlannerTest {
     }
 
     private void generateLocationService(){
-        locationService = mock( LocationService.class );
+        locationService = mock( LightLocationService.class );
         doAnswer(invocation -> twistLocationGranted).when( locationService ).isGranted();
         doReturn( new Location("NONE")).when( locationService ).getLastKnownLocation();
     }
@@ -230,7 +230,7 @@ public class LightThemePlannerTest {
         appLightTime.setSunrise( yesterdaySunrise );
         appLightTime.setSunset( yesterdaySunset );
 
-        ProxyLightTimeApi proxy = new ProxyLightTimeApi( m );
+        CoreLightThemeApi proxy = new CoreLightThemeApi( m );
         final LightTime[] proxyResult = new LightTime[1];
 
         Response<LightTime> response = result -> {
@@ -266,7 +266,7 @@ public class LightThemePlannerTest {
         appLightTime.setSunrise( yesterdaySunrise );
         appLightTime.setSunset( yesterdaySunset );
 
-        ProxyLightTimeApi proxy = new ProxyLightTimeApi( m );
+        CoreLightThemeApi proxy = new CoreLightThemeApi( m );
 
         final LightTime[] proxyResult = new LightTime[1];
 

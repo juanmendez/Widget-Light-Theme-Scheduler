@@ -13,9 +13,9 @@ import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
 import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.Response;
 import info.juanmendez.daynightthemescheduler.services.LightThemePlanner;
-import info.juanmendez.daynightthemescheduler.services.LightTimeApi;
-import info.juanmendez.daynightthemescheduler.services.LocationService;
-import info.juanmendez.daynightthemescheduler.services.NetworkService;
+import info.juanmendez.daynightthemescheduler.services.LightThemeApi;
+import info.juanmendez.daynightthemescheduler.services.LightLocationService;
+import info.juanmendez.daynightthemescheduler.services.LightThemeNetworkService;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -32,16 +32,16 @@ public class LightThemeSchedulerTest {
     LocalTime twistSunrise;
     LocalTime twistSunset;
 
-    LightTimeApi apiRetro;
+    LightThemeApi apiRetro;
     LightTime appLightTime;
     LightTime twistApiToday;
     LightTime twistApiTomorrow;
 
-    LocationService locationService;
+    LightLocationService locationService;
 
     boolean twistIsOnline = true;
     boolean twistLocationGranted = true;
-    NetworkService networkService;
+    LightThemeNetworkService networkService;
     LightThemeModule m;
 
     LightThemeClient client;
@@ -74,13 +74,13 @@ public class LightThemeSchedulerTest {
     }
 
     private void generateNetworkService() {
-        networkService = mock( NetworkService.class );
+        networkService = mock( LightThemeNetworkService.class );
         doAnswer(invocation -> twistIsOnline).when( networkService ).isOnline();
     }
 
     private void generateProxy() {
         //chicago.. https://api.sunrise-sunset.org/json?lat=41.8500300&lng=-87.6500500&formatted=0
-        apiRetro = mock( LightTimeApi.class );
+        apiRetro = mock( LightThemeApi.class );
 
         doAnswer(invocation -> {
             Response<LightTime> response = invocation.getArgumentAt(0, Response.class);
@@ -96,7 +96,7 @@ public class LightThemeSchedulerTest {
     }
 
     private void generateLocationService(){
-        locationService = mock( LocationService.class );
+        locationService = mock( LightLocationService.class );
         doAnswer(invocation -> twistLocationGranted).when( locationService ).isGranted();
 
         Location location = mock(Location.class);

@@ -17,7 +17,7 @@ import info.juanmendez.stylingrecipes.WidgetProvider_;
  * contact@juanmendez.info
  */
 @EBean
-public class DroidLightWidgetService implements LightWidgetService {
+public class DroidWidgetService implements LightWidgetService {
 
     @RootContext
     Context rootContext;

@@ -21,14 +21,14 @@ public class LightThemePlanner {
     public static final int SUNSET_SCHEDULE = 2;
     public static final int TOMORROW_SCHEDULE = 3;
 
-    private ProxyLightTimeApi apiProxy;
+    private CoreLightThemeApi apiProxy;
     private LightThemeModule m;
 
     /**
      * @param module
      */
     public LightThemePlanner(LightThemeModule module ) {
-        apiProxy = new ProxyLightTimeApi( module );
+        apiProxy = new CoreLightThemeApi( module );
         m = module;
     }
 

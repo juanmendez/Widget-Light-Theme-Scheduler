@@ -12,7 +12,7 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.SystemService;
 
-import info.juanmendez.daynightthemescheduler.services.LocationService;
+import info.juanmendez.daynightthemescheduler.services.LightLocationService;
 
 /**
  * Created by Juan Mendez on 10/29/2017.
@@ -20,7 +20,7 @@ import info.juanmendez.daynightthemescheduler.services.LocationService;
  * contact@juanmendez.info
  */
 @EBean
-public class DroidLocationService implements LocationService {
+public class DroidLocationService implements LightLocationService {
 
     @RootContext
     Context rootContext;

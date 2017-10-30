@@ -8,7 +8,7 @@ import org.androidannotations.annotations.EBean;
 import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.LightTimeStatus;
 import info.juanmendez.daynightthemescheduler.models.Response;
-import info.juanmendez.daynightthemescheduler.services.LightTimeApi;
+import info.juanmendez.daynightthemescheduler.services.LightThemeApi;
 import info.juanmendez.stylingrecipes.services.api.sunrise.LightTimeCalls;
 import info.juanmendez.stylingrecipes.services.api.sunrise.LightTimeResponse;
 import retrofit2.Call;
@@ -24,7 +24,7 @@ import timber.log.Timber;
  * contact@juanmendez.info
  */
 @EBean
-public class DroidLightTimeApi implements LightTimeApi {
+public class SunriseSunsetApi implements LightThemeApi {
 
     @Bean
     DroidLocationService locationService;
@@ -32,7 +32,7 @@ public class DroidLightTimeApi implements LightTimeApi {
     Retrofit retrofit;
     LightTimeCalls lightTimeCalls;
 
-    public DroidLightTimeApi() {
+    public SunriseSunsetApi() {
         retrofit = new Retrofit.Builder().baseUrl("https://api.sunrise-sunset.org").addConverterFactory(GsonConverterFactory.create()).build();
         lightTimeCalls = retrofit.create(LightTimeCalls.class);
     }

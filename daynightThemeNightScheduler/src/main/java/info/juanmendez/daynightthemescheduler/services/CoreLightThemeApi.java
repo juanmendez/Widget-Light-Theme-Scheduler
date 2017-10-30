@@ -13,10 +13,10 @@ import info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils;
  * contact@juanmendez.info
  */
 
-public class ProxyLightTimeApi implements LightTimeApi {
+public class CoreLightThemeApi implements LightThemeApi {
     LightThemeModule m;
 
-    public ProxyLightTimeApi(LightThemeModule module  ) {
+    public CoreLightThemeApi(LightThemeModule module  ) {
         m = module;
     }
 

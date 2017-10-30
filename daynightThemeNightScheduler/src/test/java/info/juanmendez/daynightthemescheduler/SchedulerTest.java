@@ -10,8 +10,8 @@ import org.powermock.api.mockito.PowerMockito;
 
 import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.Response;
-import info.juanmendez.daynightthemescheduler.services.LightTimeApi;
-import info.juanmendez.daynightthemescheduler.services.NetworkService;
+import info.juanmendez.daynightthemescheduler.services.LightThemeApi;
+import info.juanmendez.daynightthemescheduler.services.LightThemeNetworkService;
 import info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils;
 
 import static junit.framework.Assert.assertEquals;
@@ -31,11 +31,11 @@ public class SchedulerTest {
 
     LocalTime twistSunrise;
     LocalTime twistSunset;
-    LightTimeApi apiProxy;
+    LightThemeApi apiProxy;
     LightTime appLightTime;
 
     boolean isOnline = true;
-    NetworkService networkService;
+    LightThemeNetworkService networkService;
 
     @Before
     public void before(){
@@ -49,13 +49,13 @@ public class SchedulerTest {
     }
 
     private void generateNetworkService() {
-        networkService = mock( NetworkService.class );
+        networkService = mock( LightThemeNetworkService.class );
         doReturn( isOnline ).when( networkService ).isOnline();
     }
 
     private void generateProxy() {
         //chicago.. https://api.sunrise-sunset.org/json?lat=41.8500300&lng=-87.6500500&formatted=0
-        apiProxy = mock( LightTimeApi.class );
+        apiProxy = mock( LightThemeApi.class );
 
         PowerMockito.doAnswer(invocation -> {
             Response<LightTime> response = invocation.getArgumentAt(0, Response.class);

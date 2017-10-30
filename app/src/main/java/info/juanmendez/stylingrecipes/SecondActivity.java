@@ -12,7 +12,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 
-import info.juanmendez.stylingrecipes.services.DroidLightTimeApi;
+import info.juanmendez.stylingrecipes.services.SunriseSunsetApi;
 import info.juanmendez.stylingrecipes.services.DroidNetworkService;
 import timber.log.Timber;
 
@@ -30,7 +30,7 @@ public class SecondActivity extends AppCompatActivity {
     DroidNetworkService networkService;
 
     @Bean
-    DroidLightTimeApi lightTimeRetro;
+    SunriseSunsetApi lightTimeRetro;
 
     @AfterViews
     public void afterViews() {

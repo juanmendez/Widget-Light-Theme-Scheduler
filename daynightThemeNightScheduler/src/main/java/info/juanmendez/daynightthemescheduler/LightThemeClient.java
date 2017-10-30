@@ -1,7 +1,7 @@
 package info.juanmendez.daynightthemescheduler;
 
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
-import info.juanmendez.daynightthemescheduler.services.LightThemeAlarmService;
+import info.juanmendez.daynightthemescheduler.services.LightAlarmService;
 import info.juanmendez.daynightthemescheduler.services.LightWidgetService;
 
 /**
@@ -14,10 +14,10 @@ public class LightThemeClient {
     private LightThemeModule m;
     private LightWidgetService widgetService;
     private LightThemeScheduler scheduler;
-    private LightThemeAlarmService alarmService;
+    private LightAlarmService alarmService;
 
 
-    public LightThemeClient( LightThemeModule module, LightWidgetService widgetService, LightThemeAlarmService alarmService) {
+    public LightThemeClient( LightThemeModule module, LightWidgetService widgetService, LightAlarmService alarmService) {
         this.m = module;
         this.widgetService = widgetService;
         this.alarmService = alarmService;
