@@ -2,9 +2,9 @@ package info.juanmendez.daynightthemescheduler.models;
 
 import org.joda.time.LocalTime;
 
-import info.juanmendez.daynightthemescheduler.services.LightThemeApi;
+import info.juanmendez.daynightthemescheduler.services.LightApi;
 import info.juanmendez.daynightthemescheduler.services.LightLocationService;
-import info.juanmendez.daynightthemescheduler.services.LightThemeNetworkService;
+import info.juanmendez.daynightthemescheduler.services.LightNetworkService;
 
 /**
  * Created by Juan Mendez on 10/29/2017.
@@ -14,9 +14,9 @@ import info.juanmendez.daynightthemescheduler.services.LightThemeNetworkService;
 
 public class LightThemeModule {
 
-    LightThemeNetworkService networkService;
+    LightNetworkService networkService;
     LightLocationService locationService;
-    LightThemeApi lightTimeApi;
+    LightApi lightTimeApi;
     LightTime lightTime;
     LocalTime now;
 
@@ -24,7 +24,7 @@ public class LightThemeModule {
         return new LightThemeModule();
     }
 
-    public LightThemeModule applyNetworkService(LightThemeNetworkService networkService) {
+    public LightThemeModule applyNetworkService(LightNetworkService networkService) {
         this.networkService = networkService;
         return this;
     }
@@ -34,7 +34,7 @@ public class LightThemeModule {
         return this;
     }
 
-    public LightThemeModule applyLighTimeApi(LightThemeApi lightTimeApi) {
+    public LightThemeModule applyLighTimeApi(LightApi lightTimeApi) {
         this.lightTimeApi = lightTimeApi;
         return this;
     }
@@ -49,7 +49,7 @@ public class LightThemeModule {
         return this;
     }
 
-    public LightThemeNetworkService getNetworkService() {
+    public LightNetworkService getNetworkService() {
         return networkService;
     }
 
@@ -57,7 +57,7 @@ public class LightThemeModule {
         return locationService;
     }
 
-    public LightThemeApi getLightTimeApi() {
+    public LightApi getLightTimeApi() {
         return lightTimeApi;
     }
 

@@ -14,21 +14,21 @@ import info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils;
  * contact@juanmendez.info
  * This class takes care of figuring out the light times needed for either today, tomorrow or both
  */
-public class LightThemePlanner {
+public class LightPlanner {
 
     public static final int NO_SCHEDULE = 0;
     public static final int SUNRISE_SCHEDULE = 1;
     public static final int SUNSET_SCHEDULE = 2;
     public static final int TOMORROW_SCHEDULE = 3;
 
-    private CoreLightThemeApi apiProxy;
+    private CoreLightApi apiProxy;
     private LightThemeModule m;
 
     /**
      * @param module
      */
-    public LightThemePlanner(LightThemeModule module ) {
-        apiProxy = new CoreLightThemeApi( module );
+    public LightPlanner(LightThemeModule module ) {
+        apiProxy = new CoreLightApi( module );
         m = module;
     }
 

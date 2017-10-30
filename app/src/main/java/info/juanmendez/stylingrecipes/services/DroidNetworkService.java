@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
 
-import info.juanmendez.daynightthemescheduler.services.LightThemeNetworkService;
+import info.juanmendez.daynightthemescheduler.services.LightNetworkService;
 
 
 /**
@@ -14,7 +14,7 @@ import info.juanmendez.daynightthemescheduler.services.LightThemeNetworkService;
  * contact@juanmendez.info
  */
 @EBean
-public class DroidNetworkService implements LightThemeNetworkService {
+public class DroidNetworkService implements LightNetworkService {
     @SystemService
     ConnectivityManager cm;
 

@@ -20,4 +20,9 @@ public class DroidAlarmService implements LightAlarmService {
     public void scheduleNext(LightTime lightTime) {
 
     }
+
+    @Override
+    public void scheduleNextWhenOnline() {
+
+    }
 }

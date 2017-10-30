@@ -13,10 +13,10 @@ import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
 import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.Response;
 import info.juanmendez.daynightthemescheduler.services.LightAlarmService;
-import info.juanmendez.daynightthemescheduler.services.LightThemePlanner;
-import info.juanmendez.daynightthemescheduler.services.LightThemeApi;
+import info.juanmendez.daynightthemescheduler.services.LightPlanner;
+import info.juanmendez.daynightthemescheduler.services.LightApi;
 import info.juanmendez.daynightthemescheduler.services.LightLocationService;
-import info.juanmendez.daynightthemescheduler.services.LightThemeNetworkService;
+import info.juanmendez.daynightthemescheduler.services.LightNetworkService;
 import info.juanmendez.daynightthemescheduler.services.LightWidgetService;
 
 import static org.mockito.Matchers.any;
@@ -34,7 +34,7 @@ public class LightThemeSchedulerTest {
     LocalTime twistSunrise;
     LocalTime twistSunset;
 
-    LightThemeApi apiRetro;
+    LightApi apiRetro;
     LightTime appLightTime;
     LightTime twistApiToday;
     LightTime twistApiTomorrow;
@@ -45,7 +45,7 @@ public class LightThemeSchedulerTest {
     int twistObserversCount = 0;
 
     LightLocationService locationService;
-    LightThemeNetworkService networkService;
+    LightNetworkService networkService;
     LightWidgetService widgetService;
     LightAlarmService alarmService;
     LightThemeModule m;
@@ -80,13 +80,13 @@ public class LightThemeSchedulerTest {
     }
 
     private void generateNetworkService() {
-        networkService = mock( LightThemeNetworkService.class );
+        networkService = mock( LightNetworkService.class );
         doAnswer(invocation -> twistIsOnline).when( networkService ).isOnline();
     }
 
     private void generateProxy() {
         //chicago.. https://api.sunrise-sunset.org/json?lat=41.8500300&lng=-87.6500500&formatted=0
-        apiRetro = mock( LightThemeApi.class );
+        apiRetro = mock( LightApi.class );
 
         doAnswer(invocation -> {
             Response<LightTime> response = invocation.getArgumentAt(0, Response.class);
@@ -120,7 +120,7 @@ public class LightThemeSchedulerTest {
     @Test
     public void testScheduler(){
 
-        LightThemePlanner planner = Whitebox.getInternalState( client, "planner");
+        LightPlanner planner = Whitebox.getInternalState( client, "planner");
 
         final LightTime[] proxyResult = new LightTime[1];
 

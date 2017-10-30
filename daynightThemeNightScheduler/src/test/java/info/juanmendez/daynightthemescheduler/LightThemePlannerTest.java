@@ -12,18 +12,18 @@ import org.junit.Test;
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
 import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.Response;
-import info.juanmendez.daynightthemescheduler.services.CoreLightThemeApi;
-import info.juanmendez.daynightthemescheduler.services.LightThemePlanner;
-import info.juanmendez.daynightthemescheduler.services.LightThemeApi;
+import info.juanmendez.daynightthemescheduler.services.CoreLightApi;
+import info.juanmendez.daynightthemescheduler.services.LightPlanner;
+import info.juanmendez.daynightthemescheduler.services.LightApi;
 import info.juanmendez.daynightthemescheduler.services.LightLocationService;
-import info.juanmendez.daynightthemescheduler.services.LightThemeNetworkService;
+import info.juanmendez.daynightthemescheduler.services.LightNetworkService;
 import info.juanmendez.daynightthemescheduler.utils.LightTimeUtils;
 import info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils;
 
-import static info.juanmendez.daynightthemescheduler.services.LightThemePlanner.SUNRISE_SCHEDULE;
-import static info.juanmendez.daynightthemescheduler.services.LightThemePlanner.SUNSET_SCHEDULE;
-import static info.juanmendez.daynightthemescheduler.services.LightThemePlanner.TOMORROW_SCHEDULE;
-import static info.juanmendez.daynightthemescheduler.services.LightThemePlanner.whatSchedule;
+import static info.juanmendez.daynightthemescheduler.services.LightPlanner.SUNRISE_SCHEDULE;
+import static info.juanmendez.daynightthemescheduler.services.LightPlanner.SUNSET_SCHEDULE;
+import static info.juanmendez.daynightthemescheduler.services.LightPlanner.TOMORROW_SCHEDULE;
+import static info.juanmendez.daynightthemescheduler.services.LightPlanner.whatSchedule;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -36,24 +36,24 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doAnswer;
 
 /**
- * These tests were made in order to make the functionality needed in CoreLightThemeApi
+ * These tests were made in order to make the functionality needed in CoreLightApi
  */
 public class LightThemePlannerTest {
 
     LocalTime twistSunrise;
     LocalTime twistSunset;
 
-    LightThemeApi apiRetro;
+    LightApi apiRetro;
 
     LightTime appLightTime;
     LightTime twistApiToday;
     LightTime twistApiTomorrow;
 
-    LightThemePlanner planner;
+    LightPlanner planner;
 
     boolean twistIsOnline = true;
     private boolean twistLocationGranted = true;
-    LightThemeNetworkService networkService;
+    LightNetworkService networkService;
     LightLocationService locationService;
     LightThemeModule m;
 
@@ -77,17 +77,17 @@ public class LightThemePlannerTest {
                 .applyNow( LocalTime.parse("14:45:00"))
                 .applyLightTime( appLightTime );
 
-        planner = new LightThemePlanner( m );
+        planner = new LightPlanner( m );
     }
 
     private void generateNetworkService() {
-        networkService = mock( LightThemeNetworkService.class );
+        networkService = mock( LightNetworkService.class );
         doAnswer(invocation -> twistIsOnline).when( networkService ).isOnline();
     }
 
     private void generateProxy() {
         //chicago.. https://api.sunrise-sunset.org/json?lat=41.8500300&lng=-87.6500500&formatted=0
-        apiRetro = mock( LightThemeApi.class );
+        apiRetro = mock( LightApi.class );
 
         doAnswer(invocation -> {
             Response<LightTime> response = invocation.getArgumentAt(0, Response.class);
@@ -230,7 +230,7 @@ public class LightThemePlannerTest {
         appLightTime.setSunrise( yesterdaySunrise );
         appLightTime.setSunset( yesterdaySunset );
 
-        CoreLightThemeApi proxy = new CoreLightThemeApi( m );
+        CoreLightApi proxy = new CoreLightApi( m );
         final LightTime[] proxyResult = new LightTime[1];
 
         Response<LightTime> response = result -> {
@@ -266,7 +266,7 @@ public class LightThemePlannerTest {
         appLightTime.setSunrise( yesterdaySunrise );
         appLightTime.setSunset( yesterdaySunset );
 
-        CoreLightThemeApi proxy = new CoreLightThemeApi( m );
+        CoreLightApi proxy = new CoreLightApi( m );
 
         final LightTime[] proxyResult = new LightTime[1];
 

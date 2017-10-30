@@ -14,12 +14,17 @@ public class LightTime {
     private String nextSchedule = "";
     private int status;
 
+    public LightTime() {
+    }
+
     public LightTime(@NonNull String sunrise, @NonNull String sunset) {
         this.sunrise = sunrise;
         this.sunset = sunset;
     }
 
-    public LightTime() {
+    public LightTime(String sunrise, String sunset, String nextSchedule) {
+        this( sunrise, sunset );
+        this.nextSchedule = nextSchedule;
     }
 
     public String getSunrise() {

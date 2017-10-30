@@ -8,7 +8,7 @@ import org.androidannotations.annotations.EBean;
 import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.LightTimeStatus;
 import info.juanmendez.daynightthemescheduler.models.Response;
-import info.juanmendez.daynightthemescheduler.services.LightThemeApi;
+import info.juanmendez.daynightthemescheduler.services.LightApi;
 import info.juanmendez.stylingrecipes.services.api.sunrise.LightTimeCalls;
 import info.juanmendez.stylingrecipes.services.api.sunrise.LightTimeResponse;
 import retrofit2.Call;
@@ -24,7 +24,7 @@ import timber.log.Timber;
  * contact@juanmendez.info
  */
 @EBean
-public class SunriseSunsetApi implements LightThemeApi {
+public class SunriseSunsetApi implements LightApi {
 
     @Bean
     DroidLocationService locationService;

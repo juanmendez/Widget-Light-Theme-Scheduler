@@ -6,6 +6,6 @@ package info.juanmendez.daynightthemescheduler.services;
  * contact@juanmendez.info
  */
 
-public interface LightThemeNetworkService {
+public interface LightNetworkService {
     boolean isOnline();
 }
