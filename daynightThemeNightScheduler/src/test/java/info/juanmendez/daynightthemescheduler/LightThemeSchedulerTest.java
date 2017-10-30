@@ -12,10 +12,12 @@ import org.powermock.reflect.Whitebox;
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
 import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.Response;
+import info.juanmendez.daynightthemescheduler.services.LightAlarmService;
 import info.juanmendez.daynightthemescheduler.services.LightThemePlanner;
 import info.juanmendez.daynightthemescheduler.services.LightThemeApi;
 import info.juanmendez.daynightthemescheduler.services.LightLocationService;
 import info.juanmendez.daynightthemescheduler.services.LightThemeNetworkService;
+import info.juanmendez.daynightthemescheduler.services.LightWidgetService;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -37,11 +39,15 @@ public class LightThemeSchedulerTest {
     LightTime twistApiToday;
     LightTime twistApiTomorrow;
 
-    LightLocationService locationService;
 
     boolean twistIsOnline = true;
     boolean twistLocationGranted = true;
+    int twistObserversCount = 0;
+
+    LightLocationService locationService;
     LightThemeNetworkService networkService;
+    LightWidgetService widgetService;
+    LightAlarmService alarmService;
     LightThemeModule m;
 
     LightThemeClient client;
@@ -59,7 +65,8 @@ public class LightThemeSchedulerTest {
         generateProxy();
         generateNetworkService();
         generateLocationService();
-        generateClient();
+        generateWigetService();
+        alarmService = mock( LightAlarmService.class );
 
         m = LightThemeModule.create()
                 .applyLighTimeApi( apiRetro )
@@ -67,9 +74,8 @@ public class LightThemeSchedulerTest {
                 .applyNetworkService(networkService)
                 .applyLightTime( appLightTime )
                 .applyNow( LocalTime.now() );
-    }
 
-    private void generateClient() {
+        client = new LightThemeClient(m, widgetService, alarmService );
 
     }
 
@@ -106,11 +112,15 @@ public class LightThemeSchedulerTest {
         doReturn( location ).when( locationService ).getLastKnownLocation();
     }
 
+    private void generateWigetService() {
+        LightWidgetService lightWidgetService = mock( LightWidgetService.class );
+        doAnswer( invocation -> twistObserversCount ).when( lightWidgetService ).getObserversCount();
+    }
+
     @Test
     public void testScheduler(){
-        LightThemeScheduler scheduler = new LightThemeScheduler();
 
-        LightThemePlanner planner = Whitebox.getInternalState( scheduler, "planner");
+        LightThemePlanner planner = Whitebox.getInternalState( client, "planner");
 
         final LightTime[] proxyResult = new LightTime[1];
 

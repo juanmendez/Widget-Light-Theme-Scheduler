@@ -11,4 +11,5 @@ import info.juanmendez.daynightthemescheduler.models.LightTime;
 public interface LightAlarmService {
     void cancelIfRunning(); //cancel alarmService if it's running
     void scheduleNext(LightTime lightTime ); //provide next schedule
+    void scheduleNextWhenOnline(); //try to schedule again when online
 }
