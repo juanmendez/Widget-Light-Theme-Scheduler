@@ -20,10 +20,10 @@ import timber.log.Timber;
  */
 
 public class LightThemeClient {
+
     private static final String CLASS_NAME = LightThemeClient.class.getName();
+    public static final String NIGHT_AUTO_CHANGED = CLASS_NAME + ".NIGHT_AUTO_CHANGED";
     public static final String SCHEDULE_COMPLETED = CLASS_NAME + ".SCHEDULE_COMPLETED";
-    public static final String AUTO_TURNED_ON = CLASS_NAME + ".AUTO_TURNED_ON";
-    public static final String AUTO_TURNED_OFF = CLASS_NAME + ".AUTO_TURNED_OFF";
 
     private LightThemeModule m;
     private LightWidgetService widgetService;
@@ -43,10 +43,8 @@ public class LightThemeClient {
      */
     public void onClientEvent( @NonNull String actionEvent ){
 
-        if(actionEvent.equals(AUTO_TURNED_ON)){
-            Timber.i( "theme night auto on");
-        }else if( actionEvent.equals( AUTO_TURNED_OFF)){
-            Timber.i( "theme night auto off");
+        if(actionEvent.equals(NIGHT_AUTO_CHANGED)){
+            Timber.i( "theme night auto change");
         }else if( actionEvent.equals( AppWidgetManager.ACTION_APPWIDGET_ENABLED)){
             Timber.i( "widget added");
         }else if( actionEvent.equals( AppWidgetManager.ACTION_APPWIDGET_DELETED)){
@@ -71,7 +69,7 @@ public class LightThemeClient {
 
     public void  planNextSchedule(){
 
-        if( widgetService.getObserversCount() > 0 ){
+        if( widgetService.getWidgetsCount() > 0 ){
 
             planner.provideNextTimeLight( lightTimeResult -> {
 

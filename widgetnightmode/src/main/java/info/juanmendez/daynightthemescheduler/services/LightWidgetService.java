@@ -7,7 +7,7 @@ package info.juanmendez.daynightthemescheduler.services;
  */
 
 public interface LightWidgetService {
-    int getObserversCount();
-    void updateLightTheme( int theme );
+    int getWidgetsCount();
+    void updateWidgets();
     int getNightMode();
 }

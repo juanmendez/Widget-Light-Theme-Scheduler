@@ -1,5 +1,7 @@
 package info.juanmendez.daynightthemescheduler.utils;
 
+import android.support.annotation.NonNull;
+
 import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.LightTimeStatus;
 
@@ -13,15 +15,29 @@ public class LightTimeUtils {
     public static LightTime clone(LightTime that ){
         LightTime clone = new LightTime( that.getSunrise(), that.getSunset() );
         clone.setNextSchedule( that.getNextSchedule() );
+        clone.setStatus( that.getStatus() );
         return clone;
     }
 
     public static LightTime clonedAsGuessed(LightTime appLighttime, int daysFromToday) {
         LightTime clone = new LightTime();
-        clone.setSunrise( LocalTimeUtils.getDayAsString( appLighttime.getSunrise(), daysFromToday ));
-        clone.setSunset( LocalTimeUtils.getDayAsString( appLighttime.getSunset(), daysFromToday ));
+        copy( appLighttime, clone );
         clone.setStatus(LightTimeStatus.LIGHTTIME_GUESSED);
         return clone;
+    }
+
+    public static void copy(@NonNull  LightTime original, @NonNull  LightTime copied ){
+        copied.setSunset( original.getSunset() );
+        copied.setSunrise( original.getSunrise() );
+        copied.setNextSchedule( original.getNextSchedule() );
+        copied.setStatus( original.getStatus() );
+    }
+
+    public static void clear( @NonNull LightTime original ){
+        original.setSunset( "" );
+        original.setSunrise( "" );
+        original.setNextSchedule( "" );
+        original.setStatus( 0 );
     }
 
     public static boolean isValid( LightTime that ){

@@ -27,7 +27,7 @@ import static org.mockito.Mockito.mock;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-public class SchedulerTest {
+public class LightTimeTest {
 
     LocalTime twistSunrise;
     LocalTime twistSunset;
