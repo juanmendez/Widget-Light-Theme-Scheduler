@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.powermock.reflect.Whitebox;
 
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
-import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.services.LightPlanner;
 import info.juanmendez.daynightthemescheduler.twists.TwistAlarmService;
 import info.juanmendez.daynightthemescheduler.twists.TwistApi;
@@ -22,13 +21,12 @@ import info.juanmendez.daynightthemescheduler.twists.TwistWidgetService;
 
 abstract public class LightThemeTest {
 
-    LightTime appLightTime;
     TwistAlarmService twistedAlarm;
     TwistApi twistedApi;
-    TwistLocationService twistedLocationService;
+    TwistLocationService twistedLS;
     TwistNetworkService twistedNetwork;
     TwistStorage twistedStorage;
-    TwistWidgetService twistedWidgetService;
+    TwistWidgetService twistedWS;
 
     LightThemeModule m;
     LightThemeClient client;
@@ -37,22 +35,21 @@ abstract public class LightThemeTest {
     @Before
     public void onBefore(){
 
-        appLightTime = new LightTime();
         twistedAlarm = new TwistAlarmService();
         twistedApi = new TwistApi();
-        twistedLocationService = new TwistLocationService();
+        twistedLS = new TwistLocationService();
         twistedNetwork = new TwistNetworkService();
         twistedStorage = new TwistStorage();
-        twistedWidgetService = new TwistWidgetService();
+        twistedWS = new TwistWidgetService();
 
         m = LightThemeModule.create()
                 .applyLighTimeApi( twistedApi.asMocked() )
-                .applyLocationService(twistedLocationService.asMocked())
+                .applyLocationService(twistedLS.asMocked())
                 .applyNetworkService(twistedNetwork.asMocked())
-                .applyLightTime( appLightTime )
+                .applyLightTimeStorage( twistedStorage.asMocked() )
                 .applyNow( LocalTime.now() );
 
-        client = new LightThemeClient(m, twistedWidgetService.asMocked(), twistedAlarm.asMocked(), twistedStorage.asMocked() );
+        client = new LightThemeClient(m, twistedWS.asMocked(), twistedAlarm.asMocked() );
         planner = Whitebox.getInternalState( client, "planner");
     }
 }

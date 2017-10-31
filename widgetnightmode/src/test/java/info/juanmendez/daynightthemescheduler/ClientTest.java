@@ -11,7 +11,9 @@ import info.juanmendez.daynightthemescheduler.models.LightTimeStatus;
 import info.juanmendez.daynightthemescheduler.models.Response;
 import info.juanmendez.daynightthemescheduler.services.LightPlanner;
 import info.juanmendez.daynightthemescheduler.utils.LightTimeUtils;
+import info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -81,7 +83,7 @@ public class ClientTest extends LightThemeTest{
 
         //how about online, but no permission to get location
         twistedNetwork.isOnline = true;
-        twistedLocationService.isGranted = false;
+        twistedLS.isGranted = false;
         planner.provideNextTimeLight( response );
 
         Assert.assertFalse( LightTimeUtils.isValid(twistedStorage.asMocked().getLightTime()));
@@ -91,7 +93,7 @@ public class ClientTest extends LightThemeTest{
         //we must notify alarmService to make a second attempt once there is network.
         //lets pretend that it happened.
         twistedNetwork.isOnline = true;
-        twistedLocationService.isGranted = true;
+        twistedLS.isGranted = true;
 
         //first update values returned by apiRetro
         String sunrise = "2017-10-26T12:07:26+00:00";
@@ -110,6 +112,7 @@ public class ClientTest extends LightThemeTest{
 
     @Test
     public void rebootClientTest(){
+        LightTime appLightTime = twistedStorage.getLightTime();
         //lets first ensure there is no schedule
         m.getLightTime().setNextSchedule("");
 
@@ -124,6 +127,54 @@ public class ClientTest extends LightThemeTest{
         //online?yes, observers?no therefore no work scheduled.
         verify(twistedAlarm.asMocked()).cancelIfRunning();
 
-        twistedWidgetService.widgets = 1;
+        twistedWS.widgets = 1;
+        twistedNetwork.isOnline = true;
+
+        //include sunrise/sunset for today and tomorrow
+        twistedApi.getToday().setSunrise( "2017-10-27T12:07:26+00:00" );
+        twistedApi.getToday().setSunset( "2017-10-27T23:03:42+00:00" );
+
+        //tomorrow, both are carried over by a minute
+        twistedApi.getTomorrow().setSunrise( "2017-10-28T12:07:27+00:00" );
+        twistedApi.getTomorrow().setSunset( "2017-10-28T23:03:43+00:00" );
+
+        //almost 6pm
+        m.applyNow( LocalTime.parse("17:50:00"));
+
+        client.onScheduleRequest();
+        verify(twistedAlarm.asMocked()).scheduleNext( any(LightTime.class));
+        Assert.assertEquals( appLightTime.getNextSchedule(), twistedApi.getToday().getSunset() );
+
+        //11pm
+        m.applyNow( LocalTime.parse("23:00:00"));
+        twistedAlarm.reset();
+        client.onScheduleRequest();
+        verify(twistedAlarm.asMocked()).scheduleNext( any(LightTime.class));
+        Assert.assertEquals( appLightTime.getNextSchedule(), twistedApi.getTomorrow().getSunrise() );
+    }
+
+    /**
+     * Scenario, we have today's sunrise/sunset, but it's 11 pm and we are offline.
+     * We then make a new case of guessing based on today's schedule.
+     */
+    @Test
+    public void checkMeOut(){
+
+        //11pm
+        m.applyNow( LocalTime.parse("23:00:00"));
+
+        LightTime appLightTime = twistedStorage.getLightTime();
+        appLightTime.setSunrise( "2017-10-27T12:07:26+00:00" );
+        appLightTime.setSunset( "2017-10-27T23:03:42+00:00" );
+
+        //11pm, we are offline, therefore we are
+        twistedWS.widgets = 1;
+        twistedNetwork.isOnline = false;
+        client.onScheduleRequest();
+
+        verify( twistedAlarm.asMocked() ).scheduleNext(any(LightTime.class));
+        Assert.assertEquals( appLightTime.getStatus(), LightTimeStatus.LIGHTTIME_GUESSED );
+        Assert.assertEquals( appLightTime.getSunrise(), LocalTimeUtils.getDayAsString("2017-10-27T12:07:26+00:00", 1) );
+        Assert.assertEquals( appLightTime.getSunset(), LocalTimeUtils.getDayAsString( "2017-10-27T23:03:42+00:00", 1) );
     }
 }

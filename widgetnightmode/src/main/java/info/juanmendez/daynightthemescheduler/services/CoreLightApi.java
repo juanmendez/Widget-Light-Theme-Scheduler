@@ -36,6 +36,7 @@ public class CoreLightApi implements LightApi {
             response.onResult( LightTimeUtils.clone(appLightTime) );
         }else if( m.getNetworkService().isOnline() && m.getLocationService().isGranted() ){
              m.getLightTimeApi().generateTodayTimeLight( response );
+
         }else if( LightTimeUtils.isValid(appLightTime)){
             response.onResult( LightTimeUtils.clonedAsGuessed(appLightTime, 0 ) );
         }else{

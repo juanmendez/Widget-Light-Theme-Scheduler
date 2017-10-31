@@ -22,6 +22,8 @@ public class LightTimeUtils {
     public static LightTime clonedAsGuessed(LightTime appLighttime, int daysFromToday) {
         LightTime clone = new LightTime();
         copy( appLighttime, clone );
+        clone.setSunrise( LocalTimeUtils.getDayAsString(clone.getSunrise(), daysFromToday));
+        clone.setSunset( LocalTimeUtils.getDayAsString(clone.getSunset(), daysFromToday));
         clone.setStatus(LightTimeStatus.LIGHTTIME_GUESSED);
         return clone;
     }

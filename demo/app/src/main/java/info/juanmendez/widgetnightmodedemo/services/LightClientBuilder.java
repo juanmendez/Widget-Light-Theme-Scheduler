@@ -40,13 +40,13 @@ public class LightClientBuilder{
    @AfterInject
    public void afterInject(){
        m = LightThemeModule.create()
-               .applyLightTime( lightTimeStorage.getLightTime() )
+               .applyLightTimeStorage( lightTimeStorage )
                .applyLighTimeApi( sunriseSunsetApi )
                .applyLocationService(  locationService )
                .applyNetworkService( networkService )
                .applyNow( LocalTime.now() );
 
-       client = new LightThemeClient( m, widgetService, alarmService, lightTimeStorage );
+       client = new LightThemeClient( m, widgetService, alarmService );
    }
 
    public LightThemeClient getClient(){

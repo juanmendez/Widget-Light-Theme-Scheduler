@@ -1,5 +1,7 @@
 package info.juanmendez.daynightthemescheduler.twists;
 
+import org.mockito.Mockito;
+
 import info.juanmendez.daynightthemescheduler.services.LightAlarmService;
 
 import static org.mockito.Mockito.mock;
@@ -19,5 +21,10 @@ public class TwistAlarmService implements Twist<LightAlarmService> {
             service = mock( LightAlarmService.class );
         }
         return service;
+    }
+
+    @Override
+    public void reset() {
+        Mockito.reset( service );
     }
 }

@@ -24,8 +24,7 @@ public class DroidLightTimeStorage implements LightTimeStorage {
 
     @Override
     public LightTime getLightTime() {
-      LightTime lightTime = new LightTime( pref.sunrise().get(), pref.sunset().get(), pref.nextSchedule().get() );
-      lightTime.setStatus( pref.status().get() );
+      LightTime lightTime = new LightTime( pref.sunrise().get(), pref.sunset().get(), pref.nextSchedule().get(), pref.status().get() );
       return lightTime;
     }
 

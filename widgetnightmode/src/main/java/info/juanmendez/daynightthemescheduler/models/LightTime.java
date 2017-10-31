@@ -27,6 +27,11 @@ public class LightTime {
         this.nextSchedule = nextSchedule;
     }
 
+    public LightTime(String sunrise, String sunset, String nextSchedule, int status) {
+        this( sunrise, sunset, nextSchedule );
+        this.status = status;
+    }
+
     public String getSunrise() {
         return sunrise;
     }

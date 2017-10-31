@@ -2,6 +2,8 @@ package info.juanmendez.daynightthemescheduler.twists;
 
 import android.location.Location;
 
+import org.mockito.Mockito;
+
 import info.juanmendez.daynightthemescheduler.services.LightLocationService;
 
 import static org.mockito.Mockito.doReturn;
@@ -41,5 +43,10 @@ public class TwistLocationService implements Twist<LightLocationService> {
         }
 
         return locationService;
+    }
+
+    @Override
+    public void reset() {
+        Mockito.reset( locationService );
     }
 }

@@ -1,5 +1,7 @@
 package info.juanmendez.daynightthemescheduler.twists;
 
+import org.mockito.Mockito;
+
 import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.services.LightTimeStorage;
 import info.juanmendez.daynightthemescheduler.utils.LightTimeUtils;
@@ -46,5 +48,10 @@ public class TwistStorage implements Twist<LightTimeStorage> {
 
     public void setLightTime(LightTime lightTime) {
         LightTimeUtils.copy( lightTime, this.lightTime);
+    }
+
+    @Override
+    public void reset() {
+        Mockito.reset( storage );
     }
 }

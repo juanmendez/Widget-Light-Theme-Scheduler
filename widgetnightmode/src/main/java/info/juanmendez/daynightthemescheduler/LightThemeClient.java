@@ -8,7 +8,6 @@ import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
 import info.juanmendez.daynightthemescheduler.models.LightTimeStatus;
 import info.juanmendez.daynightthemescheduler.services.LightAlarmService;
 import info.juanmendez.daynightthemescheduler.services.LightPlanner;
-import info.juanmendez.daynightthemescheduler.services.LightTimeStorage;
 import info.juanmendez.daynightthemescheduler.services.LightWidgetService;
 import info.juanmendez.daynightthemescheduler.utils.LightTimeUtils;
 import timber.log.Timber;
@@ -31,7 +30,7 @@ public class LightThemeClient {
     private LightPlanner planner;
 
 
-    public LightThemeClient(LightThemeModule module, LightWidgetService widgetService, LightAlarmService alarmService, LightTimeStorage lightTimeStorage) {
+    public LightThemeClient(LightThemeModule module, LightWidgetService widgetService, LightAlarmService alarmService) {
         this.m = module;
         this.widgetService = widgetService;
         this.alarmService = alarmService;
@@ -74,8 +73,10 @@ public class LightThemeClient {
             planner.provideNextTimeLight( lightTimeResult -> {
 
                 if(LightTimeUtils.isValid(lightTimeResult )){
+                    m.getLightTimeStorage().saveLightTime( lightTimeResult );
                     alarmService.scheduleNext( lightTimeResult );
                 }else if( lightTimeResult.getStatus() == LightTimeStatus.NO_INTERNET ){
+                    m.getLightTimeStorage().saveLightTime( lightTimeResult );
                     lightTimeResult.setNextSchedule("");
                     alarmService.scheduleNextWhenOnline();
                 }else{

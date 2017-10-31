@@ -5,6 +5,7 @@ import org.joda.time.LocalTime;
 import info.juanmendez.daynightthemescheduler.services.LightApi;
 import info.juanmendez.daynightthemescheduler.services.LightLocationService;
 import info.juanmendez.daynightthemescheduler.services.LightNetworkService;
+import info.juanmendez.daynightthemescheduler.services.LightTimeStorage;
 
 /**
  * Created by Juan Mendez on 10/29/2017.
@@ -17,7 +18,7 @@ public class LightThemeModule {
     LightNetworkService networkService;
     LightLocationService locationService;
     LightApi lightTimeApi;
-    LightTime lightTime;
+    LightTimeStorage lightTimeStorage;
     LocalTime now;
 
     public static LightThemeModule create(){
@@ -39,8 +40,8 @@ public class LightThemeModule {
         return this;
     }
 
-    public LightThemeModule applyLightTime(LightTime lightTime) {
-        this.lightTime = lightTime;
+    public LightThemeModule applyLightTimeStorage(LightTimeStorage lightTimeStorage) {
+        this.lightTimeStorage = lightTimeStorage;
         return this;
     }
 
@@ -61,8 +62,12 @@ public class LightThemeModule {
         return lightTimeApi;
     }
 
-    public LightTime getLightTime() {
-        return lightTime;
+    public LightTimeStorage getLightTimeStorage() {
+        return lightTimeStorage;
+    }
+
+    public LightTime getLightTime(){
+        return lightTimeStorage.getLightTime();
     }
 
     public LocalTime getNow() {

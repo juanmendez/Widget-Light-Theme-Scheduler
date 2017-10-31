@@ -8,4 +8,5 @@ package info.juanmendez.daynightthemescheduler.twists;
 
 public interface Twist<T> {
     T asMocked();
+    void reset();
 }

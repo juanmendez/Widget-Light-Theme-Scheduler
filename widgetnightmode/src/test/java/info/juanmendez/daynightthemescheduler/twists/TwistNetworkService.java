@@ -1,5 +1,7 @@
 package info.juanmendez.daynightthemescheduler.twists;
 
+import org.mockito.Mockito;
+
 import info.juanmendez.daynightthemescheduler.services.LightNetworkService;
 
 import static org.mockito.Mockito.mock;
@@ -23,5 +25,10 @@ public class TwistNetworkService implements Twist<LightNetworkService> {
             doAnswer(invocation -> isOnline).when( networkService ).isOnline();
         }
         return networkService;
+    }
+
+    @Override
+    public void reset() {
+        Mockito.reset( networkService );
     }
 }

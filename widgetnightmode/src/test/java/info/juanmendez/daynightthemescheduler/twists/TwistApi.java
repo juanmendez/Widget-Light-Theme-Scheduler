@@ -1,5 +1,7 @@
 package info.juanmendez.daynightthemescheduler.twists;
 
+import org.mockito.Mockito;
+
 import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.Response;
 import info.juanmendez.daynightthemescheduler.services.LightApi;
@@ -57,5 +59,10 @@ public class TwistApi implements Twist<LightApi> {
 
     public void setTomorrow(LightTime tomorrow) {
         LightTimeUtils.copy(tomorrow, this.tomorrow);
+    }
+
+    @Override
+    public void reset() {
+        Mockito.reset( apiRetro );
     }
 }

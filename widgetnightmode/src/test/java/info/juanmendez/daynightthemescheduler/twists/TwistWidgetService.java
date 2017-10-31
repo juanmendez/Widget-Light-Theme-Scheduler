@@ -2,6 +2,8 @@ package info.juanmendez.daynightthemescheduler.twists;
 
 import android.support.v7.app.AppCompatDelegate;
 
+import org.mockito.Mockito;
+
 import info.juanmendez.daynightthemescheduler.services.LightWidgetService;
 
 import static org.mockito.Mockito.doNothing;
@@ -29,5 +31,10 @@ public class TwistWidgetService implements Twist<LightWidgetService> {
             doNothing().when( widgetService ).updateWidgets();
         }
         return widgetService;
+    }
+
+    @Override
+    public void reset() {
+        Mockito.reset( widgetService );
     }
 }

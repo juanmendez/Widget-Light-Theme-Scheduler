@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
+import org.junit.Before;
 import org.junit.Test;
 
 import info.juanmendez.daynightthemescheduler.models.LightTime;
@@ -28,7 +29,13 @@ import static org.mockito.Mockito.verify;
  * These tests were made in order to make the functionality needed in CoreLightApi
  */
 public class PlannerTest extends LightThemeTest{
-    
+    LightTime appLightTime;
+
+    @Before
+    public void before(){
+        appLightTime = twistedStorage.getLightTime();
+    }
+
     @Test
     public void firstTime(){
 
@@ -104,6 +111,7 @@ public class PlannerTest extends LightThemeTest{
         String yesterdaySunrise = "2017-10-26T12:07:26+00:00";
         String yesterdaySunset = "2017-10-26T23:03:42+00:00";
 
+        LightTime appLightTime = twistedStorage.getLightTime();
         appLightTime.setSunrise( yesterdaySunrise );
         appLightTime.setSunset( yesterdaySunset );
 
@@ -124,6 +132,8 @@ public class PlannerTest extends LightThemeTest{
         //what do we do?
         String yesterdaySunrise = "2017-10-26T12:07:26+00:00";
         String yesterdaySunset = "2017-10-26T23:03:42+00:00";
+
+        LightTime appLightTime = twistedStorage.getLightTime();
 
         appLightTime.setSunrise( yesterdaySunrise );
         appLightTime.setSunset( yesterdaySunset );
@@ -147,6 +157,8 @@ public class PlannerTest extends LightThemeTest{
     public void testCheckIfCacheIsNeeded(){
         String yesterdaySunrise = "2017-10-26T12:07:26+00:00";
         String yesterdaySunset = "2017-10-26T23:03:42+00:00";
+
+        LightTime appLightTime = twistedStorage.getLightTime();
 
         appLightTime.setSunrise( yesterdaySunrise );
         appLightTime.setSunset( yesterdaySunset );
@@ -184,6 +196,7 @@ public class PlannerTest extends LightThemeTest{
         String yesterdaySunrise = "2017-10-26T12:07:26+00:00";
         String yesterdaySunset = "2017-10-26T23:03:42+00:00";
 
+        LightTime appLightTime = twistedStorage.getLightTime();
         appLightTime.setSunrise( yesterdaySunrise );
         appLightTime.setSunset( yesterdaySunset );
 
@@ -222,6 +235,7 @@ public class PlannerTest extends LightThemeTest{
     @Test
     public void testPlannerWithNetworkIssues(){
         twistedNetwork.isOnline = false;
+        LightTime appLightTime = twistedStorage.getLightTime();
         appLightTime.setSunrise("");
         appLightTime.setSunset("");
 
@@ -236,7 +250,7 @@ public class PlannerTest extends LightThemeTest{
 
         //if we have a network, but we don't have location permissions
         twistedNetwork.isOnline = true;
-        twistedLocationService.isGranted = false;
+        twistedLS.isGranted = false;
 
         planner.provideNextTimeLight( response );
         assertFalse(LightTimeUtils.isValid( proxyResult[0]));
