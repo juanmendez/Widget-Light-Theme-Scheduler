@@ -26,6 +26,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doAnswer;
 
 /**
@@ -121,8 +122,8 @@ public class LightThemeClientTest {
     }
 
     private void generateWidgetService() {
-        LightWidgetService lightWidgetService = mock( LightWidgetService.class );
-        doAnswer( invocation -> twistObserversCount ).when( lightWidgetService ).getObserversCount();
+        widgetService = mock( LightWidgetService.class );
+        doAnswer( invocation -> twistObserversCount ).when( widgetService ).getObserversCount();
     }
 
     private void generateLightTimeStorage(){
@@ -215,5 +216,24 @@ public class LightThemeClientTest {
 
         //should be valid now..
         Assert.assertTrue(LightTimeUtils.isValid(proxyResult[0]));
+    }
+
+    @Test
+    public void rebootClientTest(){
+        //lets first ensure there is no schedule
+        m.getLightTime().setNextSchedule("");
+
+        final LightTime[] proxyResult = new LightTime[1];
+
+        Response<LightTime> response = result -> {
+            proxyResult[0] = result;
+        };
+
+        client.onScheduleRequest();
+
+        //online?yes, observers?no therefore no work scheduled.
+        verify(alarmService).cancelIfRunning();
+
+        twistObserversCount = 1;
     }
 }
