@@ -28,6 +28,24 @@ public class LightThemeClient {
         planner = new LightPlanner(m);
     }
 
+
+    /**
+     * Schedule finished its task, and lets the theme know.
+     */
+    public void onScheduleComplete(){
+
+    }
+
+    /**
+     * There hasn't been any schedule done.
+     * This is the case of device reboot, or first time adding a widget
+     */
+    public void onScheduleRequest(){
+        //We want to enforce lightTime in module has no schedule
+        m.getLightTime().setNextSchedule("");
+        planNextSchedule();
+    }
+
     public void  planNextSchedule(){
 
         if( widgetService.getObserversCount() > 0 ){
@@ -47,22 +65,4 @@ public class LightThemeClient {
             alarmService.cancelIfRunning();
         }
     }
-
-    /**
-     * Schedule finished its task, and lets the theme know.
-     */
-    public void onScheduleComplete(){
-
-    }
-
-    /**
-     * There hasn't been any schedule done.
-     * This is the case of device reboot, or first time adding a widget
-     */
-    public void onScheduleRequest(){
-        //We want to enforce lightTime in module has no schedule
-        m.getLightTime().setNextSchedule("");
-
-    }
-
 }

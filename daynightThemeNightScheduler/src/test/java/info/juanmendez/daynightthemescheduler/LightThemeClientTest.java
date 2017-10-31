@@ -11,6 +11,7 @@ import org.powermock.reflect.Whitebox;
 
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
 import info.juanmendez.daynightthemescheduler.models.LightTime;
+import info.juanmendez.daynightthemescheduler.models.LightTimeStatus;
 import info.juanmendez.daynightthemescheduler.models.Response;
 import info.juanmendez.daynightthemescheduler.services.LightAlarmService;
 import info.juanmendez.daynightthemescheduler.services.LightApi;
@@ -19,6 +20,7 @@ import info.juanmendez.daynightthemescheduler.services.LightNetworkService;
 import info.juanmendez.daynightthemescheduler.services.LightPlanner;
 import info.juanmendez.daynightthemescheduler.services.LightTimeStorage;
 import info.juanmendez.daynightthemescheduler.services.LightWidgetService;
+import info.juanmendez.daynightthemescheduler.utils.LightTimeUtils;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -32,7 +34,7 @@ import static org.powermock.api.mockito.PowerMockito.doAnswer;
  * contact@juanmendez.info
  * LightThemeScheduler based on several conditions figures out if there is a schedule to carry over
  */
-public class LightThemeSchedulerTest {
+public class LightThemeClientTest {
     LocalTime twistSunrise;
     LocalTime twistSunset;
 
@@ -54,6 +56,7 @@ public class LightThemeSchedulerTest {
     LightThemeModule m;
 
     LightThemeClient client;
+    LightPlanner planner;
 
     @Before
     public void onBefore(){
@@ -68,7 +71,7 @@ public class LightThemeSchedulerTest {
         generateProxy();
         generateNetworkService();
         generateLocationService();
-        generateWigetService();
+        generateWidgetService();
         alarmService = mock( LightAlarmService.class );
         generateLightTimeStorage();
 
@@ -80,6 +83,7 @@ public class LightThemeSchedulerTest {
                 .applyNow( LocalTime.now() );
 
         client = new LightThemeClient(m, widgetService, alarmService, lightTimeStorage );
+        planner = Whitebox.getInternalState( client, "planner");
 
     }
 
@@ -116,7 +120,7 @@ public class LightThemeSchedulerTest {
         doReturn( location ).when( locationService ).getLastKnownLocation();
     }
 
-    private void generateWigetService() {
+    private void generateWidgetService() {
         LightWidgetService lightWidgetService = mock( LightWidgetService.class );
         doAnswer( invocation -> twistObserversCount ).when( lightWidgetService ).getObserversCount();
     }
@@ -160,5 +164,56 @@ public class LightThemeSchedulerTest {
         m.applyNow( LocalTime.parse("23:00:00"));
         planner.provideNextTimeLight( response );
         Assert.assertEquals( proxyResult[0].getNextSchedule(), twistApiTomorrow.getSunrise() );
+    }
+
+    @Test
+    public void rebootTest(){
+        //lets first ensure there is no schedule
+        m.getLightTime().setNextSchedule("");
+
+        twistIsOnline = false;
+
+        final LightTime[] proxyResult = new LightTime[1];
+
+        Response<LightTime> response = result -> {
+            proxyResult[0] = result;
+        };
+
+        planner.provideNextTimeLight( response );
+
+        //lightTime storage has no data, therefore proxyResult[0] is also invalid
+        //in this case LightAlarmService must set an alarm when there is network, and we can calculate..
+        Assert.assertFalse( LightTimeUtils.isValid(lightTimeStorage.getLightTime()));
+        Assert.assertFalse(LightTimeUtils.isValid(proxyResult[0]));
+        Assert.assertEquals( proxyResult[0].getStatus(), LightTimeStatus.NO_INTERNET );
+
+
+        //how about online, but no permission to get location
+        twistIsOnline = true;
+        twistLocationGranted = false;
+        planner.provideNextTimeLight( response );
+
+        Assert.assertFalse( LightTimeUtils.isValid(lightTimeStorage.getLightTime()));
+        Assert.assertEquals( proxyResult[0].getStatus(), LightTimeStatus.NO_LOCATION_PERMISSION );
+
+
+        //we must notify alarmService to make a second attempt once there is network.
+        //lets pretend that it happened.
+        twistIsOnline = true;
+        twistLocationGranted = true;
+
+        //first update values returned by apiRetro
+        String sunrise = "2017-10-26T12:07:26+00:00";
+        String sunset = "2017-10-26T23:03:42+00:00";
+
+        twistApiToday.setSunrise(sunrise);
+        twistApiToday.setSunset(sunset);
+
+        //also lets say it's two o'clock
+        m.applyNow( LocalTime.parse("14:00:00"));
+        planner.provideNextTimeLight( response );
+
+        //should be valid now..
+        Assert.assertTrue(LightTimeUtils.isValid(proxyResult[0]));
     }
 }
