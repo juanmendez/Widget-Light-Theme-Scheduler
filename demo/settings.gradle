@@ -1,4 +1,4 @@
 include ':app'
 
-include 'daynightThemeNightScheduler'
-project(':daynightThemeNightScheduler').projectDir = new File('../daynightThemeNightScheduler' )
+include 'widgetnightmode'
+project(':widgetnightmode').projectDir = new File('../widgetnightmode' )

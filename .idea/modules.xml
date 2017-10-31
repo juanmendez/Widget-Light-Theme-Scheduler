@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/daynightThemeNightScheduler/daynightThemeNightScheduler.iml" filepath="$PROJECT_DIR$/daynightThemeNightScheduler/daynightThemeNightScheduler.iml" />
       <module fileurl="file://$PROJECT_DIR$/widget-night-mode.iml" filepath="$PROJECT_DIR$/widget-night-mode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/widgetnightmode/daynightThemeNightScheduler.iml" filepath="$PROJECT_DIR$/widgetnightmode/daynightThemeNightScheduler.iml" />
     </modules>
   </component>
 </project>
