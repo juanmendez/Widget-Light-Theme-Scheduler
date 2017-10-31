@@ -12,9 +12,8 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 
-import info.juanmendez.widgetnightmodedemo.services.SunriseSunsetApi;
-import info.juanmendez.widgetnightmodedemo.services.DroidNetworkService;
-import timber.log.Timber;
+import info.juanmendez.daynightthemescheduler.LightThemeClient;
+import info.juanmendez.widgetnightmodedemo.services.LightClientBuilder;
 
 
 /**
@@ -27,20 +26,18 @@ import timber.log.Timber;
 public class SecondActivity extends AppCompatActivity {
 
     @Bean
-    DroidNetworkService networkService;
-
-    @Bean
-    SunriseSunsetApi lightTimeRetro;
+    LightClientBuilder clientBuilder;
 
     @AfterViews
     public void afterViews() {
         checkPermissions();
+
+        LightThemeClient client = clientBuilder.getClient();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if( requestCode == 1 ){
-            getLightTimes();
         }
     }
 
@@ -54,20 +51,8 @@ public class SecondActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     1);
         }else{
-            getLightTimes();
+
         }
-    }
-
-    private void getLightTimes(){
-        lightTimeRetro.generateTodayTimeLight(result -> {
-            Timber.i( "LightTime result for today %s", result );
-        });
-
-        lightTimeRetro.generateTomorrowTimeLight( result -> {
-            Timber.i( "LightTime result for tomorrow %s", result );
-        });
-
-        Timber.i( "Is there connection %s", networkService.isOnline()?"yes":"false");
     }
 
     @Click

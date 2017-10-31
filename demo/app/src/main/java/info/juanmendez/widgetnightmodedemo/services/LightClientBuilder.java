@@ -1,5 +1,6 @@
 package info.juanmendez.widgetnightmodedemo.services;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.joda.time.LocalTime;
@@ -12,7 +13,7 @@ import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
  * www.juanmendez.info
  * contact@juanmendez.info
  */
-@EBean
+@EBean(scope = EBean.Scope.Singleton)
 public class LightClientBuilder{
 
     @Bean
@@ -33,14 +34,22 @@ public class LightClientBuilder{
    @Bean
    SunriseSunsetApi sunriseSunsetApi;
 
-   public LightThemeClient create(){
-       LightThemeModule m = LightThemeModule.create()
+   private LightThemeModule m;
+   private LightThemeClient client;
+
+   @AfterInject
+   public void afterInject(){
+       m = LightThemeModule.create()
                .applyLightTime( lightTimeStorage.getLightTime() )
                .applyLighTimeApi( sunriseSunsetApi )
                .applyLocationService(  locationService )
                .applyNetworkService( networkService )
                .applyNow( LocalTime.now() );
 
-       return  new LightThemeClient( m, widgetService, alarmService, lightTimeStorage );
+       client = new LightThemeClient( m, widgetService, alarmService, lightTimeStorage );
+   }
+
+   public LightThemeClient getClient(){
+       return  client;
    }
 }

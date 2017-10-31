@@ -6,8 +6,10 @@ import android.content.Context;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import info.juanmendez.daynightthemescheduler.services.LightWidgetService;
+import info.juanmendez.widgetnightmodedemo.ThemePrefs_;
 import info.juanmendez.widgetnightmodedemo.WidgetProvider_;
 
 
@@ -22,6 +24,9 @@ public class DroidWidgetService implements LightWidgetService {
     @RootContext
     Context rootContext;
 
+    @Pref
+    ThemePrefs_ themePrefs;
+
     @Override
     public int getObserversCount() {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(rootContext);
@@ -33,5 +38,10 @@ public class DroidWidgetService implements LightWidgetService {
     @Override
     public void updateLightTheme(int theme) {
 
+    }
+
+    @Override
+    public int getNightMode() {
+        return themePrefs.dayNightMode().get();
     }
 }

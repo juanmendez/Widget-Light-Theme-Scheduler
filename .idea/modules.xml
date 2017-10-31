@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/widget-night-mode.iml" filepath="$PROJECT_DIR$/widget-night-mode.iml" />
-      <module fileurl="file://$PROJECT_DIR$/widgetnightmode/daynightThemeNightScheduler.iml" filepath="$PROJECT_DIR$/widgetnightmode/daynightThemeNightScheduler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/widgetnightmode/widgetnightmode.iml" filepath="$PROJECT_DIR$/widgetnightmode/widgetnightmode.iml" />
     </modules>
   </component>
 </project>

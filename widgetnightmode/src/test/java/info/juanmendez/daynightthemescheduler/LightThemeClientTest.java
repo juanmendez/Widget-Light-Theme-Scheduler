@@ -1,6 +1,7 @@
 package info.juanmendez.daynightthemescheduler;
 
 import android.location.Location;
+import android.support.v7.app.AppCompatDelegate;
 
 import junit.framework.Assert;
 
@@ -48,6 +49,7 @@ public class LightThemeClientTest {
     boolean twistIsOnline = true;
     boolean twistLocationGranted = true;
     int twistObserversCount = 0;
+    int twistNightModeAction = AppCompatDelegate.MODE_NIGHT_AUTO;
 
     LightLocationService locationService;
     LightNetworkService networkService;
@@ -124,6 +126,7 @@ public class LightThemeClientTest {
     private void generateWidgetService() {
         widgetService = mock( LightWidgetService.class );
         doAnswer( invocation -> twistObserversCount ).when( widgetService ).getObserversCount();
+        doAnswer( invocation -> twistNightModeAction ).when( widgetService ).getNightMode();
     }
 
     private void generateLightTimeStorage(){

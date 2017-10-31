@@ -12,8 +12,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EReceiver;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import info.juanmendez.widgetnightmodedemo.services.SunriseSunsetApi;
-import info.juanmendez.widgetnightmodedemo.services.DroidNetworkService;
+import info.juanmendez.widgetnightmodedemo.services.LightClientBuilder;
 import timber.log.Timber;
 
 
@@ -31,14 +30,10 @@ public class WidgetProvider extends AppWidgetProvider {
     MyApp myApp;
 
     @Bean
-    DroidNetworkService networkService;
-
-    @Bean
-    SunriseSunsetApi lightTimeRetro;
+    LightClientBuilder clientBuilder;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Timber.i( "widget.onReceive! " + intent.getAction());
         if ( intent.getAction() == null ) {
 
             int[] widget_ids = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
@@ -48,6 +43,8 @@ public class WidgetProvider extends AppWidgetProvider {
         } else {
             super.onReceive(context, intent);
         }
+
+        clientBuilder.getClient().onClientEvent( intent.getAction() );
     }
 
     @Override
@@ -79,21 +76,6 @@ public class WidgetProvider extends AppWidgetProvider {
     }
 
     private void getLightTimes(){
-
-        if( themePrefs.isLocationGranted().getOr(false) ){
-            Timber.e( "there is no locationGranted stored, or is false");
-            return;
-        }
-
-        lightTimeRetro.generateTodayTimeLight(result -> {
-            Timber.i( "LightTime result for today %s", result );
-        });
-
-        lightTimeRetro.generateTomorrowTimeLight( result -> {
-            Timber.i( "LightTime result for tomorrow %s", result );
-        });
-
-        Timber.i( "Is there connection %s", networkService.isOnline()?"yes":"false");
     }
 
     /**
