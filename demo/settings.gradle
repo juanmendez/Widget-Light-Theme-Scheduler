@@ -1,0 +1,4 @@
+include ':app'
+
+include 'daynightThemeNightScheduler'
+project(':daynightThemeNightScheduler').projectDir = new File('../daynightThemeNightScheduler' )

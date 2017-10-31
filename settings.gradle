@@ -1,1 +1,1 @@
-include ':app', ':daynightThemeNightScheduler'
+include ':daynightThemeNightScheduler'

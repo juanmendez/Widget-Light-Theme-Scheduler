@@ -13,13 +13,15 @@ import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
 import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.Response;
 import info.juanmendez.daynightthemescheduler.services.LightAlarmService;
-import info.juanmendez.daynightthemescheduler.services.LightPlanner;
 import info.juanmendez.daynightthemescheduler.services.LightApi;
 import info.juanmendez.daynightthemescheduler.services.LightLocationService;
 import info.juanmendez.daynightthemescheduler.services.LightNetworkService;
+import info.juanmendez.daynightthemescheduler.services.LightPlanner;
+import info.juanmendez.daynightthemescheduler.services.LightTimeStorage;
 import info.juanmendez.daynightthemescheduler.services.LightWidgetService;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.powermock.api.mockito.PowerMockito.doAnswer;
@@ -48,6 +50,7 @@ public class LightThemeSchedulerTest {
     LightNetworkService networkService;
     LightWidgetService widgetService;
     LightAlarmService alarmService;
+    LightTimeStorage lightTimeStorage;
     LightThemeModule m;
 
     LightThemeClient client;
@@ -67,6 +70,7 @@ public class LightThemeSchedulerTest {
         generateLocationService();
         generateWigetService();
         alarmService = mock( LightAlarmService.class );
+        generateLightTimeStorage();
 
         m = LightThemeModule.create()
                 .applyLighTimeApi( apiRetro )
@@ -75,7 +79,7 @@ public class LightThemeSchedulerTest {
                 .applyLightTime( appLightTime )
                 .applyNow( LocalTime.now() );
 
-        client = new LightThemeClient(m, widgetService, alarmService );
+        client = new LightThemeClient(m, widgetService, alarmService, lightTimeStorage );
 
     }
 
@@ -115,6 +119,12 @@ public class LightThemeSchedulerTest {
     private void generateWigetService() {
         LightWidgetService lightWidgetService = mock( LightWidgetService.class );
         doAnswer( invocation -> twistObserversCount ).when( lightWidgetService ).getObserversCount();
+    }
+
+    private void generateLightTimeStorage(){
+        lightTimeStorage = mock( LightTimeStorage.class );
+        doAnswer( invocation -> appLightTime ).when( lightTimeStorage ).getLightTime();
+        doNothing().when( lightTimeStorage ).saveLightTime( any( LightTime.class));
     }
 
     @Test

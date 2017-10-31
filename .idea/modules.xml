@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/daynightThemeNightScheduler/daynightThemeNightScheduler.iml" filepath="$PROJECT_DIR$/daynightThemeNightScheduler/daynightThemeNightScheduler.iml" />
       <module fileurl="file://$PROJECT_DIR$/widget-night-mode.iml" filepath="$PROJECT_DIR$/widget-night-mode.iml" />
     </modules>
