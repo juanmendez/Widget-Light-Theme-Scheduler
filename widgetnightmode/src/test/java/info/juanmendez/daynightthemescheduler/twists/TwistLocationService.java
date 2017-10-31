@@ -30,7 +30,14 @@ public class TwistLocationService implements Twist<LightLocationService> {
             doReturn(0d).when( location ).getLatitude();
             doReturn(0d).when( location ).getLongitude();
 
-            doReturn( location ).when( locationService ).getLastKnownLocation();
+            doAnswer( invocation -> {
+                if( isGranted ){
+                    return location;
+                }else{
+                    throw new Exception("LocationService requires permission");
+                }
+
+            } ).when( locationService ).getLastKnownLocation();
         }
 
         return locationService;
