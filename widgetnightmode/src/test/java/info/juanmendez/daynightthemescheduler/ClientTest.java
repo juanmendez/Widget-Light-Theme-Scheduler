@@ -1,5 +1,9 @@
 package info.juanmendez.daynightthemescheduler;
 
+import android.appwidget.AppWidgetManager;
+import android.content.Intent;
+import android.support.v7.app.AppCompatDelegate;
+
 import junit.framework.Assert;
 
 import org.joda.time.LocalTime;
@@ -9,11 +13,15 @@ import org.powermock.reflect.Whitebox;
 import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.LightTimeStatus;
 import info.juanmendez.daynightthemescheduler.models.Response;
+import info.juanmendez.daynightthemescheduler.models.WidgetScreenStatus;
 import info.juanmendez.daynightthemescheduler.services.LightPlanner;
 import info.juanmendez.daynightthemescheduler.utils.LightTimeUtils;
 import info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -147,6 +155,7 @@ public class ClientTest extends LightThemeTest{
 
         //11pm
         m.applyNow( LocalTime.parse("23:00:00"));
+
         twistedAlarm.reset();
         client.onScheduleRequest();
         verify(twistedAlarm.asMocked()).scheduleNext( any(LightTime.class));
@@ -195,5 +204,78 @@ public class ClientTest extends LightThemeTest{
 
         verify( twistedAlarm.asMocked() ).cancelIfRunning();
         Assert.assertEquals( appLightTime.getStatus(), LightTimeStatus.NO_LOCATION_PERMISSION  );
+    }
+
+    /**
+     * User has gone to day mode only. lets update widgetService.
+     */
+    @Test
+    public void whenDayOnlyOption(){
+        twistedWS.widgets = 1;
+        twistedWS.userOption = AppCompatDelegate.MODE_NIGHT_NO;
+
+        client.onAppEvent( LightThemeClient.THEME_OPTION_CHANGED );
+        verify( twistedAlarm.asMocked() ).cancelIfRunning();
+        verify( twistedWS.asMocked(), times(1) ).setWidgetScreenMode( eq(WidgetScreenStatus.WIDGET_DAY_SCREEN) );
+
+        twistedWS.userOption = AppCompatDelegate.MODE_NIGHT_YES;
+        client.onAppEvent( LightThemeClient.THEME_OPTION_CHANGED );
+        verify( twistedAlarm.asMocked(), times(2) ).cancelIfRunning();
+        verify( twistedWS.asMocked() ).setWidgetScreenMode( eq(WidgetScreenStatus.WIDGET_NIGHT_SCREEN) );
+    }
+
+    @Test
+    public void whenNightAutoOptionAndNoWidgets(){
+
+        //we have network and we have sunrise/sunset for today
+        twistedApi.getToday().setSunrise( "2017-10-27T12:07:26+00:00" );
+        twistedApi.getToday().setSunset( "2017-10-27T23:03:42+00:00" );
+        m.applyNow( LocalTime.parse("12:00"));
+
+        twistedWS.widgets = 0;
+        twistedWS.userOption = AppCompatDelegate.MODE_NIGHT_AUTO;
+        client.onAppEvent( LightThemeClient.THEME_OPTION_CHANGED);
+        verify( twistedAlarm.asMocked() ).cancelIfRunning();
+        verify( twistedWS.asMocked(), times(0)).setWidgetScreenMode(anyInt() );
+
+
+        twistedAlarm.reset();
+        //ok, now a widget is added after.
+        twistedWS.widgets = 1;
+        client.onAppEvent( AppWidgetManager.ACTION_APPWIDGET_ENABLED );
+        verify( twistedAlarm.asMocked(), times(0) ).cancelIfRunning();
+
+        //we should be having daylight today!
+        verify( twistedWS.asMocked() ).setWidgetScreenMode( eq(WidgetScreenStatus.WIDGET_DAY_SCREEN));
+
+
+        //widget was removed..
+        twistedWS.widgets = 0;
+        client.onAppEvent( AppWidgetManager.ACTION_APPWIDGET_DELETED );
+        verify( twistedAlarm.asMocked(), times(1) ).cancelIfRunning();
+    }
+
+
+    /**
+     * User lost her device, and once it is found it's already 4pm.
+     * What is going to happen?
+     */
+    @Test
+    public void whenReboot(){
+
+        //we have network and we have sunrise/sunset for today
+        twistedApi.getToday().setSunrise( "2017-10-27T12:07:26+00:00" );
+        twistedApi.getToday().setSunset( "2017-10-27T23:03:42+00:00" );
+
+        twistedApi.getTomorrow().setSunrise( "2017-10-28T12:07:26+00:00" );
+        twistedApi.getTomorrow().setSunset( "2017-10-28T23:03:42+00:00" );
+
+        m.applyNow( LocalTime.parse("23:00"));
+
+        twistedWS.widgets = 1;
+        twistedWS.userOption = AppCompatDelegate.MODE_NIGHT_AUTO;
+        client.onAppEvent( Intent.ACTION_REBOOT);
+        //verify( twistedAlarm.asMocked() ).scheduleNext(eq(m.getLightTime()) );
+        verify( twistedWS.asMocked() ).setWidgetScreenMode( WidgetScreenStatus.WIDGET_NIGHT_SCREEN );
     }
 }

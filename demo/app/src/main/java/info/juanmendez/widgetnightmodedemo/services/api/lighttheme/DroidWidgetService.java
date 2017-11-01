@@ -37,20 +37,6 @@ public class DroidWidgetService implements LightWidgetService {
     }
 
     @Override
-    public void updateWidgets() {
-
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(rootContext);
-        ComponentName componentName = new ComponentName( rootContext, WidgetProvider_.class);
-
-        int[] widgetIds = appWidgetManager.getAppWidgetIds(componentName);
-
-        Intent intent = new Intent(rootContext, WidgetProvider_.class );
-        intent.setAction( AppWidgetManager.ACTION_APPWIDGET_UPDATE );
-        intent.putExtra( AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds );
-        rootContext.sendBroadcast( intent );
-    }
-
-    @Override
     public int getWidgetScreenOption() {
         return widgetPrefs.screenOption().get();
     }
@@ -63,5 +49,16 @@ public class DroidWidgetService implements LightWidgetService {
     @Override
     public void setWidgetScreenMode(int screenMode) {
         widgetPrefs.screenMode().put( screenMode );
+
+        //its time to notify widgets..
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(rootContext);
+        ComponentName componentName = new ComponentName( rootContext, WidgetProvider_.class);
+
+        int[] widgetIds = appWidgetManager.getAppWidgetIds(componentName);
+
+        Intent intent = new Intent(rootContext, WidgetProvider_.class );
+        intent.setAction( AppWidgetManager.ACTION_APPWIDGET_UPDATE );
+        intent.putExtra( AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds );
+        rootContext.sendBroadcast( intent );
     }
 }

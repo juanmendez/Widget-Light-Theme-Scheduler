@@ -78,6 +78,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //these changes need to be known by ligthThemeClient
-        clientBuilder.getClient().onAppEvent(LightThemeClient.NIGHT_AUTO_CHANGED );
+        clientBuilder.getClient().onAppEvent(LightThemeClient.THEME_OPTION_CHANGED);
     }
 }

@@ -8,7 +8,6 @@ package info.juanmendez.daynightthemescheduler.services;
 
 public interface LightWidgetService {
     int getWidgetsCount();
-    void updateWidgets();
 
     /**
      * gets the option placed by the user

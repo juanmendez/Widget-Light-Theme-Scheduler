@@ -7,11 +7,15 @@ import android.support.v7.app.AppCompatDelegate;
 
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
 import info.juanmendez.daynightthemescheduler.models.LightTimeStatus;
+import info.juanmendez.daynightthemescheduler.models.WidgetScreenStatus;
 import info.juanmendez.daynightthemescheduler.services.LightAlarmService;
 import info.juanmendez.daynightthemescheduler.services.LightPlanner;
 import info.juanmendez.daynightthemescheduler.services.LightWidgetService;
 import info.juanmendez.daynightthemescheduler.utils.LightTimeUtils;
 import timber.log.Timber;
+
+import static info.juanmendez.daynightthemescheduler.utils.LightTimeUtils.getScreenMode;
+
 
 /**
  * Created by Juan Mendez on 10/29/2017.
@@ -22,7 +26,7 @@ import timber.log.Timber;
 public class LightThemeClient {
 
     private static final String CLASS_NAME = LightThemeClient.class.getName();
-    public static final String NIGHT_AUTO_CHANGED = CLASS_NAME + ".NIGHT_AUTO_CHANGED";
+    public static final String THEME_OPTION_CHANGED = CLASS_NAME + ".THEME_OPTION_CHANGED";
     public static final String SCHEDULE_COMPLETED = CLASS_NAME + ".SCHEDULE_COMPLETED";
 
 
@@ -44,20 +48,23 @@ public class LightThemeClient {
      */
     public void onAppEvent(@NonNull String actionEvent ){
 
-        if(actionEvent.equals(NIGHT_AUTO_CHANGED)){
-            Timber.i( "theme night auto change");
+        if(actionEvent.equals(THEME_OPTION_CHANGED)){
+            Timber.i( "theme option changed");
 
             if( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO ){
                 planNextSchedule();
             }else{
                 alarmService.cancelIfRunning();
+                reflectScreenMode();
             }
+
         }else if( actionEvent.equals( AppWidgetManager.ACTION_APPWIDGET_ENABLED)){
             Timber.i( "widget added");
             planNextSchedule();
         }else if( actionEvent.equals( AppWidgetManager.ACTION_APPWIDGET_DELETED)){
             Timber.i( "widget removed");
             cancelWhileInNightAuto();
+            reflectScreenMode();
         }else if( actionEvent.equals(Intent.ACTION_REBOOT)){
             Timber.i( "device rebooted");
             planNextSchedule();
@@ -85,6 +92,7 @@ public class LightThemeClient {
             planner.provideNextTimeLight( lightTimeResult -> {
 
                 m.getLightTimeStorage().saveLightTime( lightTimeResult );
+                reflectScreenMode();
 
                 if(LightTimeUtils.isValid(lightTimeResult )){
                     alarmService.scheduleNext( lightTimeResult );
@@ -97,6 +105,17 @@ public class LightThemeClient {
             });
         }else{
             alarmService.cancelIfRunning();
+        }
+    }
+
+    public void reflectScreenMode(){
+
+        if( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO && LightTimeUtils.isValid( m.getLightTime() ) ){
+            widgetService.setWidgetScreenMode( getScreenMode( m.getNow(), m.getLightTime() ) );
+        }else if( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_YES ){
+            widgetService.setWidgetScreenMode( WidgetScreenStatus.WIDGET_NIGHT_SCREEN );
+        }else if( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_NO ) {
+            widgetService.setWidgetScreenMode( WidgetScreenStatus.WIDGET_DAY_SCREEN );
         }
     }
 
