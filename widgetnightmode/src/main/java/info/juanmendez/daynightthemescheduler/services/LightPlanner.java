@@ -40,6 +40,11 @@ public class LightPlanner {
     private void provideTodayLightTime(Response<LightTime> response ){
         mApiProxy.generateTodayTimeLight(todayLightTime -> {
 
+            //try to fix in case not valid.
+            if(!LightTimeUtils.isValid( todayLightTime ) && LightTimeUtils.isValid(m.getLightTime())){
+                todayLightTime = LightTimeUtils.clonedAsGuessed( m.getLightTime(), 0 );
+            }
+
             if(LightTimeUtils.isValid( todayLightTime )){
                 mTodayLightTime = LightTimeUtils.clone( todayLightTime );
 
@@ -66,8 +71,19 @@ public class LightPlanner {
 
     private void provideTomorrowLightTime(Response<LightTime> response ){
         mApiProxy.generateTomorrowTimeLight(tomorrowTimeLight -> {
-            tomorrowTimeLight.setNextSchedule( tomorrowTimeLight.getSunrise() );
-            response.onResult( tomorrowTimeLight );
+
+            //try to fix in case not valid.
+            if(!LightTimeUtils.isValid( tomorrowTimeLight ) && LightTimeUtils.isValid(m.getLightTime())){
+                tomorrowTimeLight = LightTimeUtils.clonedAsGuessed( m.getLightTime(), 1 );
+            }
+
+            if( LightTimeUtils.isValid( tomorrowTimeLight )){
+                tomorrowTimeLight.setNextSchedule( tomorrowTimeLight.getSunrise() );
+                response.onResult( tomorrowTimeLight );
+            }else{
+                response.onResult( tomorrowTimeLight );
+            }
+
         });
     }
 

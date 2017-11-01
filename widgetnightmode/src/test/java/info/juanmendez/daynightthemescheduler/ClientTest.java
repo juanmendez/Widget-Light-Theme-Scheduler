@@ -278,7 +278,7 @@ public class ClientTest extends LightThemeTest{
         twistedWS.screenMode = WidgetScreenStatus.WIDGET_DAY_SCREEN;
         twistedWS.userOption = AppCompatDelegate.MODE_NIGHT_AUTO;
         client.onAppEvent( Intent.ACTION_REBOOT);
-        
+
         verify( twistedAlarm.asMocked() ).scheduleNext( any(LightTime.class));
         verify( twistedWS.asMocked() ).setWidgetScreenMode( WidgetScreenStatus.WIDGET_NIGHT_SCREEN );
     }

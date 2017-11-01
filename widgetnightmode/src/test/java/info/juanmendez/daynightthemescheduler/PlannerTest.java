@@ -115,15 +115,12 @@ public class PlannerTest extends LightThemeTest{
         appLightTime.setSunrise( yesterdaySunrise );
         appLightTime.setSunset( yesterdaySunset );
 
-        if( !twistedNetwork.asMocked().isOnline() ){
-            //reuse what's on appLightTime from another date into today
+        //reuse what's on appLightTime from another date into today
+        twistedApi.getToday().setSunrise( LocalTimeUtils.getDayAsString( appLightTime.getSunrise(), 0 ));
+        twistedApi.getToday().setSunset( LocalTimeUtils.getDayAsString( appLightTime.getSunset(), 0 ));
 
-            twistedApi.getToday().setSunrise( LocalTimeUtils.getDayAsString( appLightTime.getSunrise(), 0 ));
-            twistedApi.getToday().setSunset( LocalTimeUtils.getDayAsString( appLightTime.getSunset(), 0 ));
-
-            assertEquals(LocalDateTime.parse( twistedApi.getToday().getSunrise()).toLocalDate(), LocalDate.now() );
-            assertEquals(LocalDateTime.parse( twistedApi.getToday().getSunset()).toLocalDate(), LocalDate.now() );
-        }
+        assertEquals(LocalDateTime.parse( twistedApi.getToday().getSunrise()).toLocalDate(), LocalDate.now() );
+        assertEquals(LocalDateTime.parse( twistedApi.getToday().getSunset()).toLocalDate(), LocalDate.now() );
     }
 
     @Test
@@ -190,7 +187,7 @@ public class PlannerTest extends LightThemeTest{
      * lets test if we can copy the one from the day before
      */
     @Test
-    public void testForNetworkIssues(){
+    public void testGettingTodayScheduleOffline(){
         twistedNetwork.isOnline = false;
 
         String yesterdaySunrise = "2017-10-26T12:07:26+00:00";
@@ -233,7 +230,7 @@ public class PlannerTest extends LightThemeTest{
     }
 
     @Test
-    public void testPlannerWithNetworkIssues(){
+    public void testWithNetworkIssues(){
         twistedNetwork.isOnline = false;
         LightTime appLightTime = twistedStorage.getLightTime();
         appLightTime.setSunrise("");
@@ -254,6 +251,69 @@ public class PlannerTest extends LightThemeTest{
 
         planner.provideNextTimeLight( response );
         assertFalse(LightTimeUtils.isValid( proxyResult[0]));
-
     }
+
+    @Test
+    public void testWithOnlineIssuesForToday(){
+
+        String notTodaySunrise = "2017-10-26T12:07:26+00:00";
+        String notTodaySunset = "2017-10-26T23:03:42+00:00";
+
+        //this is the data stored.. from another day
+        LightTime appLightTime = twistedStorage.getLightTime();
+        appLightTime.setSunrise( notTodaySunrise );
+        appLightTime.setSunset( notTodaySunset );
+
+        twistedNetwork.isOnline = true;
+        m.applyNow( LocalTime.parse("12:00:00") );
+
+        final LightTime[] proxyResult = new LightTime[1];
+
+        Response<LightTime> response = result -> {
+            proxyResult[0] = result;
+        };
+
+        planner.provideNextTimeLight( response );
+
+        //we should have schedule tomorrow sunrise.
+        assertEquals( proxyResult[0].getNextSchedule(), LocalTimeUtils.getDayAsString( notTodaySunset, 0 ) );
+    }
+
+
+    /**
+     * we have cached another day's lightTime, but while being
+     * online there is an issue getting the data.
+     * We expect to used what has been cached.
+     */
+    @Test
+    public void testWithOnlineIssuesForTomorrow(){
+
+        String notTodaySunrise = "2017-10-26T12:07:26+00:00";
+        String notTodaySunset = "2017-10-26T23:03:42+00:00";
+
+        //this is the data stored.. from another day
+        LightTime appLightTime = twistedStorage.getLightTime();
+        appLightTime.setSunrise( notTodaySunrise );
+        appLightTime.setSunset( notTodaySunset );
+
+        twistedNetwork.isOnline = true;
+        m.applyNow( LocalTime.parse("23:00:00") );
+
+        final LightTime[] proxyResult = new LightTime[1];
+
+        Response<LightTime> response = result -> {
+            proxyResult[0] = result;
+        };
+
+        planner.provideNextTimeLight( response );
+
+        //we should have schedule tomorrow sunrise.
+        assertEquals( proxyResult[0].getNextSchedule(), LocalTimeUtils.getDayAsString( notTodaySunrise, 1 ) );
+
+        //also ensure we have the lightTime for today
+        assertEquals( planner.getTodayLightTime().getSunrise(), LocalTimeUtils.getDayAsString( notTodaySunrise, 0 ) );
+        assertEquals( planner.getTodayLightTime().getSunset(), LocalTimeUtils.getDayAsString( notTodaySunset, 0 ) );
+    }
+
+
 }
