@@ -25,6 +25,7 @@ public class LightThemeClient {
     public static final String NIGHT_AUTO_CHANGED = CLASS_NAME + ".NIGHT_AUTO_CHANGED";
     public static final String SCHEDULE_COMPLETED = CLASS_NAME + ".SCHEDULE_COMPLETED";
 
+
     private LightThemeModule m;
     private LightWidgetService widgetService;
     private LightAlarmService alarmService;
@@ -46,7 +47,7 @@ public class LightThemeClient {
         if(actionEvent.equals(NIGHT_AUTO_CHANGED)){
             Timber.i( "theme night auto change");
 
-            if( widgetService.getNightMode() == AppCompatDelegate.MODE_NIGHT_AUTO ){
+            if( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO ){
                 planNextSchedule();
             }else{
                 alarmService.cancelIfRunning();
@@ -79,7 +80,7 @@ public class LightThemeClient {
 
     public void  planNextSchedule(){
 
-        if( widgetService.getWidgetsCount() > 0 && widgetService.getNightMode() == AppCompatDelegate.MODE_NIGHT_AUTO ){
+        if( widgetService.getWidgetsCount() > 0 && widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO ){
 
             planner.provideNextTimeLight( lightTimeResult -> {
 
@@ -100,7 +101,7 @@ public class LightThemeClient {
     }
 
     public void cancelWhileInNightAuto(){
-        if( widgetService.getNightMode() == AppCompatDelegate.MODE_NIGHT_AUTO ){
+        if( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO ){
             alarmService.cancelIfRunning();
         }
     }

@@ -20,19 +20,23 @@ import info.juanmendez.widgetnightmodedemo.LightTimePrefs_;
 public class DroidLightTimeStorage implements LightTimeStorage {
 
     @Pref
-    LightTimePrefs_ pref;
+    LightTimePrefs_ prefs;
 
     @Override
     public LightTime getLightTime() {
-      LightTime lightTime = new LightTime( pref.sunrise().get(), pref.sunset().get(), pref.nextSchedule().get(), pref.status().get() );
+      LightTime lightTime = new LightTime();
+      lightTime.setSunrise(prefs.sunrise().get());
+      lightTime.setSunset(prefs.sunset().get());
+      lightTime.setNextSchedule( prefs.nextSchedule().get() );
+      lightTime.setStatus(prefs.status().get());
       return lightTime;
     }
 
     @Override
     public void saveLightTime(LightTime lightTime) {
-        pref.sunrise().put( lightTime.getSunrise() );
-        pref.sunset().put( lightTime.getSunset() );
-        pref.nextSchedule().put( lightTime.getNextSchedule() );
-        pref.status().put( lightTime.getStatus() );
+        prefs.sunrise().put( lightTime.getSunrise() );
+        prefs.sunset().put( lightTime.getSunset() );
+        prefs.nextSchedule().put( lightTime.getNextSchedule() );
+        prefs.status().put( lightTime.getStatus() );
     }
 }

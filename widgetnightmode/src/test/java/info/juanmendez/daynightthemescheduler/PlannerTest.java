@@ -101,7 +101,7 @@ public class PlannerTest extends LightThemeTest{
     }
 
     /**
-     * this is the action which should be taken whenever there is no network connection.
+     * this is the option which should be taken whenever there is no network connection.
      * we use what's available from the day before.
      */
     @Test

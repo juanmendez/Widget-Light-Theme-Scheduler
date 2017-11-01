@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.DroidLocationService;
 
@@ -23,9 +22,6 @@ import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.DroidLocation
 
 @EActivity(R.layout.activity_second)
 public class ConfigActivity extends AppCompatActivity {
-
-    @Pref
-    ThemePrefs_ themePrefs;
 
     @App
     MyApp app;

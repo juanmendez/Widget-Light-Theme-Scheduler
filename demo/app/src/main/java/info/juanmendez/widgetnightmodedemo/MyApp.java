@@ -3,7 +3,6 @@ package info.juanmendez.widgetnightmodedemo;
 import android.app.Application;
 
 import org.androidannotations.annotations.EApplication;
-import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import timber.log.Timber;
 
@@ -16,9 +15,6 @@ import timber.log.Timber;
 
 @EApplication
 public class MyApp extends Application {
-
-    @Pref
-    ThemePrefs_ themePrefs;
 
     @Override
     public void onCreate() {

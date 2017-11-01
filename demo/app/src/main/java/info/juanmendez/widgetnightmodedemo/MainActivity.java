@@ -21,7 +21,7 @@ import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightClientBu
 public class MainActivity extends AppCompatActivity {
 
     @Pref
-    ThemePrefs_ themePrefs;
+    WidgetPrefs_ widgetPrefs;
 
     @ViewById
     RadioGroup radioGroup;
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     @AfterViews
     public void afterViews(){
 
-        reflectThemeChoice( themePrefs.dayNightMode().get() );
+        reflectThemeChoice( widgetPrefs.screenOption().get() );
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             saveThemeChoice(checkedId);
@@ -67,13 +67,13 @@ public class MainActivity extends AppCompatActivity {
     private void saveThemeChoice( int radioButtonId ){
         switch ( radioButtonId){
             case R.id.autoRadioButton:
-                themePrefs.dayNightMode().put( AppCompatDelegate.MODE_NIGHT_AUTO );
+                widgetPrefs.screenOption().put( AppCompatDelegate.MODE_NIGHT_AUTO );
                 break;
             case R.id.dayOnlyRadioButton:
-                themePrefs.dayNightMode().put( AppCompatDelegate.MODE_NIGHT_NO );
+                widgetPrefs.screenOption().put( AppCompatDelegate.MODE_NIGHT_NO );
                 break;
             case R.id.nightOnlyRadioButton:
-                themePrefs.dayNightMode().put( AppCompatDelegate.MODE_NIGHT_YES );
+                widgetPrefs.screenOption().put( AppCompatDelegate.MODE_NIGHT_YES );
                 break;
         }
 

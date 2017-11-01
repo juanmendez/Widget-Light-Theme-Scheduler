@@ -9,5 +9,20 @@ package info.juanmendez.daynightthemescheduler.services;
 public interface LightWidgetService {
     int getWidgetsCount();
     void updateWidgets();
-    int getNightMode();
+
+    /**
+     * gets the option placed by the user
+     * night-only, day-only, night-auto
+     * @return
+     */
+    int getWidgetScreenOption();
+
+    //gets the last option stored in the device
+    int getWidgetScreenMode();
+
+    /**
+     * Library places the value for the in day or night mode
+     * @param screenMode
+     */
+    void setWidgetScreenMode(int screenMode );
 }

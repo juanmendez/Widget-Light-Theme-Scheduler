@@ -9,8 +9,9 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
+import info.juanmendez.daynightthemescheduler.models.WidgetScreenStatus;
 import info.juanmendez.daynightthemescheduler.services.LightWidgetService;
-import info.juanmendez.widgetnightmodedemo.ThemePrefs_;
+import info.juanmendez.widgetnightmodedemo.WidgetPrefs_;
 import info.juanmendez.widgetnightmodedemo.WidgetProvider_;
 
 /**
@@ -25,7 +26,7 @@ public class DroidWidgetService implements LightWidgetService {
     Context rootContext;
 
     @Pref
-    ThemePrefs_ themePrefs;
+    WidgetPrefs_ widgetPrefs;
 
     @Override
     public int getWidgetsCount() {
@@ -50,7 +51,17 @@ public class DroidWidgetService implements LightWidgetService {
     }
 
     @Override
-    public int getNightMode() {
-        return themePrefs.dayNightMode().get();
+    public int getWidgetScreenOption() {
+        return widgetPrefs.screenOption().get();
+    }
+
+    @Override
+    public int getWidgetScreenMode() {
+        return widgetPrefs.screenMode().getOr(WidgetScreenStatus.WIDGET_DAY_SCREEN);
+    }
+
+    @Override
+    public void setWidgetScreenMode(int screenMode) {
+        widgetPrefs.screenMode().put( screenMode );
     }
 }
