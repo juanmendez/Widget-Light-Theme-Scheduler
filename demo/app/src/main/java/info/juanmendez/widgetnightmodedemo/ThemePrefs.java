@@ -2,7 +2,6 @@ package info.juanmendez.widgetnightmodedemo;
 
 import android.support.v7.app.AppCompatDelegate;
 
-import org.androidannotations.annotations.sharedpreferences.DefaultBoolean;
 import org.androidannotations.annotations.sharedpreferences.DefaultInt;
 import org.androidannotations.annotations.sharedpreferences.SharedPref;
 
@@ -13,9 +12,9 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref;
  */
 @SharedPref(SharedPref.Scope.UNIQUE)
 public interface ThemePrefs {
+
     @DefaultInt(AppCompatDelegate.MODE_NIGHT_AUTO)
     int dayNightMode();
 
-   @DefaultBoolean(false)
-   boolean isLocationGranted();
+    int scheduleJobId();
 }

@@ -15,7 +15,7 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import info.juanmendez.daynightthemescheduler.LightThemeClient;
-import info.juanmendez.widgetnightmodedemo.services.LightClientBuilder;
+import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightClientBuilder;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
@@ -78,6 +78,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //these changes need to be known by ligthThemeClient
-        clientBuilder.getClient().onClientEvent(LightThemeClient.NIGHT_AUTO_CHANGED );
+        clientBuilder.getClient().onAppEvent(LightThemeClient.NIGHT_AUTO_CHANGED );
     }
 }

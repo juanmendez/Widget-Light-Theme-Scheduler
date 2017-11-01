@@ -1,4 +1,4 @@
-package info.juanmendez.widgetnightmodedemo.services;
+package info.juanmendez.widgetnightmodedemo.services.api.lighttheme;
 
 import org.androidannotations.annotations.EBean;
 

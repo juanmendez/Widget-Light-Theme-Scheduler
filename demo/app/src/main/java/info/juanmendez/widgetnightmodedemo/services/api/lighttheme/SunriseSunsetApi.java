@@ -1,4 +1,4 @@
-package info.juanmendez.widgetnightmodedemo.services;
+package info.juanmendez.widgetnightmodedemo.services.api.lighttheme;
 
 import android.location.Location;
 
@@ -9,8 +9,8 @@ import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.LightTimeStatus;
 import info.juanmendez.daynightthemescheduler.models.Response;
 import info.juanmendez.daynightthemescheduler.services.LightApi;
-import info.juanmendez.widgetnightmodedemo.services.api.sunrise.LightTimeCalls;
 import info.juanmendez.widgetnightmodedemo.services.api.sunrise.LightTimeResponse;
+import info.juanmendez.widgetnightmodedemo.services.api.sunrise.LightTimeCalls;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;

@@ -12,7 +12,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EReceiver;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import info.juanmendez.widgetnightmodedemo.services.LightClientBuilder;
+import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightClientBuilder;
 import timber.log.Timber;
 
 
@@ -44,7 +44,7 @@ public class WidgetProvider extends AppWidgetProvider {
             super.onReceive(context, intent);
         }
 
-        clientBuilder.getClient().onClientEvent( intent.getAction() );
+        clientBuilder.getClient().onAppEvent( intent.getAction() );
     }
 
     @Override

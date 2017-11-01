@@ -1,4 +1,4 @@
-package info.juanmendez.widgetnightmodedemo.services;
+package info.juanmendez.widgetnightmodedemo.services.api.lighttheme;
 
 import android.Manifest;
 import android.annotation.SuppressLint;

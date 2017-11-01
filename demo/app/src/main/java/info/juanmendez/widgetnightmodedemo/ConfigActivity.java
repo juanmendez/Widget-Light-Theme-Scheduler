@@ -13,7 +13,7 @@ import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import info.juanmendez.widgetnightmodedemo.services.DroidLocationService;
+import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.DroidLocationService;
 
 /**
  * Created by Juan Mendez on 10/28/2017.

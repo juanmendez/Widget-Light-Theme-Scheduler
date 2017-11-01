@@ -13,7 +13,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 
 import info.juanmendez.daynightthemescheduler.LightThemeClient;
-import info.juanmendez.widgetnightmodedemo.services.LightClientBuilder;
+import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightClientBuilder;
 
 
 /**

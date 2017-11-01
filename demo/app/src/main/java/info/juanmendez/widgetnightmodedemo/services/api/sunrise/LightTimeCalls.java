@@ -9,7 +9,7 @@ import retrofit2.http.Query;
  * www.juanmendez.info
  * contact@juanmendez.info
  */
-public interface LightTimeCalls {
+public interface LightTimeCalls{
 
     @GET("/json")
     Call<LightTimeResponse> getLightTime(@Query("lat") double lat, @Query("lng") double lng, @Query("formatted") int formatted, @Query("date") String date );

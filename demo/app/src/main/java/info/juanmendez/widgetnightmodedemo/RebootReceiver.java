@@ -7,7 +7,7 @@ import android.content.Intent;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EReceiver;
 
-import info.juanmendez.widgetnightmodedemo.services.LightClientBuilder;
+import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightClientBuilder;
 import timber.log.Timber;
 
 
@@ -24,6 +24,6 @@ public class RebootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Timber.i( "Notify client about %s", intent.getAction() );
-        clientBuilder.getClient().onClientEvent( intent.getAction() );
+        clientBuilder.getClient().onAppEvent( intent.getAction() );
     }
 }

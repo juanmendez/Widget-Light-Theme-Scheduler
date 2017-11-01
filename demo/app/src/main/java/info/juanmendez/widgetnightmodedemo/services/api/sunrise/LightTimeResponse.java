@@ -1,5 +1,4 @@
 package info.juanmendez.widgetnightmodedemo.services.api.sunrise;
-
 import info.juanmendez.daynightthemescheduler.models.LightTime;
 
 /**
@@ -7,11 +6,9 @@ import info.juanmendez.daynightthemescheduler.models.LightTime;
  * www.juanmendez.info
  * contact@juanmendez.info
  */
+public class LightTimeResponse {
 
-public class LightTimeResponse
-{
     private LightTime results;
-
     private String status;
 
     public LightTime getResults ()

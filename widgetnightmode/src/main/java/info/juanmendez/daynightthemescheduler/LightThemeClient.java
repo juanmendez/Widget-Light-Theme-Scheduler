@@ -3,6 +3,7 @@ package info.juanmendez.daynightthemescheduler;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatDelegate;
 
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
 import info.juanmendez.daynightthemescheduler.models.LightTimeStatus;
@@ -16,8 +17,8 @@ import timber.log.Timber;
  * Created by Juan Mendez on 10/29/2017.
  * www.juanmendez.info
  * contact@juanmendez.info
+ * TODO: rename to LightThemeManager
  */
-
 public class LightThemeClient {
 
     private static final String CLASS_NAME = LightThemeClient.class.getName();
@@ -40,18 +41,28 @@ public class LightThemeClient {
     /**
      * widget added/removed. device reboot
      */
-    public void onClientEvent( @NonNull String actionEvent ){
+    public void onAppEvent(@NonNull String actionEvent ){
 
         if(actionEvent.equals(NIGHT_AUTO_CHANGED)){
             Timber.i( "theme night auto change");
+
+            if( widgetService.getNightMode() == AppCompatDelegate.MODE_NIGHT_AUTO ){
+                planNextSchedule();
+            }else{
+                alarmService.cancelIfRunning();
+            }
         }else if( actionEvent.equals( AppWidgetManager.ACTION_APPWIDGET_ENABLED)){
             Timber.i( "widget added");
+            planNextSchedule();
         }else if( actionEvent.equals( AppWidgetManager.ACTION_APPWIDGET_DELETED)){
             Timber.i( "widget removed");
+            cancelWhileInNightAuto();
         }else if( actionEvent.equals(Intent.ACTION_REBOOT)){
             Timber.i( "device rebooted");
+            planNextSchedule();
         }else if( actionEvent.equals(SCHEDULE_COMPLETED)){
             Timber.i( "schedule completed");
+            planNextSchedule();
         }
     }
 
@@ -68,7 +79,7 @@ public class LightThemeClient {
 
     public void  planNextSchedule(){
 
-        if( widgetService.getWidgetsCount() > 0 ){
+        if( widgetService.getWidgetsCount() > 0 && widgetService.getNightMode() == AppCompatDelegate.MODE_NIGHT_AUTO ){
 
             planner.provideNextTimeLight( lightTimeResult -> {
 
@@ -84,6 +95,12 @@ public class LightThemeClient {
                 }
             });
         }else{
+            alarmService.cancelIfRunning();
+        }
+    }
+
+    public void cancelWhileInNightAuto(){
+        if( widgetService.getNightMode() == AppCompatDelegate.MODE_NIGHT_AUTO ){
             alarmService.cancelIfRunning();
         }
     }
