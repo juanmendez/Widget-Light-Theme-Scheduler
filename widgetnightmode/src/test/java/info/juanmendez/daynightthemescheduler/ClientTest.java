@@ -230,6 +230,7 @@ public class ClientTest extends LightThemeTest{
         //we have network and we have sunrise/sunset for today
         twistedApi.getToday().setSunrise( "2017-10-27T12:07:26+00:00" );
         twistedApi.getToday().setSunset( "2017-10-27T23:03:42+00:00" );
+
         m.applyNow( LocalTime.parse("12:00"));
 
         twistedWS.widgets = 0;
@@ -266,16 +267,16 @@ public class ClientTest extends LightThemeTest{
         //we have network and we have sunrise/sunset for today
         twistedApi.getToday().setSunrise( "2017-10-27T12:07:26+00:00" );
         twistedApi.getToday().setSunset( "2017-10-27T23:03:42+00:00" );
+        twistedApi.getTomorrow().setSunrise( "2017-10-28T12:07:27+00:00" );
+        twistedApi.getTomorrow().setSunset( "2017-10-28T23:03:43+00:00" );
 
-        twistedApi.getTomorrow().setSunrise( "2017-10-28T12:07:26+00:00" );
-        twistedApi.getTomorrow().setSunset( "2017-10-28T23:03:42+00:00" );
 
-        m.applyNow( LocalTime.parse("23:00"));
+        m.applyNow( LocalTimeUtils.getLocalTime(twistedApi.getToday().getSunset() ) );
 
         twistedWS.widgets = 1;
         twistedWS.userOption = AppCompatDelegate.MODE_NIGHT_AUTO;
         client.onAppEvent( Intent.ACTION_REBOOT);
-        //verify( twistedAlarm.asMocked() ).scheduleNext(eq(m.getLightTime()) );
+        verify( twistedAlarm.asMocked() ).scheduleNext( any(LightTime.class));
         verify( twistedWS.asMocked() ).setWidgetScreenMode( WidgetScreenStatus.WIDGET_NIGHT_SCREEN );
     }
 }

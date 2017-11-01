@@ -21,14 +21,15 @@ public class LightPlanner {
     public static final int SUNSET_SCHEDULE = 2;
     public static final int TOMORROW_SCHEDULE = 3;
 
-    private CoreLightApi apiProxy;
+    private CoreLightApi mApiProxy;
     private LightThemeModule m;
+    private LightTime mTodayLightTime = new LightTime();
 
     /**
      * @param module
      */
     public LightPlanner(LightThemeModule module ) {
-        apiProxy = new CoreLightApi( module );
+        mApiProxy = new CoreLightApi( module );
         m = module;
     }
 
@@ -37,34 +38,36 @@ public class LightPlanner {
     }
 
     private void provideTodayLightTime(Response<LightTime> response ){
-        apiProxy.generateTodayTimeLight(lightTimeResult -> {
+        mApiProxy.generateTodayTimeLight(todayLightTime -> {
 
-            if(LightTimeUtils.isValid( lightTimeResult )){
-                LocalTime sunrise = LocalTimeUtils.getLocalTime( lightTimeResult.getSunrise() );
-                LocalTime sunset = LocalTimeUtils.getLocalTime( lightTimeResult.getSunset() );
+            if(LightTimeUtils.isValid( todayLightTime )){
+                mTodayLightTime = LightTimeUtils.clone( todayLightTime );
+
+                LocalTime sunrise = LocalTimeUtils.getLocalTime( todayLightTime.getSunrise() );
+                LocalTime sunset = LocalTimeUtils.getLocalTime( todayLightTime.getSunset() );
 
                 int when = whatSchedule( m.getNow() , sunrise, sunset );
 
                 if( when == SUNRISE_SCHEDULE ){
-                    lightTimeResult.setNextSchedule( lightTimeResult.getSunrise() );
-                    response.onResult( lightTimeResult );
+                    todayLightTime.setNextSchedule( todayLightTime.getSunrise() );
+                    response.onResult( todayLightTime );
                 }else if(  when == SUNSET_SCHEDULE ){
-                    lightTimeResult.setNextSchedule( lightTimeResult.getSunset() );
-                    response.onResult( lightTimeResult );
+                    todayLightTime.setNextSchedule( todayLightTime.getSunset() );
+                    response.onResult( todayLightTime );
                 }else if( when == TOMORROW_SCHEDULE ){
                     //ok, we need to call and get tomorrows..
                     provideTomorrowLightTime( response );
                 }
             }else{
-                response.onResult( lightTimeResult );
+                response.onResult( todayLightTime );
             }
         });
     }
 
     private void provideTomorrowLightTime(Response<LightTime> response ){
-        apiProxy.generateTomorrowTimeLight(lightTimeResult -> {
-            lightTimeResult.setNextSchedule( lightTimeResult.getSunrise() );
-            response.onResult( lightTimeResult );
+        mApiProxy.generateTomorrowTimeLight(tomorrowTimeLight -> {
+            tomorrowTimeLight.setNextSchedule( tomorrowTimeLight.getSunrise() );
+            response.onResult( tomorrowTimeLight );
         });
     }
 
@@ -76,5 +79,9 @@ public class LightPlanner {
         }else{
             return TOMORROW_SCHEDULE;
         }
+    }
+
+    public LightTime getTodayLightTime(){
+        return mTodayLightTime;
     }
 }

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatDelegate;
 
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
+import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.LightTimeStatus;
 import info.juanmendez.daynightthemescheduler.models.WidgetScreenStatus;
 import info.juanmendez.daynightthemescheduler.services.LightAlarmService;
@@ -55,23 +56,18 @@ public class LightThemeClient {
                 planNextSchedule();
             }else{
                 alarmService.cancelIfRunning();
-                reflectScreenMode();
             }
-
         }else if( actionEvent.equals( AppWidgetManager.ACTION_APPWIDGET_ENABLED)){
-            Timber.i( "widget added");
             planNextSchedule();
-        }else if( actionEvent.equals( AppWidgetManager.ACTION_APPWIDGET_DELETED)){
-            Timber.i( "widget removed");
-            cancelWhileInNightAuto();
-            reflectScreenMode();
+        }else if( actionEvent.equals( AppWidgetManager.ACTION_APPWIDGET_DELETED) && widgetService.getWidgetsCount() == 0 ){
+            alarmService.cancelIfRunning();
         }else if( actionEvent.equals(Intent.ACTION_REBOOT)){
-            Timber.i( "device rebooted");
             planNextSchedule();
         }else if( actionEvent.equals(SCHEDULE_COMPLETED)){
-            Timber.i( "schedule completed");
             planNextSchedule();
         }
+
+        reflectScreenMode();
     }
 
     /**
@@ -92,7 +88,6 @@ public class LightThemeClient {
             planner.provideNextTimeLight( lightTimeResult -> {
 
                 m.getLightTimeStorage().saveLightTime( lightTimeResult );
-                reflectScreenMode();
 
                 if(LightTimeUtils.isValid(lightTimeResult )){
                     alarmService.scheduleNext( lightTimeResult );
@@ -110,18 +105,14 @@ public class LightThemeClient {
 
     public void reflectScreenMode(){
 
-        if( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO && LightTimeUtils.isValid( m.getLightTime() ) ){
-            widgetService.setWidgetScreenMode( getScreenMode( m.getNow(), m.getLightTime() ) );
+        LightTime todayLightTime = planner.getTodayLightTime();
+
+        if( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO && LightTimeUtils.isValid( todayLightTime ) ){
+            widgetService.setWidgetScreenMode( getScreenMode( m.getNow(), todayLightTime ) );
         }else if( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_YES ){
             widgetService.setWidgetScreenMode( WidgetScreenStatus.WIDGET_NIGHT_SCREEN );
         }else if( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_NO ) {
             widgetService.setWidgetScreenMode( WidgetScreenStatus.WIDGET_DAY_SCREEN );
-        }
-    }
-
-    public void cancelWhileInNightAuto(){
-        if( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO ){
-            alarmService.cancelIfRunning();
         }
     }
 }
