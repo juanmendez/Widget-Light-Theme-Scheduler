@@ -258,8 +258,9 @@ public class ClientTest extends LightThemeTest{
 
 
     /**
-     * User lost her device, and once it is found it's already 4pm.
-     * What is going to happen?
+     * User lost her device, and when found is exactly sunset time
+     * There is one widget, and last time it was in daylight mode.
+     * Widget should go on night mode once the device is rebooted.
      */
     @Test
     public void whenReboot(){
@@ -274,8 +275,10 @@ public class ClientTest extends LightThemeTest{
         m.applyNow( LocalTimeUtils.getLocalTime(twistedApi.getToday().getSunset() ) );
 
         twistedWS.widgets = 1;
+        twistedWS.screenMode = WidgetScreenStatus.WIDGET_DAY_SCREEN;
         twistedWS.userOption = AppCompatDelegate.MODE_NIGHT_AUTO;
         client.onAppEvent( Intent.ACTION_REBOOT);
+        
         verify( twistedAlarm.asMocked() ).scheduleNext( any(LightTime.class));
         verify( twistedWS.asMocked() ).setWidgetScreenMode( WidgetScreenStatus.WIDGET_NIGHT_SCREEN );
     }
