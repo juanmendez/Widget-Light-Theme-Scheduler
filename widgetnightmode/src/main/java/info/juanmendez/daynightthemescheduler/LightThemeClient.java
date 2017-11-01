@@ -72,11 +72,11 @@ public class LightThemeClient {
 
             planner.provideNextTimeLight( lightTimeResult -> {
 
+                m.getLightTimeStorage().saveLightTime( lightTimeResult );
+
                 if(LightTimeUtils.isValid(lightTimeResult )){
-                    m.getLightTimeStorage().saveLightTime( lightTimeResult );
                     alarmService.scheduleNext( lightTimeResult );
                 }else if( lightTimeResult.getStatus() == LightTimeStatus.NO_INTERNET ){
-                    m.getLightTimeStorage().saveLightTime( lightTimeResult );
                     lightTimeResult.setNextSchedule("");
                     alarmService.scheduleNextWhenOnline();
                 }else{

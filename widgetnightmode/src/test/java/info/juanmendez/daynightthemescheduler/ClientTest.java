@@ -158,7 +158,7 @@ public class ClientTest extends LightThemeTest{
      * We then make a new case of guessing based on today's schedule.
      */
     @Test
-    public void checkMeOut(){
+    public void testCachingForTomorrow(){
 
         //11pm
         m.applyNow( LocalTime.parse("23:00:00"));
@@ -176,5 +176,24 @@ public class ClientTest extends LightThemeTest{
         Assert.assertEquals( appLightTime.getStatus(), LightTimeStatus.LIGHTTIME_GUESSED );
         Assert.assertEquals( appLightTime.getSunrise(), LocalTimeUtils.getDayAsString("2017-10-27T12:07:26+00:00", 1) );
         Assert.assertEquals( appLightTime.getSunset(), LocalTimeUtils.getDayAsString( "2017-10-27T23:03:42+00:00", 1) );
+    }
+
+    /**
+     * first time, and there is no location permission
+     */
+    @Test
+    public void testFirstWihoutPermissions(){
+        //11pm
+        m.applyNow( LocalTime.parse("23:00:00"));
+
+        LightTime appLightTime = twistedStorage.getLightTime();
+
+        //11pm, we are offline, therefore we are
+        twistedWS.widgets = 1;
+        twistedLS.isGranted = false;
+        client.onScheduleRequest();
+
+        verify( twistedAlarm.asMocked() ).cancelIfRunning();
+        Assert.assertEquals( appLightTime.getStatus(), LightTimeStatus.NO_LOCATION_PERMISSION  );
     }
 }
