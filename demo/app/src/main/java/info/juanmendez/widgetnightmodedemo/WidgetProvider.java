@@ -45,6 +45,7 @@ public class WidgetProvider extends AppWidgetProvider {
             super.onReceive(context, intent);
         }
 
+        Timber.i( "widget action %s", intent.getAction() );
         clientBuilder.getClient().onAppEvent( intent.getAction() );
     }
 

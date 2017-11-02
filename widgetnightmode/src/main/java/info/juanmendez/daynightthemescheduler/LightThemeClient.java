@@ -49,6 +49,8 @@ public class LightThemeClient {
      */
     public void onAppEvent(@NonNull String actionEvent ){
 
+        boolean matchesAnAction = true;
+
         if(actionEvent.equals(THEME_OPTION_CHANGED)){
             Timber.i( "theme option changed");
 
@@ -65,9 +67,12 @@ public class LightThemeClient {
             planNextSchedule();
         }else if( actionEvent.equals(SCHEDULE_COMPLETED)){
             planNextSchedule();
+        }else{
+            matchesAnAction = false;
         }
 
-        reflectScreenMode();
+        if( matchesAnAction )
+            reflectScreenMode();
     }
 
     /**
