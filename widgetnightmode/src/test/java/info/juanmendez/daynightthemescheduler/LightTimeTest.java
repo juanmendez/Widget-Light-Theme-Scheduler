@@ -183,4 +183,19 @@ public class LightTimeTest {
         LocalDateTime sunriseToday =  sunriseDateTime.toLocalTime().toDateTimeToday().toLocalDateTime();
         assertTrue( sunriseToday.toLocalDate().equals( sunriseToday.toLocalDate() ));
     }
+
+    @Test
+    public void testGettingMSBetweenLocalDateTimes(){
+
+        //Nov 3, 2017. 5 am, US-Central-Time
+        LocalDateTime lc = LocalTimeUtils.getLocalDateTime("2017-11-03T10:00:00");
+
+
+        //Nov 2, 2017. 5 pm, US-Central-Time
+        LocalDateTime lcNow = LocalDateTime.parse( "2017-11-02T17:00:00" );
+
+        long diff = LocalTimeUtils.getMSBetween( lc, lcNow );
+
+        assertEquals( diff, 12*60*60*1000 );
+    }
 }

@@ -18,8 +18,9 @@ import info.juanmendez.daynightthemescheduler.services.LightPlanner;
 import info.juanmendez.daynightthemescheduler.utils.LightTimeUtils;
 import info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils;
 
-import static org.mockito.Matchers.any;
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -52,19 +53,19 @@ public class ClientTest extends LightThemeTest{
         //it's 5am
         m.applyNow( LocalTime.parse("5:00:00"));
         planner.provideNextTimeLight( response );
-        Assert.assertEquals( proxyResult[0].getNextSchedule(), twistedApi.getToday().getSunrise() );
+        assertEquals( proxyResult[0].getNextSchedule(), twistedApi.getToday().getSunrise() );
 
 
         //it's 2pm
         m.applyNow( LocalTime.parse("14:00:00"));
         planner.provideNextTimeLight( response );
-        Assert.assertEquals( proxyResult[0].getNextSchedule(), twistedApi.getToday().getSunset() );
+        assertEquals( proxyResult[0].getNextSchedule(), twistedApi.getToday().getSunset() );
 
 
         //it's 11pm
         m.applyNow( LocalTime.parse("23:00:00"));
         planner.provideNextTimeLight( response );
-        Assert.assertEquals( proxyResult[0].getNextSchedule(), twistedApi.getTomorrow().getSunrise() );
+        assertEquals( proxyResult[0].getNextSchedule(), twistedApi.getTomorrow().getSunrise() );
     }
 
     @Test
@@ -86,7 +87,7 @@ public class ClientTest extends LightThemeTest{
         //in this case LightAlarmService must set an alarm when there is network, and we can calculate..
         Assert.assertFalse( LightTimeUtils.isValid(twistedStorage.asMocked().getLightTime()));
         Assert.assertFalse(LightTimeUtils.isValid(proxyResult[0]));
-        Assert.assertEquals( proxyResult[0].getStatus(), LightTimeStatus.NO_INTERNET );
+        assertEquals( proxyResult[0].getStatus(), LightTimeStatus.NO_INTERNET );
 
 
         //how about online, but no permission to get location
@@ -95,7 +96,7 @@ public class ClientTest extends LightThemeTest{
         planner.provideNextTimeLight( response );
 
         Assert.assertFalse( LightTimeUtils.isValid(twistedStorage.asMocked().getLightTime()));
-        Assert.assertEquals( proxyResult[0].getStatus(), LightTimeStatus.NO_LOCATION_PERMISSION );
+        assertEquals( proxyResult[0].getStatus(), LightTimeStatus.NO_LOCATION_PERMISSION );
 
 
         //we must notify alarmService to make a second attempt once there is network.
@@ -150,16 +151,16 @@ public class ClientTest extends LightThemeTest{
         m.applyNow( LocalTime.parse("17:50:00"));
 
         client.onScheduleRequest();
-        verify(twistedAlarm.asMocked()).scheduleNext( any(LightTime.class));
-        Assert.assertEquals( appLightTime.getNextSchedule(), twistedApi.getToday().getSunset() );
+        verify(twistedAlarm.asMocked()).scheduleNext( anyLong());
+        assertEquals( appLightTime.getNextSchedule(), twistedApi.getToday().getSunset() );
 
         //11pm
         m.applyNow( LocalTime.parse("23:00:00"));
 
         twistedAlarm.reset();
         client.onScheduleRequest();
-        verify(twistedAlarm.asMocked()).scheduleNext( any(LightTime.class));
-        Assert.assertEquals( appLightTime.getNextSchedule(), twistedApi.getTomorrow().getSunrise() );
+        verify(twistedAlarm.asMocked()).scheduleNext( anyLong() );
+        assertEquals( appLightTime.getNextSchedule(), twistedApi.getTomorrow().getSunrise() );
     }
 
     /**
@@ -181,10 +182,10 @@ public class ClientTest extends LightThemeTest{
         twistedNetwork.isOnline = false;
         client.onScheduleRequest();
 
-        verify( twistedAlarm.asMocked() ).scheduleNext(any(LightTime.class));
-        Assert.assertEquals( appLightTime.getStatus(), LightTimeStatus.LIGHTTIME_GUESSED );
-        Assert.assertEquals( appLightTime.getSunrise(), LocalTimeUtils.getDayAsString("2017-10-27T12:07:26+00:00", 1) );
-        Assert.assertEquals( appLightTime.getSunset(), LocalTimeUtils.getDayAsString( "2017-10-27T23:03:42+00:00", 1) );
+        verify( twistedAlarm.asMocked() ).scheduleNext(anyLong());
+        assertEquals( appLightTime.getStatus(), LightTimeStatus.LIGHTTIME_GUESSED );
+        assertEquals( appLightTime.getSunrise(), LocalTimeUtils.getDayAsString("2017-10-27T12:07:26+00:00", 1) );
+        assertEquals( appLightTime.getSunset(), LocalTimeUtils.getDayAsString( "2017-10-27T23:03:42+00:00", 1) );
     }
 
     /**
@@ -203,7 +204,7 @@ public class ClientTest extends LightThemeTest{
         client.onScheduleRequest();
 
         verify( twistedAlarm.asMocked() ).cancelIfRunning();
-        Assert.assertEquals( appLightTime.getStatus(), LightTimeStatus.NO_LOCATION_PERMISSION  );
+        assertEquals( appLightTime.getStatus(), LightTimeStatus.NO_LOCATION_PERMISSION  );
     }
 
     /**
@@ -279,7 +280,22 @@ public class ClientTest extends LightThemeTest{
         twistedWS.userOption = AppCompatDelegate.MODE_NIGHT_AUTO;
         client.onAppEvent( Intent.ACTION_REBOOT);
 
-        verify( twistedAlarm.asMocked() ).scheduleNext( any(LightTime.class));
-        verify( twistedWS.asMocked() ).setWidgetScreenMode( WidgetScreenStatus.WIDGET_NIGHT_SCREEN );
+        verify( twistedAlarm.asMocked() ).scheduleNext( anyLong() );
+        verify( twistedWS.asMocked() ).setWidgetScreenMode( eq(WidgetScreenStatus.WIDGET_NIGHT_SCREEN) );
+    }
+
+    @Test
+    public void firstWidgetAdded(){
+
+        m.applyNow( LocalTime.parse("22:00") );
+        twistedApi.getToday().setSunrise( "2017-10-27T12:07:26+00:00" );
+        twistedApi.getToday().setSunset( "2017-10-27T23:03:42+00:00" );
+
+        twistedApi.getTomorrow().setSunrise( "2017-10-28T12:07:26+00:00" );
+        twistedApi.getTomorrow().setSunset( "2017-10-28T23:03:42+00:00" );
+
+        twistedWS.widgets = 1;
+        client.onAppEvent( AppWidgetManager.ACTION_APPWIDGET_ENABLED );
+        verify( twistedWS.asMocked() ).setWidgetScreenMode( eq(WidgetScreenStatus.WIDGET_NIGHT_SCREEN) );
     }
 }

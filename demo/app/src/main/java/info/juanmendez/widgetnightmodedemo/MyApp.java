@@ -2,8 +2,11 @@ package info.juanmendez.widgetnightmodedemo;
 
 import android.app.Application;
 
+import com.evernote.android.job.JobManager;
+
 import org.androidannotations.annotations.EApplication;
 
+import info.juanmendez.widgetnightmodedemo.services.api.alarm.WidgetAlarmCreator;
 import timber.log.Timber;
 
 
@@ -20,5 +23,6 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         Timber.plant( new Timber.DebugTree());
+        JobManager.create(this).addJobCreator( new WidgetAlarmCreator() );
     }
 }

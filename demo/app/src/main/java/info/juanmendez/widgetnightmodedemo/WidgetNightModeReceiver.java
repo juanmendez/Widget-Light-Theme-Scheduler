@@ -4,12 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.evernote.android.job.JobManager;
+
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EReceiver;
 
+import info.juanmendez.widgetnightmodedemo.services.api.alarm.WidgetAlarmJob;
 import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightClientBuilder;
-import timber.log.Timber;
-
 
 /**
  * Created by Juan Mendez on 10/31/2017.
@@ -17,13 +18,21 @@ import timber.log.Timber;
  * contact@juanmendez.info
  */
 @EReceiver
-public class RebootReceiver extends BroadcastReceiver {
+public class WidgetNightModeReceiver extends BroadcastReceiver {
+
     @Bean
     LightClientBuilder clientBuilder;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Timber.i( "Notify client about %s", intent.getAction() );
-        clientBuilder.getClient().onAppEvent( intent.getAction() );
+
+        boolean validCall = true;
+
+        //if there is an alarm schedule, then don't call with ACTION_BOOT_COMPLETED
+        if( intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED) )
+            validCall = JobManager.instance().getAllJobRequestsForTag(WidgetAlarmJob.TAG).size() <= 0;
+
+        if( validCall )
+            clientBuilder.getClient().onAppEvent( intent.getAction() );
     }
 }

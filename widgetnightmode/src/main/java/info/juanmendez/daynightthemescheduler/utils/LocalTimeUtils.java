@@ -17,16 +17,29 @@ import java.util.TimeZone;
 
 public class LocalTimeUtils {
 
-    public static LocalTime getLocalTime(@NonNull String dateString ){
-        DateTime dt = new DateTime(dateString, DateTimeZone.UTC);
+    public static LocalTime getLocalTime(@NonNull String dateUTCString ){
+        DateTime dt = new DateTime(dateUTCString, DateTimeZone.UTC);
         dt = new DateTime( dt, DateTimeZone.forID((TimeZone.getDefault()).getID()));
         return dt.toLocalTime();
     }
 
-    public static LocalDateTime getLocalDateTime(@NonNull String dateString ){
-        DateTime dt = new DateTime(dateString, DateTimeZone.UTC);
+    public static LocalDateTime getLocalDateTime(@NonNull String dateUTCString ){
+        DateTime dt = new DateTime(dateUTCString, DateTimeZone.UTC);
         dt = new DateTime( dt, DateTimeZone.forID((TimeZone.getDefault()).getID()));
         return dt.toLocalDateTime();
+    }
+
+    public static long getMSBetween(@NonNull LocalDateTime dateLocalThen, @NonNull LocalDateTime dateLocalFrom ){
+
+        if( dateLocalFrom.isBefore( dateLocalThen )){
+            return dateLocalThen.toDateTime().getMillis() - dateLocalFrom.toDateTime().getMillis();
+        }else{
+            return 0;
+        }
+    }
+
+    public static long getTimeFromNow( @NonNull LocalDateTime dateLocalThen ){
+        return getMSBetween( dateLocalThen, LocalDateTime.now() );
     }
 
     public static Boolean isDaylightScreen(LocalTime now, LocalTime sunrise, LocalTime sunset){

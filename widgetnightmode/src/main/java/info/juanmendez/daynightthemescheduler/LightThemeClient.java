@@ -29,6 +29,7 @@ public class LightThemeClient {
     private static final String CLASS_NAME = LightThemeClient.class.getName();
     public static final String THEME_OPTION_CHANGED = CLASS_NAME + ".THEME_OPTION_CHANGED";
     public static final String SCHEDULE_COMPLETED = CLASS_NAME + ".SCHEDULE_COMPLETED";
+    public static final String SCHEDULE_WHEN_ONLINE = CLASS_NAME + ".SCHEDULE_WHEN_ONLINE";
 
 
     private LightThemeModule m;
@@ -49,8 +50,6 @@ public class LightThemeClient {
      */
     public void onAppEvent(@NonNull String actionEvent ){
 
-        boolean matchesAnAction = true;
-
         if(actionEvent.equals(THEME_OPTION_CHANGED)){
             Timber.i( "theme option changed");
 
@@ -68,11 +67,11 @@ public class LightThemeClient {
         }else if( actionEvent.equals(SCHEDULE_COMPLETED)){
             planNextSchedule();
         }else{
-            matchesAnAction = false;
+            //if it doesn't match any actions, then skip
+            return;
         }
 
-        if( matchesAnAction )
-            reflectScreenMode();
+        reflectScreenMode();
     }
 
     /**
@@ -95,8 +94,9 @@ public class LightThemeClient {
                 m.getLightTimeStorage().saveLightTime( lightTimeResult );
 
                 if(LightTimeUtils.isValid(lightTimeResult )){
-                    alarmService.scheduleNext( lightTimeResult );
+                    alarmService.scheduleNext( LightTimeUtils.getMSFromSchedule(lightTimeResult)  );
                 }else if( lightTimeResult.getStatus() == LightTimeStatus.NO_INTERNET ){
+
                     lightTimeResult.setNextSchedule("");
                     alarmService.scheduleNextWhenOnline();
                 }else{

@@ -1,10 +1,11 @@
 package info.juanmendez.widgetnightmodedemo.services.api.lighttheme;
 
+import com.evernote.android.job.JobManager;
+
 import org.androidannotations.annotations.EBean;
 
-import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.services.LightAlarmService;
-import timber.log.Timber;
+import info.juanmendez.widgetnightmodedemo.services.api.alarm.WidgetAlarmJob;
 
 
 /**
@@ -16,16 +17,18 @@ import timber.log.Timber;
 public class DroidAlarmService implements LightAlarmService {
     @Override
     public void cancelIfRunning() {
-        Timber.i( "cancel if an alarm is running");
+        JobManager.instance().cancelAllForTag(WidgetAlarmJob.TAG);
     }
 
     @Override
-    public void scheduleNext(LightTime lightTime) {
-        Timber.i( "Schedule next " + lightTime );
+    public void scheduleNext(long msFromNow) {
+        WidgetAlarmJob.scheduleJobAtAGivenTime( msFromNow );
     }
 
     @Override
     public void scheduleNextWhenOnline() {
-        Timber.i( "schedule next time device is online");
+        long fifteenMinutes = 2*60*1000L;
+        long tenHours = 10*60*60*1000L;
+        WidgetAlarmJob.scheduleJobWhenOnline( fifteenMinutes, tenHours );
     }
 }

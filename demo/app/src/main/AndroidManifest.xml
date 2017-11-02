@@ -47,9 +47,11 @@
                 android:resource="@xml/provider_widget" />
         </receiver>
 
-        <receiver android:name=".RebootReceiver_" android:exported="false">
+        <receiver android:name=".WidgetNightModeReceiver_" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="info.juanmendez.daynightthemescheduler.LightThemeClient.SCHEDULE_COMPLETED"/>
+                <action android:name="info.juanmendez.daynightthemescheduler.LightThemeClient.SCHEDULE_WHEN_ONLINE"/>
             </intent-filter>
         </receiver>
     </application>

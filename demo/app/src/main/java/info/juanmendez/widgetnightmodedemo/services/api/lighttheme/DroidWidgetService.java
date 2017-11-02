@@ -49,6 +49,12 @@ public class DroidWidgetService implements LightWidgetService {
 
     @Override
     public void setWidgetScreenMode(int screenMode) {
+
+        if( screenMode == widgetPrefs.screenMode().get() ){
+            Timber.i( "we prevent updating if it's the same screen mode" );
+            return;
+        }
+
         Timber.i( "We are told to change the screenMode %d", screenMode );
         widgetPrefs.screenMode().put( screenMode );
 

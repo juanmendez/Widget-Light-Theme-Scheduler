@@ -2,6 +2,7 @@ package info.juanmendez.daynightthemescheduler.utils;
 
 import android.support.annotation.NonNull;
 
+import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 
 import info.juanmendez.daynightthemescheduler.models.LightTime;
@@ -46,6 +47,14 @@ public class LightTimeUtils {
         original.setSunrise( "" );
         original.setNextSchedule( "" );
         original.setStatus( 0 );
+    }
+
+    public static long getMSFromSchedule( @NonNull LightTime lightTime ){
+
+        LocalDateTime scheduleDateTime = LocalTimeUtils.getLocalDateTime( lightTime.getNextSchedule());
+
+        long ms = LocalTimeUtils.getTimeFromNow( scheduleDateTime );
+        return ms;
     }
 
     public static boolean isValid( LightTime that ){
