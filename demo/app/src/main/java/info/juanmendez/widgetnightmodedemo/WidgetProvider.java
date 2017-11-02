@@ -77,6 +77,6 @@ public class WidgetProvider extends AppWidgetProvider {
     }
 
     private boolean isDayMode(){
-        return widgetPrefs.screenMode().getOr(WidgetScreenStatus.WIDGET_DAY_SCREEN)== WidgetScreenStatus.WIDGET_DAY_SCREEN;
+        return widgetPrefs.screenMode().get()== WidgetScreenStatus.WIDGET_DAY_SCREEN;
     }
 }
