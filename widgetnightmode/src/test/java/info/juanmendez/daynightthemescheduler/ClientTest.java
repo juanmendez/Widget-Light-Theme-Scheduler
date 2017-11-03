@@ -217,7 +217,9 @@ public class ClientTest extends LightThemeTest{
 
         client.onAppEvent( LightThemeClient.THEME_OPTION_CHANGED );
         verify( twistedAlarm.asMocked() ).cancelIfRunning();
-        verify( twistedWS.asMocked(), times(1) ).setWidgetScreenMode( eq(WidgetScreenStatus.WIDGET_DAY_SCREEN) );
+
+        //optimized, day is default.
+        verify( twistedWS.asMocked(), times(0) ).setWidgetScreenMode( eq(WidgetScreenStatus.WIDGET_DAY_SCREEN) );
 
         twistedWS.userOption = AppCompatDelegate.MODE_NIGHT_YES;
         client.onAppEvent( LightThemeClient.THEME_OPTION_CHANGED );
@@ -247,8 +249,8 @@ public class ClientTest extends LightThemeTest{
         client.onAppEvent( AppWidgetManager.ACTION_APPWIDGET_ENABLED );
         verify( twistedAlarm.asMocked(), times(0) ).cancelIfRunning();
 
-        //we should be having daylight today!
-        verify( twistedWS.asMocked() ).setWidgetScreenMode( eq(WidgetScreenStatus.WIDGET_DAY_SCREEN));
+        //optimized call, therefore this is not call if in day mode
+        verify( twistedWS.asMocked(), times(0) ).setWidgetScreenMode( eq(WidgetScreenStatus.WIDGET_DAY_SCREEN));
 
 
         //widget was removed..

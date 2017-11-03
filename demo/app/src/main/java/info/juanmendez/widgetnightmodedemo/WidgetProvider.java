@@ -35,6 +35,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Timber.i( "%s@widgetEvent", intent.getAction() );
         if ( intent.getAction() == null ) {
 
             int[] widget_ids = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
@@ -45,7 +46,6 @@ public class WidgetProvider extends AppWidgetProvider {
             super.onReceive(context, intent);
         }
 
-        Timber.i( "widget action %s", intent.getAction() );
         clientBuilder.getClient().onAppEvent( intent.getAction() );
     }
 

@@ -36,7 +36,7 @@ public class WidgetAlarmJob extends Job {
 
     public static int scheduleJobAtAGivenTime( long timeFromNow ){
         PersistableBundleCompat extras = new PersistableBundleCompat();
-        extras.putString( ACTION, LightThemeClient.SCHEDULE_COMPLETED  );
+        extras.putString( ACTION, LightThemeClient.ALARM_EXECUTED);
 
         return new JobRequest.Builder(TAG)
                 .setExact( timeFromNow )
@@ -49,7 +49,7 @@ public class WidgetAlarmJob extends Job {
     public static int scheduleJobWhenOnline( long timeFromNow, long timeFromNowAtTheLatest ){
 
         PersistableBundleCompat extras = new PersistableBundleCompat();
-        extras.putString( ACTION, LightThemeClient.SCHEDULE_WHEN_ONLINE  );
+        extras.putString( ACTION, LightThemeClient.ALARM_EXECUTED_ONLINE);
 
         return new JobRequest.Builder(TAG)
                 .setExecutionWindow( timeFromNow, timeFromNowAtTheLatest )

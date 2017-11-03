@@ -10,9 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 
+import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.DroidAlarmService;
 import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.DroidLocationService;
+import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightClientBuilder;
 
 /**
  * Created by Juan Mendez on 10/28/2017.
@@ -25,6 +28,14 @@ public class ConfigActivity extends AppCompatActivity {
 
     @App
     MyApp app;
+
+    @Bean
+    LightClientBuilder clientBuilder;
+
+    @Bean
+    DroidAlarmService alarmService;
+
+    int validCode = 1;
 
     @AfterViews
     public void afterViews(){
@@ -41,27 +52,31 @@ public class ConfigActivity extends AppCompatActivity {
 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                    1);
+                    validCode);
 
         }else{
-            onPermissionResult(true);
+            onPermissionResult(true, 0);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if( requestCode == 1 ){
-            onPermissionResult(true);
-        }else{
-            onPermissionResult( false );
-        }
+        onPermissionResult(requestCode==validCode, requestCode);
     }
 
-    private void onPermissionResult( boolean thereIsPermission ){
+    private void onPermissionResult( boolean thereIsPermission, int requestCode ){
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         int widgetId;
+
+        /**
+         * What happens is the first widget is added before permission.
+         * So what we do instead is delay 1s
+         */
+        if( requestCode == validCode ){
+            alarmService.scheduleNext(1000 );
+        }
 
         if (extras != null) {
             widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);

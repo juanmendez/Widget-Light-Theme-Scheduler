@@ -13,7 +13,6 @@ import info.juanmendez.daynightthemescheduler.models.WidgetScreenStatus;
 import info.juanmendez.daynightthemescheduler.services.LightWidgetService;
 import info.juanmendez.widgetnightmodedemo.WidgetPrefs_;
 import info.juanmendez.widgetnightmodedemo.WidgetProvider_;
-import timber.log.Timber;
 
 /**
  * Created by Juan Mendez on 10/30/2017.
@@ -50,7 +49,6 @@ public class DroidWidgetService implements LightWidgetService {
     @Override
     public void setWidgetScreenMode(int screenMode) {
 
-        Timber.i( "We are told to change the screenMode %d", screenMode );
         widgetPrefs.screenMode().put( screenMode );
 
         //its time to notify widgets..
@@ -66,6 +64,5 @@ public class DroidWidgetService implements LightWidgetService {
             intent.putExtra( AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds );
             rootContext.sendBroadcast( intent );
         }
-
     }
 }
