@@ -50,8 +50,8 @@
         <receiver android:name=".WidgetNightModeReceiver_" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="info.juanmendez.daynightthemescheduler.LightThemeClient.SCHEDULE_COMPLETED"/>
-                <action android:name="info.juanmendez.daynightthemescheduler.LightThemeClient.SCHEDULE_WHEN_ONLINE"/>
+                <action android:name="info.juanmendez.daynightthemescheduler.LightThemeClient.ALARM_EXECUTED"/>
+                <action android:name="info.juanmendez.daynightthemescheduler.LightThemeClient.ALARM_EXECUTED_ONLINE"/>
             </intent-filter>
         </receiver>
     </application>

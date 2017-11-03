@@ -72,7 +72,7 @@ public class ConfigActivity extends AppCompatActivity {
 
         /**
          * What happens is the first widget is added before permission.
-         * So what we do instead is delay 1s
+         * So what we do instead is delay 1 s
          */
         if( requestCode == validCode ){
             alarmService.scheduleNext(1000 );
