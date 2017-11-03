@@ -57,6 +57,7 @@ public class LightThemeClient {
                 planNextSchedule();
             }else{
                 alarmService.cancelIfRunning();
+                reflectScreenMode();
             }
         }else if( actionEvent.equals( AppWidgetManager.ACTION_APPWIDGET_ENABLED)){
             planNextSchedule();
@@ -66,12 +67,9 @@ public class LightThemeClient {
             planNextSchedule();
         }else if( actionEvent.equals(SCHEDULE_COMPLETED)){
             planNextSchedule();
-        }else{
-            //if it doesn't match any actions, then skip
-            return;
+        }else if( actionEvent.equals(SCHEDULE_WHEN_ONLINE)){
+            planNextSchedule();
         }
-
-        reflectScreenMode();
     }
 
     /**
@@ -85,7 +83,7 @@ public class LightThemeClient {
         planNextSchedule();
     }
 
-    public void  planNextSchedule(){
+    private void  planNextSchedule(){
 
         if( widgetService.getWidgetsCount() > 0 && widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO ){
 
@@ -102,6 +100,8 @@ public class LightThemeClient {
                 }else{
                     alarmService.cancelIfRunning();
                 }
+
+                reflectScreenMode();
             });
         }else{
             alarmService.cancelIfRunning();
