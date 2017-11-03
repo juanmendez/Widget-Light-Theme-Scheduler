@@ -47,6 +47,7 @@
                 android:resource="@xml/provider_widget" />
         </receiver>
 
+        <!-- For clarity I made this other broadcastReceiver-->
         <receiver android:name=".WidgetNightModeReceiver_" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
@@ -55,5 +56,4 @@
             </intent-filter>
         </receiver>
     </application>
-
 </manifest>
