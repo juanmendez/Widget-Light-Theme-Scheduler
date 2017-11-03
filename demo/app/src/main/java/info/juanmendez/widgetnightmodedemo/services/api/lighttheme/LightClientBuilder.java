@@ -35,7 +35,7 @@ public class LightClientBuilder{
    SunriseSunsetApi sunriseSunsetApi;
 
    private LightThemeModule m;
-   private LightThemeClient client;
+   private LightThemeClient mClient;
 
    @AfterInject
    public void afterInject(){
@@ -46,10 +46,10 @@ public class LightClientBuilder{
                .applyNetworkService( networkService )
                .applyNow( LocalTime.now() );
 
-       client = new LightThemeClient( m, widgetService, alarmService );
+       mClient = new LightThemeClient( m, widgetService, alarmService );
    }
 
    public LightThemeClient getClient(){
-       return  client;
+       return mClient;
    }
 }

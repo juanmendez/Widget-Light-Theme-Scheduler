@@ -17,41 +17,41 @@ import static org.powermock.api.mockito.PowerMockito.doAnswer;
  */
 
 public class TwistStorage implements Twist<LightTimeStorage> {
-    LightTimeStorage storage;
-    LightTime lightTime = new LightTime();
+    LightTimeStorage mStorage;
+    LightTime mLightTime = new LightTime();
 
     @Override
     public LightTimeStorage asMocked() {
-        if( storage == null ){
-            storage = mock( LightTimeStorage.class );
-            doAnswer( invocation -> lightTime).when( storage ).getLightTime();
+        if( mStorage == null ){
+            mStorage = mock( LightTimeStorage.class );
+            doAnswer( invocation -> mLightTime).when(mStorage).getLightTime();
 
             doAnswer( invocation -> {
                 LightTime theirLightTime = invocation.getArgumentAt(0, LightTime.class );
 
                 if( theirLightTime != null ){
-                    LightTimeUtils.copy( theirLightTime, lightTime);
+                    LightTimeUtils.copy( theirLightTime, mLightTime);
                 }else{
-                    LightTimeUtils.clear(lightTime);
+                    LightTimeUtils.clear(mLightTime);
                 }
 
                 return null;
-            }).when( storage ).saveLightTime( any( LightTime.class));
+            }).when(mStorage).saveLightTime( any( LightTime.class));
         }
 
-        return storage;
+        return mStorage;
     }
 
     public LightTime getLightTime() {
-        return lightTime;
+        return mLightTime;
     }
 
     public void setLightTime(LightTime lightTime) {
-        LightTimeUtils.copy( lightTime, this.lightTime);
+        LightTimeUtils.copy( lightTime, this.mLightTime);
     }
 
     @Override
     public void reset() {
-        Mockito.reset( storage );
+        Mockito.reset(mStorage);
     }
 }

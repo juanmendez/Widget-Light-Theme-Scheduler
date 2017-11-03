@@ -15,62 +15,62 @@ import info.juanmendez.daynightthemescheduler.services.LightTimeStorage;
 
 public class LightThemeModule {
 
-    LightNetworkService networkService;
-    LightLocationService locationService;
-    LightApi lightTimeApi;
-    LightTimeStorage lightTimeStorage;
-    LocalTime now;
+    LightNetworkService mNetworkService;
+    LightLocationService mLocationService;
+    LightApi mLightTimeApi;
+    LightTimeStorage mStorage;
+    LocalTime mNow;
 
     public static LightThemeModule create(){
         return new LightThemeModule();
     }
 
     public LightThemeModule applyNetworkService(LightNetworkService networkService) {
-        this.networkService = networkService;
+        mNetworkService = networkService;
         return this;
     }
 
     public LightThemeModule applyLocationService(LightLocationService locationService) {
-        this.locationService = locationService;
+        mLocationService = locationService;
         return this;
     }
 
     public LightThemeModule applyLighTimeApi(LightApi lightTimeApi) {
-        this.lightTimeApi = lightTimeApi;
+        mLightTimeApi = lightTimeApi;
         return this;
     }
 
     public LightThemeModule applyLightTimeStorage(LightTimeStorage lightTimeStorage) {
-        this.lightTimeStorage = lightTimeStorage;
+        mStorage = lightTimeStorage;
         return this;
     }
 
     public LightThemeModule applyNow( LocalTime now ){
-        this.now = now;
+        mNow = now;
         return this;
     }
 
     public LightNetworkService getNetworkService() {
-        return networkService;
+        return mNetworkService;
     }
 
     public LightLocationService getLocationService() {
-        return locationService;
+        return mLocationService;
     }
 
     public LightApi getLightTimeApi() {
-        return lightTimeApi;
+        return mLightTimeApi;
     }
 
     public LightTimeStorage getLightTimeStorage() {
-        return lightTimeStorage;
+        return mStorage;
     }
 
     public LightTime getLightTime(){
-        return lightTimeStorage.getLightTime();
+        return mStorage.getLightTime();
     }
 
     public LocalTime getNow() {
-        return now;
+        return mNow;
     }
 }

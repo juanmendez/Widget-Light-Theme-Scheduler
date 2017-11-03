@@ -17,12 +17,12 @@ import info.juanmendez.daynightthemescheduler.services.LightNetworkService;
 public class DroidNetworkService implements LightNetworkService {
 
     @SystemService
-    ConnectivityManager cm;
+    ConnectivityManager mConnectivityManager;
 
     @Override
     public boolean isOnline() {
-        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable()
-                && cm.getActiveNetworkInfo().isConnected()) {
+        if (mConnectivityManager.getActiveNetworkInfo() != null && mConnectivityManager.getActiveNetworkInfo().isAvailable()
+                && mConnectivityManager.getActiveNetworkInfo().isConnected()) {
             return true;
         } else {
             return false;

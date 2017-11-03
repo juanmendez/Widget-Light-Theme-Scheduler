@@ -15,20 +15,20 @@ import static org.powermock.api.mockito.PowerMockito.doAnswer;
 
 public class TwistNetworkService implements Twist<LightNetworkService> {
 
-    private LightNetworkService networkService;
+    private LightNetworkService mNetworkService;
     public boolean isOnline = true;
 
     @Override
     public LightNetworkService asMocked() {
-        if( networkService == null ){
-            networkService = mock( LightNetworkService.class );
-            doAnswer(invocation -> isOnline).when( networkService ).isOnline();
+        if( mNetworkService == null ){
+            mNetworkService = mock( LightNetworkService.class );
+            doAnswer(invocation -> isOnline).when(mNetworkService).isOnline();
         }
-        return networkService;
+        return mNetworkService;
     }
 
     @Override
     public void reset() {
-        Mockito.reset( networkService );
+        Mockito.reset(mNetworkService);
     }
 }

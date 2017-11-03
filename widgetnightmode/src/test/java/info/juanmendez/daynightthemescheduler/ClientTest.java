@@ -36,7 +36,7 @@ public class ClientTest extends LightThemeTest{
     @Test
     public void testScheduler(){
 
-        LightPlanner planner = Whitebox.getInternalState( client, "planner");
+        LightPlanner planner = Whitebox.getInternalState( client, "mPlanner");
 
         final LightTime[] proxyResult = new LightTime[1];
 
@@ -92,7 +92,7 @@ public class ClientTest extends LightThemeTest{
 
         //how about online, but no permission to get location
         twistedNetwork.isOnline = true;
-        twistedLS.isGranted = false;
+        twistedLS.sIsGranted = false;
         planner.provideNextTimeLight( response );
 
         Assert.assertFalse( LightTimeUtils.isValid(twistedStorage.asMocked().getLightTime()));
@@ -102,7 +102,7 @@ public class ClientTest extends LightThemeTest{
         //we must notify alarmService to make a second attempt once there is network.
         //lets pretend that it happened.
         twistedNetwork.isOnline = true;
-        twistedLS.isGranted = true;
+        twistedLS.sIsGranted = true;
 
         //first update values returned by apiRetro
         String sunrise = "2017-10-26T12:07:26+00:00";
@@ -200,7 +200,7 @@ public class ClientTest extends LightThemeTest{
 
         //11pm, we are offline, therefore we are
         twistedWS.widgets = 1;
-        twistedLS.isGranted = false;
+        twistedLS.sIsGranted = false;
         client.onScheduleRequest();
 
         verify( twistedAlarm.asMocked() ).cancelIfRunning();

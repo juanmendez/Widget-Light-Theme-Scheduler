@@ -50,6 +50,6 @@ abstract public class LightThemeTest {
                 .applyNow( LocalTime.now() );
 
         client = new LightThemeClient(m, twistedWS.asMocked(), twistedAlarm.asMocked() );
-        planner = Whitebox.getInternalState( client, "planner");
+        planner = Whitebox.getInternalState( client, "mPlanner");
     }
 }

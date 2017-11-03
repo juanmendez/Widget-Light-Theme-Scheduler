@@ -13,18 +13,18 @@ import static org.mockito.Mockito.mock;
  */
 
 public class TwistAlarmService implements Twist<LightAlarmService> {
-    LightAlarmService service;
+    LightAlarmService mService;
 
     @Override
     public LightAlarmService asMocked() {
-        if( service == null ){
-            service = mock( LightAlarmService.class );
+        if( mService == null ){
+            mService = mock( LightAlarmService.class );
         }
-        return service;
+        return mService;
     }
 
     @Override
     public void reset() {
-        Mockito.reset( service );
+        Mockito.reset(mService);
     }
 }

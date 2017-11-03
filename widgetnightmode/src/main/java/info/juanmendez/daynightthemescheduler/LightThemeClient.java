@@ -32,15 +32,15 @@ public class LightThemeClient {
     public static final String ALARM_EXECUTED_ONLINE = CLASS_NAME + ".ALARM_EXECUTED_ONLINE";
 
     private LightThemeModule m;
-    private LightWidgetService widgetService;
-    private LightAlarmService alarmService;
-    private LightPlanner planner;
+    private LightWidgetService mWidgetService;
+    private LightAlarmService mAlarmService;
+    private LightPlanner mPlanner;
 
     public LightThemeClient(LightThemeModule module, LightWidgetService widgetService, LightAlarmService alarmService) {
-        this.m = module;
-        this.widgetService = widgetService;
-        this.alarmService = alarmService;
-        planner = new LightPlanner(m);
+        m = module;
+        mWidgetService = widgetService;
+        mAlarmService = alarmService;
+        mPlanner = new LightPlanner(m);
     }
 
     /**
@@ -53,19 +53,19 @@ public class LightThemeClient {
         if(appEvent.equals(THEME_OPTION_CHANGED)){
             Timber.i( "theme option changed");
 
-            if( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO ){
+            if( mWidgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO ){
                 planNextSchedule();
             }else{
                 reflectScreenMode();
-                alarmService.cancelIfRunning();
+                mAlarmService.cancelIfRunning();
             }
         }else if( appEvent.equals( AppWidgetManager.ACTION_APPWIDGET_ENABLED) ){
-            if( widgetService.getWidgetsCount() == 1 ){
+            if( mWidgetService.getWidgetsCount() == 1 ){
                 planNextSchedule();
             }
         }else if( appEvent.equals( AppWidgetManager.ACTION_APPWIDGET_DELETED) ){
-            if( widgetService.getWidgetsCount() == 0 ){
-                alarmService.cancelIfRunning();
+            if( mWidgetService.getWidgetsCount() == 0 ){
+                mAlarmService.cancelIfRunning();
             }
         }else if( appEvent.equals(Intent.ACTION_REBOOT)){
             planNextSchedule();
@@ -88,48 +88,48 @@ public class LightThemeClient {
     }
 
     private void  planNextSchedule(){
-        Timber.i( "plan next schedule... " + widgetService.getWidgetsCount() );
-        Timber.i( "in auto mode? " + ( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO? "yes":"noe"));
-        if( widgetService.getWidgetsCount() > 0 && widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO ){
+        Timber.i( "plan next schedule... " + mWidgetService.getWidgetsCount() );
+        Timber.i( "in auto mode? " + ( mWidgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO? "yes":"noe"));
+        if( mWidgetService.getWidgetsCount() > 0 && mWidgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO ){
 
-            planner.provideNextTimeLight( lightTimeResult -> {
+            mPlanner.provideNextTimeLight(lightTimeResult -> {
 
                 Timber.i( "result %s", lightTimeResult );
                 m.getLightTimeStorage().saveLightTime( lightTimeResult );
 
                 if(LightTimeUtils.isValid(lightTimeResult )){
-                    alarmService.scheduleNext( LightTimeUtils.getMSFromSchedule(lightTimeResult)  );
+                    mAlarmService.scheduleNext( LightTimeUtils.getMSFromSchedule(lightTimeResult)  );
                 }else if( lightTimeResult.getStatus() == LightTimeStatus.NO_INTERNET ){
 
                     lightTimeResult.setNextSchedule("");
-                    alarmService.scheduleNextWhenOnline();
+                    mAlarmService.scheduleNextWhenOnline();
                 }else{
-                    alarmService.cancelIfRunning();
+                    mAlarmService.cancelIfRunning();
                 }
 
                 reflectScreenMode();
             });
         }else{
-            alarmService.cancelIfRunning();
+            mAlarmService.cancelIfRunning();
             reflectScreenMode();
         }
     }
 
     public void reflectScreenMode(){
 
-        LightTime todayLightTime = planner.getTodayLightTime();
-        int nextScreenMode = widgetService.getWidgetScreenMode();
+        LightTime todayLightTime = mPlanner.getTodayLightTime();
+        int nextScreenMode = mWidgetService.getWidgetScreenMode();
 
-        if( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO && LightTimeUtils.isValid( todayLightTime ) ){
+        if( mWidgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO && LightTimeUtils.isValid( todayLightTime ) ){
             nextScreenMode = getScreenMode( m.getNow(), todayLightTime );
-        }else if( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_YES ){
+        }else if( mWidgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_YES ){
             nextScreenMode = WidgetScreenStatus.WIDGET_NIGHT_SCREEN;
-        }else if( widgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_NO ) {
+        }else if( mWidgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_NO ) {
             nextScreenMode = WidgetScreenStatus.WIDGET_DAY_SCREEN;
         }
 
-        if( nextScreenMode != widgetService.getWidgetScreenMode() ){
-            widgetService.setWidgetScreenMode( nextScreenMode );
+        if( nextScreenMode != mWidgetService.getWidgetScreenMode() ){
+            mWidgetService.setWidgetScreenMode( nextScreenMode );
         }
     }
 }

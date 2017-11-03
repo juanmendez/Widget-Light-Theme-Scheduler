@@ -19,8 +19,8 @@ import static org.powermock.api.mockito.PowerMockito.doAnswer;
 
 public class TwistApi implements Twist<LightApi> {
 
-    private LightTime today = new LightTime();
-    private LightTime tomorrow = new LightTime();
+    private LightTime mToday = new LightTime();
+    private LightTime mTomorrow = new LightTime();
     private LightApi apiRetro;
 
     @Override
@@ -32,13 +32,13 @@ public class TwistApi implements Twist<LightApi> {
 
             doAnswer(invocation -> {
                 Response<LightTime> response = invocation.getArgumentAt(0, Response.class);
-                response.onResult(today);
+                response.onResult(mToday);
                 return null;
             }).when(apiRetro).generateTodayTimeLight(any(Response.class));
 
             doAnswer(invocation -> {
                 Response<LightTime> response = invocation.getArgumentAt(0, Response.class);
-                response.onResult(tomorrow);
+                response.onResult(mTomorrow);
                 return null;
             }).when(apiRetro).generateTomorrowTimeLight(any(Response.class));
         }
@@ -46,19 +46,19 @@ public class TwistApi implements Twist<LightApi> {
     }
 
     public LightTime getToday() {
-        return today;
+        return mToday;
     }
 
     public void setToday(LightTime today) {
-        LightTimeUtils.copy(today, this.today);
+        LightTimeUtils.copy(today, this.mToday);
     }
 
     public LightTime getTomorrow() {
-        return tomorrow;
+        return mTomorrow;
     }
 
     public void setTomorrow(LightTime tomorrow) {
-        LightTimeUtils.copy(tomorrow, this.tomorrow);
+        LightTimeUtils.copy(tomorrow, this.mTomorrow);
     }
 
     @Override

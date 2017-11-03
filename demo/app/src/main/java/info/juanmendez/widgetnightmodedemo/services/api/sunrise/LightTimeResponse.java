@@ -8,34 +8,34 @@ import info.juanmendez.daynightthemescheduler.models.LightTime;
  */
 public class LightTimeResponse {
 
-    private LightTime results;
-    private String status;
+    private LightTime mResults;
+    private String mStatus;
 
     public LightTime getResults ()
     {
-        return results;
+        return mResults;
     }
 
     public void setResults (LightTime results)
     {
-        this.results = results;
+        mResults = results;
     }
 
     public String getStatus ()
     {
-        return status;
+        return mStatus;
     }
 
     public void setStatus (String status)
     {
-        this.status = status;
+        mStatus = status;
     }
 
     @Override
     public String toString() {
         return "LightThemeClientResponse{" +
-                "results=" + results +
-                ", status='" + status + '\'' +
+                "results=" + mResults +
+                ", status='" + mStatus + '\'' +
                 '}';
     }
 }

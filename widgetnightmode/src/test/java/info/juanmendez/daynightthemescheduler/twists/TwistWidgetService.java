@@ -19,30 +19,30 @@ import static org.powermock.api.mockito.PowerMockito.doAnswer;
 
 public class TwistWidgetService implements Twist<LightWidgetService> {
 
-    private LightWidgetService widgetService;
+    private LightWidgetService mWidgetService;
     public int widgets = 0;
     public int userOption = AppCompatDelegate.MODE_NIGHT_AUTO;
     public int screenMode = WidgetScreenStatus.WIDGET_DAY_SCREEN;
 
     @Override
     public LightWidgetService asMocked() {
-        if( widgetService == null ){
-            widgetService = mock( LightWidgetService.class );
+        if( mWidgetService == null ){
+            mWidgetService = mock( LightWidgetService.class );
 
-            doAnswer( invocation -> widgets).when( widgetService ).getWidgetsCount();
-            doAnswer( invocation -> userOption ).when( widgetService ).getWidgetScreenOption();
-            doAnswer( invocation -> screenMode).when( widgetService ).getWidgetScreenMode();
+            doAnswer( invocation -> widgets).when(mWidgetService).getWidgetsCount();
+            doAnswer( invocation -> userOption ).when(mWidgetService).getWidgetScreenOption();
+            doAnswer( invocation -> screenMode).when(mWidgetService).getWidgetScreenMode();
             doAnswer( invocation ->{
                 screenMode = invocation.getArgumentAt(0, Integer.class );
                 return null;
-            }).when( widgetService ).setWidgetScreenMode( anyInt());
+            }).when(mWidgetService).setWidgetScreenMode( anyInt());
         }
 
-        return widgetService;
+        return mWidgetService;
     }
 
     @Override
     public void reset() {
-        Mockito.reset( widgetService );
+        Mockito.reset(mWidgetService);
     }
 }

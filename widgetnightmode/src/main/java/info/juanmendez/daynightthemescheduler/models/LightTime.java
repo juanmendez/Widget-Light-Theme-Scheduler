@@ -9,62 +9,62 @@ import android.support.annotation.NonNull;
  */
 
 public class LightTime {
-    private String sunrise = "";
-    private String sunset = "";
-    private String nextSchedule = "";
-    private int status;
+    private String mSunrise = "";
+    private String mSunset = "";
+    private String mNextSchedule = "";
+    private int mStatus;
 
     public LightTime() {
     }
 
     public LightTime(@NonNull String sunrise, @NonNull String sunset) {
-        this.sunrise = sunrise;
-        this.sunset = sunset;
+        mSunrise = sunrise;
+        mSunset = sunset;
     }
 
     public LightTime(String sunrise, String sunset, String nextSchedule) {
         this( sunrise, sunset );
-        this.nextSchedule = nextSchedule;
+        mNextSchedule = nextSchedule;
     }
 
     public String getSunrise() {
-        return sunrise;
+        return mSunrise;
     }
 
     public void setSunrise(String sunrise) {
-        this.sunrise = sunrise;
+        mSunrise = sunrise;
     }
 
     public String getSunset() {
-        return sunset;
+        return mSunset;
     }
 
     public void setSunset(String sunset) {
-        this.sunset = sunset;
+        mSunset = sunset;
     }
 
     public String getNextSchedule() {
-        return nextSchedule;
+        return mNextSchedule;
     }
 
     public void setNextSchedule(String nextSchedule) {
-        this.nextSchedule = nextSchedule;
+        mNextSchedule = nextSchedule;
     }
 
     public int getStatus() {
-        return status;
+        return mStatus;
     }
 
     public void setStatus(int status) {
-        this.status = status;
+        mStatus = status;
     }
 
     @Override
     public String toString() {
         return "LightTime{" +
-                "sunrise='" + sunrise + '\'' +
-                ", sunset='" + sunset + '\'' +
-                ", nextSchedule='" + nextSchedule + '\'' +
+                "sunrise='" + mSunrise + '\'' +
+                ", sunset='" + mSunset + '\'' +
+                ", nextSchedule='" + mNextSchedule + '\'' +
                 '}';
     }
 }

@@ -247,7 +247,7 @@ public class PlannerTest extends LightThemeTest{
 
         //if we have a network, but we don't have location permissions
         twistedNetwork.isOnline = true;
-        twistedLS.isGranted = false;
+        twistedLS.sIsGranted = false;
 
         planner.provideNextTimeLight( response );
         assertFalse(LightTimeUtils.isValid( proxyResult[0]));

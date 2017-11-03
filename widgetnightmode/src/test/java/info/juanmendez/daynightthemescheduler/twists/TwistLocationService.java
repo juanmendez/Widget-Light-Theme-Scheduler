@@ -18,35 +18,35 @@ import static org.powermock.api.mockito.PowerMockito.doAnswer;
 
 public class TwistLocationService implements Twist<LightLocationService> {
 
-    public boolean isGranted = true;
-    LightLocationService locationService;
+    public boolean sIsGranted = true;
+    LightLocationService mLocationService;
 
     @Override
     public LightLocationService asMocked() {
 
-        if( locationService == null ){
-            locationService = mock( LightLocationService.class );
-            doAnswer(invocation -> isGranted).when( locationService ).isGranted();
+        if( mLocationService == null ){
+            mLocationService = mock( LightLocationService.class );
+            doAnswer(invocation -> sIsGranted).when(mLocationService).isGranted();
 
             Location location = mock(Location.class);
             doReturn(0d).when( location ).getLatitude();
             doReturn(0d).when( location ).getLongitude();
 
             doAnswer( invocation -> {
-                if( isGranted ){
+                if(sIsGranted){
                     return location;
                 }else{
                     throw new Exception("LocationService requires permission");
                 }
 
-            } ).when( locationService ).getLastKnownLocation();
+            } ).when(mLocationService).getLastKnownLocation();
         }
 
-        return locationService;
+        return mLocationService;
     }
 
     @Override
     public void reset() {
-        Mockito.reset( locationService );
+        Mockito.reset(mLocationService);
     }
 }
