@@ -1,0 +1,4 @@
+include ':app'
+
+include 'widgetnightmode'
+project(':widgetnightmode').projectDir = new File('../widgetnightmode' )
