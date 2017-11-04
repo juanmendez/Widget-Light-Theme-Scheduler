@@ -72,7 +72,7 @@ public class LightThemeModule {
     }
 
     /**
-     * In this way of having now provided, it can be helpful when testing an application.
+     * Default is LocalTime.now(). Otherwise you can define your own when testing the application.
      * @param now
      * @return
      */
@@ -111,6 +111,10 @@ public class LightThemeModule {
     }
 
     public LocalTime getNow() {
+        //we set here default, if not provided
+        if( mNow == null ){
+            mNow = LocalTime.now();
+        }
         return mNow;
     }
 }
