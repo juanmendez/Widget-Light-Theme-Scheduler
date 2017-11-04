@@ -17,7 +17,6 @@ import static info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils.isDayl
  * www.juanmendez.info
  * contact@juanmendez.info
  */
-
 public class LightTimeUtils {
     public static LightTime clone(LightTime that ){
         LightTime clone = new LightTime( that.getSunrise(), that.getSunset() );
@@ -59,7 +58,7 @@ public class LightTimeUtils {
     public static boolean isValid( LightTime that ){
         return !that.getSunrise().isEmpty() && !that.getSunset().isEmpty();
     }
-    
+
     public static int getScreenMode(LocalTime now, LightTime lightTime){
         if( isDaylightScreen( now, getLocalTime(lightTime.getSunrise()), getLocalTime(lightTime.getSunset()) ))
             return WidgetScreenStatus.WIDGET_DAY_SCREEN;

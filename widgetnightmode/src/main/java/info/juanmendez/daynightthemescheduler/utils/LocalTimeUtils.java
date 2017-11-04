@@ -14,7 +14,6 @@ import java.util.TimeZone;
  * www.juanmendez.info
  * contact@juanmendez.info
  */
-
 public class LocalTimeUtils {
 
     public static LocalTime getLocalTime(@NonNull String dateUTCString ){

@@ -11,8 +11,10 @@ import info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils;
  * Created by Juan Mendez on 10/27/2017.
  * www.juanmendez.info
  * contact@juanmendez.info
+ *
+ * This class wraps the LightApi defined in the application. It is access directly by this library.
+ * In this way, a lot of the logic sits here. And the one in the application generates the LightTime object.
  */
-
 public class CoreLightApi implements LightApi {
     LightThemeModule m;
 

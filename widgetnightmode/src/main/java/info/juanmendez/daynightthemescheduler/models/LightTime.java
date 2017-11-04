@@ -6,8 +6,12 @@ import android.support.annotation.NonNull;
  * Created by Juan Mendez on 10/27/2017.
  * www.juanmendez.info
  * contact@juanmendez.info
+ *
+ * This pojo provides sunrise, sunset.
+ * It optionally provides schedule, an any status assigned through the library process.
+ *
+ * @see LightTimeStatus
  */
-
 public class LightTime {
     private String mSunrise = "";
     private String mSunset = "";

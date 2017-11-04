@@ -12,7 +12,8 @@ import info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils;
  * Created by Juan Mendez on 10/27/2017.
  * www.juanmendez.info
  * contact@juanmendez.info
- * This class takes care of figuring out the light times needed for either today, tomorrow or both
+ * This class provides a LightTime having the next schedule.
+ * If a LightTime points to next day, then it caches the LightTime for current day.
  */
 public class LightPlanner {
 
