@@ -38,6 +38,7 @@ public class LightThemeClient {
 
     public LightThemeClient(LightThemeModule module, LightWidgetService widgetService, LightAlarmService alarmService) {
         m = module;
+
         mWidgetService = widgetService;
         mAlarmService = alarmService;
         mPlanner = new LightPlanner(m);

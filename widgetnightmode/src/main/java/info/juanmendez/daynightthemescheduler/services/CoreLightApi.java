@@ -31,12 +31,12 @@ public class CoreLightApi implements LightApi {
     public void generateTodayTimeLight(Response<LightTime> response) {
         //we check if what we have is already cached
         LightTime appLightTime = m.getLightTime();
+        boolean isSameDay = LocalTimeUtils.isSameDay( appLightTime.getSunrise(), m.getNow().toDateTimeToday().toString() );
 
-        if(LocalTimeUtils.isSameDay( appLightTime.getSunrise(), m.getNow().toDateTimeToday().toString() )){
+        if( isSameDay){
             response.onResult( LightTimeUtils.clone(appLightTime) );
         }else if( m.getNetworkService().isOnline() && m.getLocationService().isGranted() ){
              m.getLightTimeApi().generateTodayTimeLight( response );
-
         }else if( LightTimeUtils.isValid(appLightTime)){
             response.onResult( LightTimeUtils.clonedAsGuessed(appLightTime, 0 ) );
         }else{
