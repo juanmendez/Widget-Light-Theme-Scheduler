@@ -98,7 +98,8 @@ public class LightThemeClient {
                 m.getLightTimeStorage().saveLightTime( lightTimeResult );
 
                 if(LightTimeUtils.isValid(lightTimeResult )){
-                    mAlarmService.scheduleNext( LightTimeUtils.getMSFromSchedule(lightTimeResult)  );
+                    Long msFromNow = LightTimeUtils.getMSFromSchedule( m.getNow(), lightTimeResult);
+                    mAlarmService.scheduleNext( msFromNow );
                 }else if( lightTimeResult.getStatus() == LightTimeStatus.NO_INTERNET ){
 
                     lightTimeResult.setNextSchedule("");

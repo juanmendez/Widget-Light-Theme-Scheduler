@@ -29,17 +29,22 @@ public class LocalTimeUtils {
         return dt.toLocalDateTime();
     }
 
-    public static long getMSBetween(@NonNull LocalDateTime dateLocalThen, @NonNull LocalDateTime dateLocalFrom ){
+    public static LocalDateTime getUTC( @NonNull LocalDateTime localDateTime ){
+        DateTime universalDateTime = new DateTime( localDateTime.toDateTime(), DateTimeZone.UTC );
+        return universalDateTime.toLocalDateTime();
+    }
 
-        if( dateLocalFrom.isBefore( dateLocalThen )){
-            return dateLocalThen.toDateTime().getMillis() - dateLocalFrom.toDateTime().getMillis();
+    public static String getStringUTC( @NonNull LocalDateTime localDateTime ){
+        return getUTC( localDateTime ).toString();
+    }
+
+    public static long getMSBetween(@NonNull DateTime dateLocalNow, @NonNull DateTime dateLocalThen ){
+
+        if( dateLocalNow.isBefore( dateLocalThen )){
+            return dateLocalThen.getMillis() - dateLocalNow.getMillis() ;
         }else{
             return 0;
         }
-    }
-
-    public static long getTimeFromNow( @NonNull LocalDateTime dateLocalThen ){
-        return getMSBetween( dateLocalThen, LocalDateTime.now() );
     }
 
     public static Boolean isDaylightScreen(LocalTime now, LocalTime sunrise, LocalTime sunset){

@@ -49,11 +49,10 @@ public class LightTimeUtils {
         original.setStatus( 0 );
     }
 
-    public static long getMSFromSchedule( @NonNull LightTime lightTime ){
+    public static long getMSFromSchedule( LocalTime now,  @NonNull LightTime lightTime ){
 
         LocalDateTime scheduleDateTime = LocalTimeUtils.getLocalDateTime( lightTime.getNextSchedule());
-
-        long ms = LocalTimeUtils.getTimeFromNow( scheduleDateTime );
+        long ms = LocalTimeUtils.getMSBetween( now.toDateTimeToday(), scheduleDateTime.toDateTime() );
         return ms;
     }
 

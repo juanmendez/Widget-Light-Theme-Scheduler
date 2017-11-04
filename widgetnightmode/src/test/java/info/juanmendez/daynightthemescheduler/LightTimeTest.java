@@ -1,5 +1,6 @@
 package info.juanmendez.daynightthemescheduler;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.Period;
@@ -187,15 +188,21 @@ public class LightTimeTest {
     @Test
     public void testGettingMSBetweenLocalDateTimes(){
 
+        //Nov 2, 2017. 5 pm, US-Central-Time
+        DateTime now = DateTime.parse( "2017-11-02T17:00:00" );
+
         //Nov 3, 2017. 5 am, US-Central-Time
         LocalDateTime lc = LocalTimeUtils.getLocalDateTime("2017-11-03T10:00:00");
 
-
-        //Nov 2, 2017. 5 pm, US-Central-Time
-        LocalDateTime lcNow = LocalDateTime.parse( "2017-11-02T17:00:00" );
-
-        long diff = LocalTimeUtils.getMSBetween( lc, lcNow );
+        long diff = LocalTimeUtils.getMSBetween( now, lc.toDateTime() );
 
         assertEquals( diff, 12*60*60*1000 );
+    }
+
+    @Test
+    public void testGettingUTCTime(){
+        DateTime now = DateTime.now();
+        LocalDateTime utc = LocalTimeUtils.getUTC( now.toLocalDateTime() );
+        assertEquals( (LocalTimeUtils.getMSBetween(now, utc.toDateTime()))/1000/60/60, 5   );
     }
 }
