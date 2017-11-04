@@ -51,6 +51,15 @@ public class LightThemeModule {
     }
 
     public LightNetworkService getNetworkService() {
+
+        /**
+         * LightNetworkService might not be required in the app,
+         * if LightApi doesn't make Rest calls.
+         */
+        if( mNetworkService == null ){
+            mNetworkService = () -> true;
+        }
+
         return mNetworkService;
     }
 
