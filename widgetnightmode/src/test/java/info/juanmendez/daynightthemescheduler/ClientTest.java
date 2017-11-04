@@ -52,19 +52,19 @@ public class ClientTest extends LightThemeTest{
 
         //it's 5am
         m.applyNow( LocalTime.parse("5:00:00"));
-        planner.provideNextTimeLight( response );
+        planner.generateLightTime( response );
         assertEquals( proxyResult[0].getNextSchedule(), twistedApi.getToday().getSunrise() );
 
 
         //it's 2pm
         m.applyNow( LocalTime.parse("14:00:00"));
-        planner.provideNextTimeLight( response );
+        planner.generateLightTime( response );
         assertEquals( proxyResult[0].getNextSchedule(), twistedApi.getToday().getSunset() );
 
 
         //it's 11pm
         m.applyNow( LocalTime.parse("23:00:00"));
-        planner.provideNextTimeLight( response );
+        planner.generateLightTime( response );
         assertEquals( proxyResult[0].getNextSchedule(), twistedApi.getTomorrow().getSunrise() );
     }
 
@@ -81,7 +81,7 @@ public class ClientTest extends LightThemeTest{
             proxyResult[0] = result;
         };
 
-        planner.provideNextTimeLight( response );
+        planner.generateLightTime( response );
 
         //lightTime storage has no data, therefore proxyResult[0] is also invalid
         //in this case LightAlarmService must set an alarm when there is network, and we can calculate..
@@ -93,7 +93,7 @@ public class ClientTest extends LightThemeTest{
         //how about online, but no permission to get location
         twistedNetwork.isOnline = true;
         twistedLS.sIsGranted = false;
-        planner.provideNextTimeLight( response );
+        planner.generateLightTime( response );
 
         Assert.assertFalse( LightTimeUtils.isValid(twistedStorage.asMocked().getLightTime()));
         assertEquals( proxyResult[0].getStatus(), LightTimeStatus.NO_LOCATION_PERMISSION );
@@ -113,7 +113,7 @@ public class ClientTest extends LightThemeTest{
 
         //also lets say it's two o'clock
         m.applyNow( LocalTime.parse("14:00:00"));
-        planner.provideNextTimeLight( response );
+        planner.generateLightTime( response );
 
         //should be valid now..
         Assert.assertTrue(LightTimeUtils.isValid(proxyResult[0]));

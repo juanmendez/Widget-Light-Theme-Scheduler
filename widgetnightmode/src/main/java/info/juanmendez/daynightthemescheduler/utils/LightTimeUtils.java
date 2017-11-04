@@ -59,7 +59,7 @@ public class LightTimeUtils {
     public static boolean isValid( LightTime that ){
         return !that.getSunrise().isEmpty() && !that.getSunset().isEmpty();
     }
-
+    
     public static int getScreenMode(LocalTime now, LightTime lightTime){
         if( isDaylightScreen( now, getLocalTime(lightTime.getSunrise()), getLocalTime(lightTime.getSunset()) ))
             return WidgetScreenStatus.WIDGET_DAY_SCREEN;

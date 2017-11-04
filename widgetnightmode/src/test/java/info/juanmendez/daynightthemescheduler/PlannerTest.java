@@ -82,18 +82,18 @@ public class PlannerTest extends LightThemeTest{
         twistedApi.getTomorrow().setSunset( "2017-10-28T23:03:42+00:00" );
 
         m.applyNow( LocalTime.parse( "00:40:00" ) );
-        planner.provideNextTimeLight(result -> {
+        planner.generateLightTime(result -> {
             assertEquals(twistedApi.getToday().getSunrise(), result.getNextSchedule());
         });
 
 
         m.applyNow( LocalTime.parse( "16:40:00" ) );
-        planner.provideNextTimeLight(result -> {
+        planner.generateLightTime(result -> {
             assertEquals(twistedApi.getToday().getSunset(), result.getNextSchedule());
         });
 
         m.applyNow( LocalTime.parse( "23:00:00" ) );
-        planner.provideNextTimeLight(result -> {
+        planner.generateLightTime(result -> {
             assertEquals( result.getSunrise(), twistedApi.getTomorrow().getSunrise() );
             assertEquals( result.getSunset(), twistedApi.getTomorrow().getSunset() );
             assertEquals( result.getNextSchedule(), twistedApi.getTomorrow().getSunrise() );
@@ -242,14 +242,14 @@ public class PlannerTest extends LightThemeTest{
             proxyResult[0] = result;
         };
 
-        planner.provideNextTimeLight( response );
+        planner.generateLightTime( response );
         assertFalse(LightTimeUtils.isValid( proxyResult[0]));
 
         //if we have a network, but we don't have location permissions
         twistedNetwork.isOnline = true;
         twistedLS.sIsGranted = false;
 
-        planner.provideNextTimeLight( response );
+        planner.generateLightTime( response );
         assertFalse(LightTimeUtils.isValid( proxyResult[0]));
     }
 
@@ -273,7 +273,7 @@ public class PlannerTest extends LightThemeTest{
             proxyResult[0] = result;
         };
 
-        planner.provideNextTimeLight( response );
+        planner.generateLightTime( response );
 
         //we should have schedule tomorrow sunrise.
         assertEquals( proxyResult[0].getNextSchedule(), LocalTimeUtils.getDayAsString( notTodaySunset, 0 ) );
@@ -305,7 +305,7 @@ public class PlannerTest extends LightThemeTest{
             proxyResult[0] = result;
         };
 
-        planner.provideNextTimeLight( response );
+        planner.generateLightTime( response );
 
         //we should have schedule tomorrow sunrise.
         assertEquals( proxyResult[0].getNextSchedule(), LocalTimeUtils.getDayAsString( notTodaySunrise, 1 ) );

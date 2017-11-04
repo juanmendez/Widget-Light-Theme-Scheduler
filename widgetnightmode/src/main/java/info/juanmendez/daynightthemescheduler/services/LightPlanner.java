@@ -33,11 +33,11 @@ public class LightPlanner {
         m = module;
     }
 
-    public void provideNextTimeLight(Response<LightTime> response){
-        provideTodayLightTime(  response );
+    public void generateLightTime(Response<LightTime> response){
+        generateTodayLightTime(  response );
     }
 
-    private void provideTodayLightTime(Response<LightTime> response ){
+    private void generateTodayLightTime(Response<LightTime> response ){
         mApiProxy.generateTodayTimeLight(todayLightTime -> {
 
             //try to fix in case not valid.
@@ -61,7 +61,7 @@ public class LightPlanner {
                     response.onResult( todayLightTime );
                 }else if( when == TOMORROW_SCHEDULE ){
                     //ok, we need to call and get tomorrows..
-                    provideTomorrowLightTime( response );
+                    generateTomorrowLightTime( response );
                 }
             }else{
                 response.onResult( todayLightTime );
@@ -69,7 +69,7 @@ public class LightPlanner {
         });
     }
 
-    private void provideTomorrowLightTime(Response<LightTime> response ){
+    private void generateTomorrowLightTime(Response<LightTime> response ){
         mApiProxy.generateTomorrowTimeLight(tomorrowTimeLight -> {
 
             //try to fix in case not valid.

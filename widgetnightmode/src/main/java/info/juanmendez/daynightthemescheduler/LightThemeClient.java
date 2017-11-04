@@ -92,16 +92,15 @@ public class LightThemeClient {
         Timber.i( "in auto mode? " + ( mWidgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO? "yes":"noe"));
         if( mWidgetService.getWidgetsCount() > 0 && mWidgetService.getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO ){
 
-            mPlanner.provideNextTimeLight(lightTimeResult -> {
+            mPlanner.generateLightTime(lightTimeResult -> {
 
                 Timber.i( "result %s", lightTimeResult );
                 m.getLightTimeStorage().saveLightTime( lightTimeResult );
 
-                if(LightTimeUtils.isValid(lightTimeResult )){
+                if( !lightTimeResult.getNextSchedule().isEmpty() ){
                     Long msFromNow = LightTimeUtils.getMSFromSchedule( m.getNow(), lightTimeResult);
                     mAlarmService.scheduleNext( msFromNow );
                 }else if( lightTimeResult.getStatus() == LightTimeStatus.NO_INTERNET ){
-
                     lightTimeResult.setNextSchedule("");
                     mAlarmService.scheduleNextWhenOnline();
                 }else{
