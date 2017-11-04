@@ -16,11 +16,11 @@ import info.juanmendez.daynightthemescheduler.services.LightTimeStorage;
  */
 public class LightThemeModule {
 
-    LightNetworkService mNetworkService;
-    LightLocationService mLocationService;
-    LightApi mLightTimeApi;
-    LightTimeStorage mStorage;
-    LocalTime mNow;
+    private LightNetworkService mNetworkService;
+    private LightLocationService mLocationService;
+    private LightApi mLightTimeApi;
+    private LightTimeStorage mStorage;
+    private LocalTime mNow;
 
     public static LightThemeModule create(){
         return new LightThemeModule();
