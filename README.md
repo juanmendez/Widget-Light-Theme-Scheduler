@@ -1,7 +1,7 @@
 # LightTheme-Scheduler
 ---------------------
 
-An unopinionated library to set night-auto theme to widgets. It requires dependencies which are all defined by the library's interfaces, and such instances are included in `LightThemeModule`.
+A depedency agnostic library to set night-auto theme to widgets. It requires dependencies which are all defined by the library's interfaces, and such instances are included in `LightThemeModule`.
 Once the module is created it is then assigned to `LightThemeManager`.
 
 ```java
