@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
  * contact@juanmendez.info
  *
  * This pojo provides sunrise, sunset.
- * It optionally provides schedule, an any status assigned through the library process.
+ * Please ensure those values are in UTC.
  *
  * @see LightTimeStatus
  */
