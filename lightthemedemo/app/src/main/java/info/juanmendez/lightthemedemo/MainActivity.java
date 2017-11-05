@@ -15,7 +15,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import info.juanmendez.lighttheme.LightThemeManager;
+import info.juanmendez.lightthemescheduler.LightThemeManager;
 import info.juanmendez.lightthemedemo.services.lighttheme.DroidLocationService;
 import info.juanmendez.lightthemedemo.services.lighttheme.LightManagerFactory;
 import info.juanmendez.lightthemedemo.services.preferences.WidgetPrefs_;
@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         switch ( choiceMade){
             case AppCompatDelegate.MODE_NIGHT_AUTO:
                 autoRadioButton.setChecked(true);
+                checkPermissions();
                 break;
             case AppCompatDelegate.MODE_NIGHT_NO:
                 dayOnlyRadioButton.setChecked(true);
@@ -79,6 +80,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void notifyThemeManager(){
+        //these changes need to be known by ligthThemeClient
+        clientBuilder.getManager().onAppEvent(LightThemeManager.THEME_OPTION_CHANGED);
+    }
+
 
     private void checkPermissions(){
         if (!DroidLocationService.isLocationGranted(this)) {
@@ -95,8 +101,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void notifyThemeManager(){
-        //these changes need to be known by ligthThemeClient
-        clientBuilder.getManager().onAppEvent(LightThemeManager.THEME_OPTION_CHANGED);
-    }
+
 }

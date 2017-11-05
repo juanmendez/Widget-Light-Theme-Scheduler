@@ -6,7 +6,7 @@ import com.evernote.android.job.Job;
 import com.evernote.android.job.JobRequest;
 import com.evernote.android.job.util.support.PersistableBundleCompat;
 
-import info.juanmendez.lighttheme.LightThemeManager;
+import info.juanmendez.lightthemescheduler.LightThemeManager;
 import info.juanmendez.lightthemedemo.services.lighttheme.LightManagerFactory;
 
 

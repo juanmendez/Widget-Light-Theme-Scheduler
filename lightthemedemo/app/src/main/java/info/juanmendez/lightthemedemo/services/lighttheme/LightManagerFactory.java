@@ -6,8 +6,8 @@ import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
-import info.juanmendez.lighttheme.LightThemeManager;
-import info.juanmendez.lighttheme.models.LightThemeModule;
+import info.juanmendez.lightthemescheduler.LightThemeManager;
+import info.juanmendez.lightthemescheduler.models.LightThemeModule;
 
 /**
  * Created by Juan Mendez on 10/30/2017.

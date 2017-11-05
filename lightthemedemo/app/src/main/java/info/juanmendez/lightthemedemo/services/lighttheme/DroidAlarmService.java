@@ -4,8 +4,11 @@ import com.evernote.android.job.JobManager;
 
 import org.androidannotations.annotations.EBean;
 
-import info.juanmendez.lighttheme.services.LightAlarmService;
+import java.util.Date;
+
+import info.juanmendez.lightthemescheduler.services.LightAlarmService;
 import info.juanmendez.lightthemedemo.services.alarm.WidgetAlarmJob;
+import timber.log.Timber;
 
 
 /**
@@ -23,12 +26,15 @@ public class DroidAlarmService implements LightAlarmService {
     @Override
     public void scheduleNext(long msFromNow) {
         WidgetAlarmJob.scheduleJobAtAGivenTime( msFromNow );
+        Timber.i( "Next schedule is around " + new Date( System.currentTimeMillis() + msFromNow ));
     }
 
     @Override
     public void scheduleNextWhenOnline() {
-        long oneMinute = 5*60*1000L;
-        long fifteenMinutes = 20*60*60*1000L;
-        WidgetAlarmJob.scheduleJobWhenOnline( oneMinute, fifteenMinutes );
+        long fifteenMinutes = 15*60*1000L;
+        long twentyHours = 20*60*60*1000L;
+
+        WidgetAlarmJob.scheduleJobWhenOnline( fifteenMinutes, twentyHours );
+        Timber.i( "Scheduling a job to find out when device is online between %s and %s ", new Date( System.currentTimeMillis() + fifteenMinutes ), new Date( System.currentTimeMillis() + twentyHours ) );
     }
 }

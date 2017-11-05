@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
 
-import info.juanmendez.lighttheme.services.LightNetworkService;
+import info.juanmendez.lightthemescheduler.services.LightNetworkService;
 
 
 /**

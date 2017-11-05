@@ -9,8 +9,8 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import info.juanmendez.lighttheme.models.WidgetScreenStatus;
-import info.juanmendez.lighttheme.services.LightWidgetService;
+import info.juanmendez.lightthemescheduler.models.WidgetScreenStatus;
+import info.juanmendez.lightthemescheduler.services.LightWidgetService;
 import info.juanmendez.lightthemedemo.WidgetProvider_;
 import info.juanmendez.lightthemedemo.services.preferences.WidgetPrefs_;
 

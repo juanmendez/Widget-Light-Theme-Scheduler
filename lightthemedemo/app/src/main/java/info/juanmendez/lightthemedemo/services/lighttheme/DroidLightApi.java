@@ -5,10 +5,10 @@ import android.location.Location;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
-import info.juanmendez.lighttheme.models.LightTime;
-import info.juanmendez.lighttheme.models.LightTimeStatus;
-import info.juanmendez.lighttheme.models.Response;
-import info.juanmendez.lighttheme.services.LightApi;
+import info.juanmendez.lightthemescheduler.models.LightTime;
+import info.juanmendez.lightthemescheduler.models.LightTimeStatus;
+import info.juanmendez.lightthemescheduler.models.Response;
+import info.juanmendez.lightthemescheduler.services.LightApi;
 import info.juanmendez.lightthemedemo.services.sunrise.LightTimeCalls;
 import info.juanmendez.lightthemedemo.services.sunrise.LightTimeResponse;
 import retrofit2.Call;

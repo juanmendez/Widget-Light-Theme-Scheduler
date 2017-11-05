@@ -11,14 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
-            android:text="Tell us your Day-Night preference."
+            android:text="Tell us your Widget mode preference."
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:layout_marginBottom="20dp" />
         <TextView
-            android:text="Truth be told theme changes happen upon starting the activity."
-            android:textColor="@color/colorAccent"
+            android:text="Please allow to get your location in order to find out sunrise and sunset times in your area"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_marginBottom="20dp" android:layout_marginTop="20dp"/>
+            android:layout_height="wrap_content" android:layout_marginBottom="20dp"/>
         <RadioGroup
             android:id="@+id/radioGroup"
             android:orientation="horizontal"

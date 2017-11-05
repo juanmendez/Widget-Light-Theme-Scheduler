@@ -1,5 +1,5 @@
 package info.juanmendez.lightthemedemo.services.sunrise;
-import info.juanmendez.lighttheme.models.LightTime;
+import info.juanmendez.lightthemescheduler.models.LightTime;
 
 /**
  * Created by Juan Mendez on 10/18/2017.

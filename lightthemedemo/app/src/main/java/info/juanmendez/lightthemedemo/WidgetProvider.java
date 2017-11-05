@@ -11,7 +11,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EReceiver;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import info.juanmendez.lighttheme.models.WidgetScreenStatus;
+import info.juanmendez.lightthemescheduler.models.WidgetScreenStatus;
 import info.juanmendez.lightthemedemo.services.lighttheme.LightManagerFactory;
 import info.juanmendez.lightthemedemo.services.preferences.WidgetPrefs_;
 

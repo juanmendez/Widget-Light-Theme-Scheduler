@@ -3,8 +3,8 @@ package info.juanmendez.lightthemedemo.services.lighttheme;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import info.juanmendez.lighttheme.models.LightTime;
-import info.juanmendez.lighttheme.services.LightTimeStorage;
+import info.juanmendez.lightthemescheduler.models.LightTime;
+import info.juanmendez.lightthemescheduler.services.LightTimeStorage;
 import info.juanmendez.lightthemedemo.services.preferences.LightTimePrefs_;
 
 

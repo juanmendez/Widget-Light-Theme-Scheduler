@@ -12,7 +12,7 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.SystemService;
 
-import info.juanmendez.lighttheme.services.LightLocationService;
+import info.juanmendez.lightthemescheduler.services.LightLocationService;
 
 /**
  * Created by Juan Mendez on 10/29/2017.

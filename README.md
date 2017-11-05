@@ -1,39 +1,47 @@
-# Night-Mode Widget
+# LightTheme-Scheduler
 ---------------------
 
-An agnostic library to apply night auto theme to widgets. It is done in this way to have options for what third party libraries to depend on to make Rest calls, schedule Alarms, etc.
-It keeps the library light, and doesn't require more than just `Joda Time`, a Java library for date and time.
-
-For example, one request is to store the sunrise, sunset, and next schedule times in `SharedPreferences` or a local Database. The dependency needed implements the following:
+An agnostic library to apply night auto theme to widgets. It requires dependencies which are all defined by interfaces, and such instances are included in `LightThemeModule`.
+Once the module is created it is then assigned to `LightThemeManager`.
 
 ```java
-interface LightTimeStorage {
-    LightTime getLightTime();
-    void saveLightTime(LightTime lightTime );
+module = LightThemeModule.create()
+               .applyLightTimeStorage( lightTimeStorage ) //stores sunrise and sunset. could be in sharedPreferences
+               .applyLightTimeApi( sunriseSunsetApi ) //calls webservice or implements a sunrise/sunset generator library
+               .applyLocationService(  locationService ) //returns last known location, and if app has location permissions
+               .applyNetworkService( networkService ) //returns networkstate if online, but can be ignored if not using online access for sunrise/sunset
+               .applyWidgetService( widgetService ) //provides number of widgets, and saves the widget theme for day or night
+               .applyTestableNow( LocalTime.parse("14:00")) //optional for testing, skip in production
+               .applyAlarmService( alarmService ); //covers scheduling the next sun event, also schedules a job when user is back online
+
+mLightThemeManager = new LightThemeManager( module );
+```
+
+Your own `WidgetProvider` must pass its events to `LightThemeManager`. Also include a BroadcastReceiver to catch when the device turns on.
+
+```java
+    @Inject
+    LightThemeManager mLightThemeManager;
+    
+     @Override
+    public void onReceive(Context context, Intent intent) {
+       mLightThemeManager.onAppEvent( intent.getAction() );
+    }
+```
+
+```java
+public class RebootReceiver extends BroadcastReceiver {
+
+    @Inject
+    LightThemeManager mLightThemeManager;
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+       if( intent.getAction().equals(Intent.ACTION_REBOOT))
+            mLightThemeManager.onAppEvent( intent.getAction() );
+    }
 }
 ```
 
-This is what LightTime class looks like
-```java
-class LightTime {
-   //Date formatted strings
-   String sunrise;
-   String sunset;
-   String nextSchedule;
-}   
-```
-
-Thereafter, we make an instance of `LightThemeManager` and pass our own implementation of `LightTimeStorage`.
-```java
-new LightThemeManager( ...ourLightTimeStorage );
-```
-
-In the same procedure we provide other dependencies. You can make each time an instance of LightThemeManager or stored it as Singleton in your application. It doesn't matter.
-
-Thereafter your `WidgetProvider@onReceive` make calls to notify of events happening.
-```java
-lightThemeManager.onEvent( intent.getAction() );
-```
-All dependencies required can be found on LightThemeManager constructor. There is also a demo project which shows how it uses the library.
-This library intends to keep everything as light as possible and depend on your project's own dependencies.
-
+`LightThemeManager` doesn't have to be a Singleton or be referenced using dependency injection, but works fine as well.
+The library only requires [Joda Time](http://www.joda.org/joda-time/). Feel free to apply the libraries of your choice.
