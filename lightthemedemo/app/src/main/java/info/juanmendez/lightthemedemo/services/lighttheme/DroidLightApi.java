@@ -57,7 +57,7 @@ public class DroidLightApi implements LightApi {
             return;
         }
 
-        Call<LightTimeResponse> call = lightTimeCalls.getLightTime(location.getLatitude(), location.getLongitude(), 0, dateString, System.currentTimeMillis());
+        Call<LightTimeResponse> call = lightTimeCalls.getLightTime(location.getLatitude(), location.getLongitude(), 0, dateString);
 
         call.enqueue(new Callback<LightTimeResponse>() {
             @Override

@@ -2,6 +2,7 @@ package info.juanmendez.lightthemedemo.services.sunrise;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Query;
 
 /**
@@ -11,6 +12,7 @@ import retrofit2.http.Query;
  */
 public interface LightTimeCalls{
 
+    @Headers("Cache-Control: no-cache")
     @GET("/json")
-    Call<LightTimeResponse> getLightTime(@Query("lat") double lat, @Query("lng") double lng, @Query("formatted") int formatted, @Query("date") String date, @Query("now") long now);
+    Call<LightTimeResponse> getLightTime(@Query("lat") double lat, @Query("lng") double lng, @Query("formatted") int formatted, @Query("date") String date);
 }
