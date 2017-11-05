@@ -9,6 +9,8 @@ import org.joda.time.LocalTime;
 
 import java.util.TimeZone;
 
+import timber.log.Timber;
+
 /**
  * Created by Juan Mendez on 10/27/2017.
  * www.juanmendez.info
@@ -41,6 +43,7 @@ public class LocalTimeUtils {
         if( now.isBefore( sunrise )){
             return false;
         }else if( now.isBefore(sunset)){
+            Timber.i(  now.toString() + " vs " + sunset.toString() );
             return true;
         }
 

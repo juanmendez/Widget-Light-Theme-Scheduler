@@ -2,10 +2,12 @@ package info.juanmendez.daynightthemescheduler.models;
 
 import org.joda.time.LocalTime;
 
+import info.juanmendez.daynightthemescheduler.services.LightAlarmService;
 import info.juanmendez.daynightthemescheduler.services.LightApi;
 import info.juanmendez.daynightthemescheduler.services.LightLocationService;
 import info.juanmendez.daynightthemescheduler.services.LightNetworkService;
 import info.juanmendez.daynightthemescheduler.services.LightTimeStorage;
+import info.juanmendez.daynightthemescheduler.services.LightWidgetService;
 
 /**
  * Created by Juan Mendez on 10/29/2017.
@@ -20,7 +22,9 @@ public class LightThemeModule {
     private LightLocationService mLocationService;
     private LightApi mLightTimeApi;
     private LightTimeStorage mStorage;
-    private LocalTime mNow;
+    private LocalTime mNow = LocalTime.now();
+    private LightWidgetService mWidgetService;
+    private LightAlarmService mAlarmService;
 
     public static LightThemeModule create(){
         return new LightThemeModule();
@@ -55,7 +59,7 @@ public class LightThemeModule {
      * @param lightTimeApi
      * @return
      */
-    public LightThemeModule applyLighTimeApi(LightApi lightTimeApi) {
+    public LightThemeModule applyLightTimeApi(LightApi lightTimeApi) {
         mLightTimeApi = lightTimeApi;
         return this;
     }
@@ -71,12 +75,22 @@ public class LightThemeModule {
         return this;
     }
 
+    public LightThemeModule applyWidgetService( LightWidgetService widgetService ){
+        mWidgetService = widgetService;
+        return this;
+    }
+
+    public LightThemeModule applyAlarmService( LightAlarmService alarmService ){
+        mAlarmService = alarmService;
+        return this;
+    }
+
     /**
      * Default is LocalTime.now(). Otherwise you can define your own when testing the application.
      * @param now
      * @return
      */
-    public LightThemeModule applyNow( LocalTime now ){
+    public LightThemeModule applyTestableNow(LocalTime now ){
         mNow = now;
         return this;
     }
@@ -111,10 +125,14 @@ public class LightThemeModule {
     }
 
     public LocalTime getNow() {
-        //we set here default, if not provided
-        if( mNow == null ){
-            mNow = LocalTime.now();
-        }
         return mNow;
+    }
+
+    public LightWidgetService getWidgetService() {
+        return mWidgetService;
+    }
+
+    public LightAlarmService getAlarmService() {
+        return mAlarmService;
     }
 }

@@ -31,12 +31,12 @@ import static org.mockito.Mockito.verify;
  * contact@juanmendez.info
  * LightThemeScheduler based on several conditions figures out if there is a schedule to carry over
  */
-public class ClientTest extends LightThemeTest{
+public class LightThemeManagerTest extends LightThemeTest{
 
     @Test
     public void testScheduler(){
 
-        LightPlanner planner = Whitebox.getInternalState( client, "mPlanner");
+        LightPlanner planner = Whitebox.getInternalState(manager, "mPlanner");
 
         final LightTime[] proxyResult = new LightTime[1];
 
@@ -51,19 +51,19 @@ public class ClientTest extends LightThemeTest{
         twistedApi.getTomorrow().setSunset( "2017-10-28T23:03:42+00:00" );
 
         //it's 5am
-        m.applyNow( LocalTime.parse("5:00:00"));
+        m.applyTestableNow( LocalTime.parse("5:00:00"));
         planner.generateLightTime( response );
         assertEquals( proxyResult[0].getNextSchedule(), twistedApi.getToday().getSunrise() );
 
 
         //it's 2pm
-        m.applyNow( LocalTime.parse("14:00:00"));
+        m.applyTestableNow( LocalTime.parse("14:00:00"));
         planner.generateLightTime( response );
         assertEquals( proxyResult[0].getNextSchedule(), twistedApi.getToday().getSunset() );
 
 
         //it's 11pm
-        m.applyNow( LocalTime.parse("23:00:00"));
+        m.applyTestableNow( LocalTime.parse("23:00:00"));
         planner.generateLightTime( response );
         assertEquals( proxyResult[0].getNextSchedule(), twistedApi.getTomorrow().getSunrise() );
     }
@@ -112,7 +112,7 @@ public class ClientTest extends LightThemeTest{
         twistedApi.getToday().setSunset(sunset);
 
         //also lets say it's two o'clock
-        m.applyNow( LocalTime.parse("14:00:00"));
+        m.applyTestableNow( LocalTime.parse("14:00:00"));
         planner.generateLightTime( response );
 
         //should be valid now..
@@ -131,7 +131,7 @@ public class ClientTest extends LightThemeTest{
             proxyResult[0] = result;
         };
 
-        client.onScheduleRequest();
+        manager.onScheduleRequest();
 
         //online?yes, observers?no therefore no work scheduled.
         verify(twistedAlarm.asMocked()).cancelIfRunning();
@@ -148,17 +148,17 @@ public class ClientTest extends LightThemeTest{
         twistedApi.getTomorrow().setSunset( "2017-10-28T23:03:43+00:00" );
 
         //almost 6pm
-        m.applyNow( LocalTime.parse("17:50:00"));
+        m.applyTestableNow( LocalTime.parse("17:50:00"));
 
-        client.onScheduleRequest();
+        manager.onScheduleRequest();
         verify(twistedAlarm.asMocked()).scheduleNext( anyLong());
         assertEquals( appLightTime.getNextSchedule(), twistedApi.getToday().getSunset() );
 
         //11pm
-        m.applyNow( LocalTime.parse("23:00:00"));
+        m.applyTestableNow( LocalTime.parse("23:00:00"));
 
         twistedAlarm.reset();
-        client.onScheduleRequest();
+        manager.onScheduleRequest();
         verify(twistedAlarm.asMocked()).scheduleNext( anyLong() );
         assertEquals( appLightTime.getNextSchedule(), twistedApi.getTomorrow().getSunrise() );
     }
@@ -171,7 +171,7 @@ public class ClientTest extends LightThemeTest{
     public void testCachingForTomorrow(){
 
         //11pm
-        m.applyNow( LocalTime.parse("23:00:00"));
+        m.applyTestableNow( LocalTime.parse("23:00:00"));
 
         LightTime appLightTime = twistedStorage.getLightTime();
         appLightTime.setSunrise( "2017-10-27T12:07:26+00:00" );
@@ -180,7 +180,7 @@ public class ClientTest extends LightThemeTest{
         //11pm, we are offline, therefore we are
         twistedWS.widgets = 1;
         twistedNetwork.isOnline = false;
-        client.onScheduleRequest();
+        manager.onScheduleRequest();
 
         verify( twistedAlarm.asMocked() ).scheduleNext(anyLong());
         assertEquals( appLightTime.getStatus(), LightTimeStatus.LIGHTTIME_GUESSED );
@@ -194,14 +194,14 @@ public class ClientTest extends LightThemeTest{
     @Test
     public void testFirstWihoutPermissions(){
         //11pm
-        m.applyNow( LocalTime.parse("23:00:00"));
+        m.applyTestableNow( LocalTime.parse("23:00:00"));
 
         LightTime appLightTime = twistedStorage.getLightTime();
 
         //11pm, we are offline, therefore we are
         twistedWS.widgets = 1;
         twistedLS.sIsGranted = false;
-        client.onScheduleRequest();
+        manager.onScheduleRequest();
 
         verify( twistedAlarm.asMocked() ).cancelIfRunning();
         assertEquals( appLightTime.getStatus(), LightTimeStatus.NO_LOCATION_PERMISSION  );
@@ -215,14 +215,14 @@ public class ClientTest extends LightThemeTest{
         twistedWS.widgets = 1;
         twistedWS.userOption = AppCompatDelegate.MODE_NIGHT_NO;
 
-        client.onAppEvent( LightThemeClient.THEME_OPTION_CHANGED );
+        manager.onAppEvent( LightThemeManager.THEME_OPTION_CHANGED );
         verify( twistedAlarm.asMocked() ).cancelIfRunning();
 
         //optimized, day is default.
         verify( twistedWS.asMocked(), times(0) ).setWidgetScreenMode( eq(WidgetScreenStatus.WIDGET_DAY_SCREEN) );
 
         twistedWS.userOption = AppCompatDelegate.MODE_NIGHT_YES;
-        client.onAppEvent( LightThemeClient.THEME_OPTION_CHANGED );
+        manager.onAppEvent( LightThemeManager.THEME_OPTION_CHANGED );
         verify( twistedAlarm.asMocked(), times(2) ).cancelIfRunning();
         verify( twistedWS.asMocked() ).setWidgetScreenMode( eq(WidgetScreenStatus.WIDGET_NIGHT_SCREEN) );
     }
@@ -234,11 +234,11 @@ public class ClientTest extends LightThemeTest{
         twistedApi.getToday().setSunrise( "2017-10-27T12:07:26+00:00" );
         twistedApi.getToday().setSunset( "2017-10-27T23:03:42+00:00" );
 
-        m.applyNow( LocalTime.parse("12:00"));
+        m.applyTestableNow( LocalTime.parse("12:00"));
 
         twistedWS.widgets = 0;
         twistedWS.userOption = AppCompatDelegate.MODE_NIGHT_AUTO;
-        client.onAppEvent( LightThemeClient.THEME_OPTION_CHANGED);
+        manager.onAppEvent( LightThemeManager.THEME_OPTION_CHANGED);
         verify( twistedAlarm.asMocked() ).cancelIfRunning();
         verify( twistedWS.asMocked(), times(0)).setWidgetScreenMode(anyInt() );
 
@@ -246,7 +246,7 @@ public class ClientTest extends LightThemeTest{
         twistedAlarm.reset();
         //ok, now a widget is added after.
         twistedWS.widgets = 1;
-        client.onAppEvent( AppWidgetManager.ACTION_APPWIDGET_ENABLED );
+        manager.onAppEvent( AppWidgetManager.ACTION_APPWIDGET_ENABLED );
         verify( twistedAlarm.asMocked(), times(0) ).cancelIfRunning();
 
         //optimized call, therefore this is not call if in day mode
@@ -255,7 +255,7 @@ public class ClientTest extends LightThemeTest{
 
         //widget was removed..
         twistedWS.widgets = 0;
-        client.onAppEvent( AppWidgetManager.ACTION_APPWIDGET_DELETED );
+        manager.onAppEvent( AppWidgetManager.ACTION_APPWIDGET_DELETED );
         verify( twistedAlarm.asMocked(), times(1) ).cancelIfRunning();
     }
 
@@ -275,12 +275,12 @@ public class ClientTest extends LightThemeTest{
         twistedApi.getTomorrow().setSunset( "2017-10-28T23:03:43+00:00" );
 
 
-        m.applyNow( LocalTimeUtils.getLocalTime(twistedApi.getToday().getSunset() ) );
+        m.applyTestableNow( LocalTimeUtils.getLocalTime(twistedApi.getToday().getSunset() ) );
 
         twistedWS.widgets = 1;
         twistedWS.screenMode = WidgetScreenStatus.WIDGET_DAY_SCREEN;
         twistedWS.userOption = AppCompatDelegate.MODE_NIGHT_AUTO;
-        client.onAppEvent( Intent.ACTION_REBOOT);
+        manager.onAppEvent( Intent.ACTION_REBOOT);
 
         verify( twistedAlarm.asMocked() ).scheduleNext( anyLong() );
         verify( twistedWS.asMocked() ).setWidgetScreenMode( eq(WidgetScreenStatus.WIDGET_NIGHT_SCREEN) );
@@ -289,7 +289,7 @@ public class ClientTest extends LightThemeTest{
     @Test
     public void firstWidgetAdded(){
 
-        m.applyNow( LocalTime.parse("22:00") );
+        m.applyTestableNow( LocalTime.parse("22:00") );
         twistedApi.getToday().setSunrise( "2017-10-27T12:07:26+00:00" );
         twistedApi.getToday().setSunset( "2017-10-27T23:03:42+00:00" );
 
@@ -297,7 +297,7 @@ public class ClientTest extends LightThemeTest{
         twistedApi.getTomorrow().setSunset( "2017-10-28T23:03:42+00:00" );
 
         twistedWS.widgets = 1;
-        client.onAppEvent( AppWidgetManager.ACTION_APPWIDGET_ENABLED );
+        manager.onAppEvent( AppWidgetManager.ACTION_APPWIDGET_ENABLED );
         verify( twistedWS.asMocked() ).setWidgetScreenMode( eq(WidgetScreenStatus.WIDGET_NIGHT_SCREEN) );
     }
 }

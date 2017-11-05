@@ -81,18 +81,18 @@ public class PlannerTest extends LightThemeTest{
         twistedApi.getTomorrow().setSunrise( "2017-10-28T12:07:26+00:00" );
         twistedApi.getTomorrow().setSunset( "2017-10-28T23:03:42+00:00" );
 
-        m.applyNow( LocalTime.parse( "00:40:00" ) );
+        m.applyTestableNow( LocalTime.parse( "00:40:00" ) );
         planner.generateLightTime(result -> {
             assertEquals(twistedApi.getToday().getSunrise(), result.getNextSchedule());
         });
 
 
-        m.applyNow( LocalTime.parse( "16:40:00" ) );
+        m.applyTestableNow( LocalTime.parse( "16:40:00" ) );
         planner.generateLightTime(result -> {
             assertEquals(twistedApi.getToday().getSunset(), result.getNextSchedule());
         });
 
-        m.applyNow( LocalTime.parse( "23:00:00" ) );
+        m.applyTestableNow( LocalTime.parse( "23:00:00" ) );
         planner.generateLightTime(result -> {
             assertEquals( result.getSunrise(), twistedApi.getTomorrow().getSunrise() );
             assertEquals( result.getSunset(), twistedApi.getTomorrow().getSunset() );
@@ -265,7 +265,7 @@ public class PlannerTest extends LightThemeTest{
         appLightTime.setSunset( notTodaySunset );
 
         twistedNetwork.isOnline = true;
-        m.applyNow( LocalTime.parse("12:00:00") );
+        m.applyTestableNow( LocalTime.parse("12:00:00") );
 
         final LightTime[] proxyResult = new LightTime[1];
 
@@ -297,7 +297,7 @@ public class PlannerTest extends LightThemeTest{
         appLightTime.setSunset( notTodaySunset );
 
         twistedNetwork.isOnline = true;
-        m.applyNow( LocalTime.parse("23:00:00") );
+        m.applyTestableNow( LocalTime.parse("23:00:00") );
 
         final LightTime[] proxyResult = new LightTime[1];
 

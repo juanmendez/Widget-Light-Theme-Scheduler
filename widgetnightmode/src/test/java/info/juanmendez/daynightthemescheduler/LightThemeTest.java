@@ -29,7 +29,7 @@ abstract public class LightThemeTest {
     TwistWidgetService twistedWS;
 
     LightThemeModule m;
-    LightThemeClient client;
+    LightThemeManager manager;
     LightPlanner planner;
 
     @Before
@@ -43,13 +43,15 @@ abstract public class LightThemeTest {
         twistedWS = new TwistWidgetService();
 
         m = LightThemeModule.create()
-                .applyLighTimeApi( twistedApi.asMocked() )
+                .applyLightTimeApi( twistedApi.asMocked() )
                 .applyLocationService(twistedLS.asMocked())
                 .applyNetworkService(twistedNetwork.asMocked())
                 .applyLightTimeStorage( twistedStorage.asMocked() )
-                .applyNow( LocalTime.now() );
+                .applyWidgetService( twistedWS.asMocked() )
+                .applyAlarmService( twistedAlarm.asMocked() )
+                .applyTestableNow( LocalTime.now() );
 
-        client = new LightThemeClient(m, twistedWS.asMocked(), twistedAlarm.asMocked() );
-        planner = Whitebox.getInternalState( client, "mPlanner");
+        manager = new LightThemeManager(m);
+        planner = Whitebox.getInternalState(manager, "mPlanner");
     }
 }

@@ -14,7 +14,6 @@ import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.Response;
 import info.juanmendez.daynightthemescheduler.services.LightApi;
 import info.juanmendez.daynightthemescheduler.services.LightNetworkService;
-import info.juanmendez.daynightthemescheduler.utils.LightTimeUtils;
 import info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils;
 
 import static junit.framework.Assert.assertEquals;
@@ -208,30 +207,5 @@ public class LightTimeTest {
         assertFalse( now.toString().equals( utc.toString() ) );
         assertTrue( utc.toString().equals( now.toDateTime(DateTimeZone.UTC).toString() ) );
         assertEquals( LocalTimeUtils.getMSBetween(now, utc.toDateTime()), 0   );
-    }
-
-    @Test
-    public void testApproximateToSchedule(){
-
-        appLightTime = new LightTime("2017-10-18T12:07:26", "2017-10-18T23:03:42");
-        LocalDateTime schedule = LocalTimeUtils.getLocalDateTime( appLightTime.getSunset() );
-        schedule = schedule.minusMinutes( 10 );
-
-        LightTimeUtils.approximateToSchedule( appLightTime, schedule );
-
-        LocalDateTime sunset = LocalTimeUtils.getLocalDateTime( appLightTime.getSunset() );
-        assertTrue( LocalTimeUtils.getMSBetween( schedule.toDateTime(), sunset.toDateTime()) == 0 );
-        assertEquals( schedule.toString(), sunset.toString() );
-
-
-
-        schedule = LocalTimeUtils.getLocalDateTime( appLightTime.getSunrise() );
-        schedule = schedule.plusMinutes( 15 );
-
-        LightTimeUtils.approximateToSchedule( appLightTime, schedule );
-
-        LocalDateTime sunrise = LocalTimeUtils.getLocalDateTime( appLightTime.getSunrise() );
-        assertTrue( LocalTimeUtils.getMSBetween( schedule.toDateTime(), sunrise.toDateTime()) == 0 );
-        assertEquals( schedule.toString(), sunrise.toString() );
     }
 }
