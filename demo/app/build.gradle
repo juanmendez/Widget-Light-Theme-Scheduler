@@ -6,7 +6,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
     defaultConfig {
-        applicationId "info.juanmendez.widgetnightmodedemo"
+        applicationId "info.juanmendez.lighthemedemo"
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
@@ -29,7 +29,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation project(':widgetnightmode')
+    implementation project(':lightthemescheduler')
     implementation "com.android.support:appcompat-v7:${supportLibVersion}"
     implementation "com.android.support:design:${supportLibVersion}"
     implementation "com.android.support:appcompat-v7:${supportLibVersion}"
