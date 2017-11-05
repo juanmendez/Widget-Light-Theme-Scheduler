@@ -9,8 +9,8 @@ import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.LightTimeStatus;
 import info.juanmendez.daynightthemescheduler.models.Response;
 import info.juanmendez.daynightthemescheduler.services.LightApi;
-import info.juanmendez.widgetnightmodedemo.services.api.sunrise.LightTimeResponse;
 import info.juanmendez.widgetnightmodedemo.services.api.sunrise.LightTimeCalls;
+import info.juanmendez.widgetnightmodedemo.services.api.sunrise.LightTimeResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -67,9 +67,15 @@ public class SunriseSunsetApi implements LightApi {
             public void onResponse(Call<LightTimeResponse> call, retrofit2.Response<LightTimeResponse> retrofitResponse) {
                 LightTimeResponse sun = retrofitResponse.body();
 
-                if (sun.getStatus().equals("OK")) {
-                    response.onResult(sun.getResults());
+                if( sun.getStatus() != null) {
+                    if( sun.getStatus().equals("OK") ){
+                        response.onResult(sun.getResults());
+                    }else{
+                        response.onResult(new LightTime());
+                    }
                 } else {
+                    LightTime lightTime = new LightTime();
+                    lightTime.setStatus( LightTimeStatus.NO_INTERNET );
                     response.onResult(new LightTime());
                 }
             }

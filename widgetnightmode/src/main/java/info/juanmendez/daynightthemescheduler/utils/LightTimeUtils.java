@@ -2,6 +2,8 @@ package info.juanmendez.daynightthemescheduler.utils;
 
 import android.support.annotation.NonNull;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 
@@ -64,5 +66,33 @@ public class LightTimeUtils {
             return WidgetScreenStatus.WIDGET_DAY_SCREEN;
         else
             return WidgetScreenStatus.WIDGET_NIGHT_SCREEN;
+    }
+
+    /**
+     * Schedules are not accurate with either sunrise or sunset. Whenever sunrise or sunset is closed by
+     * 15 minutes to the schedule, then either one's is turned into the schedule time. Of course, the time is set back to UTC
+     * @param lightTime
+     * @param scheduleTime
+     */
+    public static void approximateToSchedule(@NonNull LightTime lightTime, @NonNull LocalDateTime scheduleTime ){
+        if( scheduleTime != null && isValid( lightTime )){
+
+            DateTime scheduleDateTime = scheduleTime.toDateTime();
+            LocalDateTime sunrise = LocalTimeUtils.getLocalDateTime( lightTime.getSunrise() );
+            LocalDateTime sunset = LocalTimeUtils.getLocalDateTime( lightTime.getSunset() );
+
+            long ms = LocalTimeUtils.getMSBetween( scheduleDateTime, sunrise.toDateTime() );
+
+            if( ms <= (15*60*1000) ){
+                lightTime.setSunrise( scheduleDateTime.toDateTime(DateTimeZone.UTC).toString() );
+                return;
+            }
+
+            ms = LocalTimeUtils.getMSBetween( scheduleDateTime, sunset.toDateTime() );
+
+            if( ms <= (15*60*1000) ){
+                lightTime.setSunset( scheduleDateTime.toDateTime(DateTimeZone.UTC).toString() );
+            }
+        }
     }
 }

@@ -13,7 +13,6 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import info.juanmendez.daynightthemescheduler.models.WidgetScreenStatus;
 import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightClientBuilder;
-import timber.log.Timber;
 
 
 /**
@@ -35,7 +34,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Timber.i( "%s@widgetEvent", intent.getAction() );
+        //Timber.i( "%s@widgetEvent", intent.getAction() );
         if ( intent.getAction() == null ) {
 
             int[] widget_ids = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
@@ -62,7 +61,7 @@ public class WidgetProvider extends AppWidgetProvider {
     }
 
     private void updateWidget( Context context, AppWidgetManager manager, int widgetId) {
-        Timber.i( "udpate widget " + widgetId  );
+        //Timber.i( "udpate widget " + widgetId  );
         if( widgetId > 0 ){
 
             /**

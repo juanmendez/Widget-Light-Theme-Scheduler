@@ -28,22 +28,13 @@ public class LocalTimeUtils {
         return dt.toLocalDateTime();
     }
 
-    public static LocalDateTime getUTC( @NonNull LocalDateTime localDateTime ){
-        DateTime universalDateTime = new DateTime( localDateTime.toDateTime(), DateTimeZone.UTC );
-        return universalDateTime.toLocalDateTime();
-    }
-
-    public static String getStringUTC( @NonNull LocalDateTime localDateTime ){
-        return getUTC( localDateTime ).toString();
+    public static DateTime getUTC( @NonNull DateTime localDateTime ){
+        return new DateTime( localDateTime, DateTimeZone.UTC );
     }
 
     public static long getMSBetween(@NonNull DateTime dateLocalNow, @NonNull DateTime dateLocalThen ){
 
-        if( dateLocalNow.isBefore( dateLocalThen )){
-            return dateLocalThen.getMillis() - dateLocalNow.getMillis() ;
-        }else{
-            return 0;
-        }
+        return Math.abs( dateLocalThen.getMillis() - dateLocalNow.getMillis() );
     }
 
     public static Boolean isDaylightScreen(LocalTime now, LocalTime sunrise, LocalTime sunset){

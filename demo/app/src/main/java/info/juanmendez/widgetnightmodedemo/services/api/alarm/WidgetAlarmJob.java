@@ -1,6 +1,5 @@
 package info.juanmendez.widgetnightmodedemo.services.api.alarm;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.evernote.android.job.Job;
@@ -8,6 +7,7 @@ import com.evernote.android.job.JobRequest;
 import com.evernote.android.job.util.support.PersistableBundleCompat;
 
 import info.juanmendez.daynightthemescheduler.LightThemeClient;
+import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightClientBuilder;
 
 
 /**
@@ -27,8 +27,7 @@ public class WidgetAlarmJob extends Job {
         String action = extras.getString(ACTION, "");
 
         if( !action.isEmpty()){
-            Intent intent = new Intent(action);
-            getContext().sendBroadcast( intent );
+            LightClientBuilder.getClient(getContext()).onAppEvent( action );
         }
 
         return !action.isEmpty()? Result.SUCCESS:Result.FAILURE;

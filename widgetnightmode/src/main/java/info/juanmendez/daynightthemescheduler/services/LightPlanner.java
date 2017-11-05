@@ -2,8 +2,8 @@ package info.juanmendez.daynightthemescheduler.services;
 
 import org.joda.time.LocalTime;
 
-import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
+import info.juanmendez.daynightthemescheduler.models.LightTime;
 import info.juanmendez.daynightthemescheduler.models.Response;
 import info.juanmendez.daynightthemescheduler.utils.LightTimeUtils;
 import info.juanmendez.daynightthemescheduler.utils.LocalTimeUtils;
@@ -84,11 +84,22 @@ public class LightPlanner {
             }else{
                 response.onResult( tomorrowTimeLight );
             }
-
         });
     }
 
     public static int whatSchedule( LocalTime now, LocalTime sunrise, LocalTime sunset ){
+
+        //lets do some rounding of a minute
+        long ms = Math.abs(sunrise.getMillisOfDay() - now.getMillisOfDay());
+        if( ms < 60_000L){
+            sunrise = LocalTime.parse( now.toString() );
+        }
+
+        ms = Math.abs(sunset.getMillisOfDay() - now.getMillisOfDay());
+        if( ms < 60_000L){
+            sunset = LocalTime.parse( now.toString() );
+        }
+
         if( now.isBefore( sunrise )){
             return SUNRISE_SCHEDULE;
         }else if( now.isBefore( sunset) ){
