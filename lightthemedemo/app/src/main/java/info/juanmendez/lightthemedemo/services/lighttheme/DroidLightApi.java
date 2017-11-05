@@ -5,12 +5,12 @@ import android.location.Location;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
+import info.juanmendez.lightthemedemo.services.sunrise.LightTimeCalls;
+import info.juanmendez.lightthemedemo.services.sunrise.LightTimeResponse;
 import info.juanmendez.lightthemescheduler.models.LightTime;
 import info.juanmendez.lightthemescheduler.models.LightTimeStatus;
 import info.juanmendez.lightthemescheduler.models.Response;
 import info.juanmendez.lightthemescheduler.services.LightApi;
-import info.juanmendez.lightthemedemo.services.sunrise.LightTimeCalls;
-import info.juanmendez.lightthemedemo.services.sunrise.LightTimeResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -32,7 +32,12 @@ public class DroidLightApi implements LightApi {
     LightTimeCalls lightTimeCalls;
 
     public DroidLightApi() {
-        retrofit = new Retrofit.Builder().baseUrl("https://api.sunrise-sunset.org").addConverterFactory(GsonConverterFactory.create()).build();
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.sunrise-sunset.org")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        
         lightTimeCalls = retrofit.create(LightTimeCalls.class);
     }
 
