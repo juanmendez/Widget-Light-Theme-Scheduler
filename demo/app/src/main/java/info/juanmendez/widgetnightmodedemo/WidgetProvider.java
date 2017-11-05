@@ -12,7 +12,7 @@ import org.androidannotations.annotations.EReceiver;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import info.juanmendez.daynightthemescheduler.models.WidgetScreenStatus;
-import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightClientBuilder;
+import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightManagerFactory;
 
 
 /**
@@ -27,7 +27,7 @@ public class WidgetProvider extends AppWidgetProvider {
     MyApp myApp;
 
     @Bean
-    LightClientBuilder clientBuilder;
+    LightManagerFactory clientBuilder;
 
     @Pref
     WidgetPrefs_ widgetPrefs;
@@ -45,7 +45,7 @@ public class WidgetProvider extends AppWidgetProvider {
             super.onReceive(context, intent);
         }
 
-        clientBuilder.getClient().onAppEvent( intent.getAction() );
+        clientBuilder.getManager().onAppEvent( intent.getAction() );
     }
 
     @Override

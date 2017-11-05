@@ -20,19 +20,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity_">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".ConfigActivity_">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".SecondActivity_">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
@@ -48,7 +45,7 @@
         </receiver>
 
         <!-- For clarity I made this other broadcastReceiver-->
-        <receiver android:name=".WidgetNightModeReceiver_" android:exported="false">
+        <receiver android:name=".RebootReceiver_" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>

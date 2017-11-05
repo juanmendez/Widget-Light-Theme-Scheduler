@@ -1,11 +1,13 @@
 package info.juanmendez.widgetnightmodedemo.services.api.lighttheme;
 
+import android.content.Context;
+
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.joda.time.LocalTime;
 
-import info.juanmendez.daynightthemescheduler.LightThemeClient;
+import info.juanmendez.daynightthemescheduler.LightThemeManager;
 import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
 
 /**
@@ -14,7 +16,7 @@ import info.juanmendez.daynightthemescheduler.models.LightThemeModule;
  * contact@juanmendez.info
  */
 @EBean(scope = EBean.Scope.Singleton)
-public class LightClientBuilder{
+public class LightManagerFactory {
 
     @Bean
     DroidAlarmService alarmService;
@@ -32,24 +34,30 @@ public class LightClientBuilder{
     DroidWidgetService widgetService;
 
    @Bean
-   SunriseSunsetApi sunriseSunsetApi;
+   DroidLightApi sunriseSunsetApi;
 
    private LightThemeModule m;
-   private LightThemeClient mClient;
+   private LightThemeManager mManager;
 
    @AfterInject
    public void afterInject(){
        m = LightThemeModule.create()
                .applyLightTimeStorage( lightTimeStorage )
-               .applyLighTimeApi( sunriseSunsetApi )
+               .applyLightTimeApi( sunriseSunsetApi )
                .applyLocationService(  locationService )
                .applyNetworkService( networkService )
-               .applyNow( LocalTime.now() );
+               .applyWidgetService( widgetService )
+               .applyAlarmService( alarmService )
+               .applyTestableNow( LocalTime.parse("16:38") );
 
-       mClient = new LightThemeClient( m, widgetService, alarmService );
+       mManager = new LightThemeManager( m );
    }
 
-   public LightThemeClient getClient(){
-       return mClient;
+   public LightThemeManager getManager(){
+       return mManager;
+   }
+
+   public static LightThemeManager getManager(Context context ){
+       return LightManagerFactory_.getInstance_(context).getManager();
    }
 }

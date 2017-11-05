@@ -24,7 +24,7 @@ import timber.log.Timber;
  * contact@juanmendez.info
  */
 @EBean
-public class SunriseSunsetApi implements LightApi {
+public class DroidLightApi implements LightApi {
 
     @Bean
     DroidLocationService locationService;
@@ -32,7 +32,7 @@ public class SunriseSunsetApi implements LightApi {
     Retrofit retrofit;
     LightTimeCalls lightTimeCalls;
 
-    public SunriseSunsetApi() {
+    public DroidLightApi() {
         retrofit = new Retrofit.Builder().baseUrl("https://api.sunrise-sunset.org").addConverterFactory(GsonConverterFactory.create()).build();
         lightTimeCalls = retrofit.create(LightTimeCalls.class);
     }
@@ -52,8 +52,6 @@ public class SunriseSunsetApi implements LightApi {
         Location location = locationService.getLastKnownLocation();
 
         if( location == null ){
-            Timber.e( "There is no location found!");
-
             LightTime errorLightTime = new LightTime();
             errorLightTime.setStatus(LightTimeStatus.NO_LOCATION_AVAILABLE );
             response.onResult( errorLightTime );
@@ -76,7 +74,7 @@ public class SunriseSunsetApi implements LightApi {
                 } else {
                     LightTime lightTime = new LightTime();
                     lightTime.setStatus( LightTimeStatus.NO_INTERNET );
-                    response.onResult(new LightTime());
+                    response.onResult(lightTime);
                 }
             }
 

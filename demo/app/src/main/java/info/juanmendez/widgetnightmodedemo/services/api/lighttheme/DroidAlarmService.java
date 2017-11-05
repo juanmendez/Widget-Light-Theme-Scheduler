@@ -27,8 +27,8 @@ public class DroidAlarmService implements LightAlarmService {
 
     @Override
     public void scheduleNextWhenOnline() {
-        long oneMinute = 60*1000L;
-        long fifteenMinutes = 15*60*60*1000L;
+        long oneMinute = 5*60*1000L;
+        long fifteenMinutes = 20*60*60*1000L;
         WidgetAlarmJob.scheduleJobWhenOnline( oneMinute, fifteenMinutes );
     }
 }

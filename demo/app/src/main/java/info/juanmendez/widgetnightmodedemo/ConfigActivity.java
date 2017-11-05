@@ -15,7 +15,7 @@ import org.androidannotations.annotations.EActivity;
 
 import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.DroidAlarmService;
 import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.DroidLocationService;
-import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightClientBuilder;
+import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightManagerFactory;
 
 /**
  * Created by Juan Mendez on 10/28/2017.
@@ -23,14 +23,14 @@ import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightClientBu
  * contact@juanmendez.info
  */
 
-@EActivity(R.layout.activity_second)
+@EActivity(R.layout.activity_config)
 public class ConfigActivity extends AppCompatActivity {
 
     @App
     MyApp app;
 
     @Bean
-    LightClientBuilder clientBuilder;
+    LightManagerFactory clientBuilder;
 
     @Bean
     DroidAlarmService alarmService;

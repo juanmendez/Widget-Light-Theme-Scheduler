@@ -33,7 +33,7 @@ public class LightTimeResponse {
 
     @Override
     public String toString() {
-        return "LightThemeClientResponse{" +
+        return "LightThemeManager{" +
                 "results=" + mResults +
                 ", status='" + mStatus + '\'' +
                 '}';

@@ -6,8 +6,8 @@ import com.evernote.android.job.Job;
 import com.evernote.android.job.JobRequest;
 import com.evernote.android.job.util.support.PersistableBundleCompat;
 
-import info.juanmendez.daynightthemescheduler.LightThemeClient;
-import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightClientBuilder;
+import info.juanmendez.daynightthemescheduler.LightThemeManager;
+import info.juanmendez.widgetnightmodedemo.services.api.lighttheme.LightManagerFactory;
 
 
 /**
@@ -27,7 +27,7 @@ public class WidgetAlarmJob extends Job {
         String action = extras.getString(ACTION, "");
 
         if( !action.isEmpty()){
-            LightClientBuilder.getClient(getContext()).onAppEvent( action );
+            LightManagerFactory.getManager(getContext()).onAppEvent( action );
         }
 
         return !action.isEmpty()? Result.SUCCESS:Result.FAILURE;
@@ -35,10 +35,10 @@ public class WidgetAlarmJob extends Job {
 
     public static int scheduleJobAtAGivenTime( long timeFromNow ){
         PersistableBundleCompat extras = new PersistableBundleCompat();
-        extras.putString( ACTION, LightThemeClient.ALARM_EXECUTED);
+        extras.putString( ACTION, LightThemeManager.ALARM_EXECUTED);
 
         return new JobRequest.Builder(TAG)
-                .setExact( timeFromNow )
+                .setExecutionWindow( timeFromNow, timeFromNow + (5*60*1000) )
                 .setUpdateCurrent(true)
                 .setExtras( extras )
                 .build()
@@ -48,7 +48,7 @@ public class WidgetAlarmJob extends Job {
     public static int scheduleJobWhenOnline( long timeFromNow, long timeFromNowAtTheLatest ){
 
         PersistableBundleCompat extras = new PersistableBundleCompat();
-        extras.putString( ACTION, LightThemeClient.ALARM_EXECUTED_ONLINE);
+        extras.putString( ACTION, LightThemeManager.ALARM_EXECUTED_ONLINE);
 
         return new JobRequest.Builder(TAG)
                 .setExecutionWindow( timeFromNow, timeFromNowAtTheLatest )
