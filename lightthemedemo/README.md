@@ -1,5 +1,4 @@
-LightTheme Demo
-----------------------------------------
+# LightTheme Demo
 
 This demo shows how to support the requirements of LightThemeScheduler library. 
 
