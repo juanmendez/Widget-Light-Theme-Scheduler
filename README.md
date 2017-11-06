@@ -49,7 +49,6 @@ public class RebootReceiver extends BroadcastReceiver {
 }
 ```
 
-`LightThemeManager` doesn't have to be a Singleton or be referenced using dependency injection, but works fine as well.
 The library makes use of [Joda Time](http://www.joda.org/joda-time/). Feel free to apply the libraries of your choice.
 
 Please look into the [demo](/lightthemedemo) for more insights
