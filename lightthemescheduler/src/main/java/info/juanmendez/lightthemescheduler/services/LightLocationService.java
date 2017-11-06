@@ -10,5 +10,5 @@ import android.location.Location;
 
 public interface LightLocationService {
     boolean isGranted();
-    Location getLastKnownLocation();
+    Location getLocation();
 }

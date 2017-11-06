@@ -25,7 +25,7 @@ public class DroidAlarmService implements LightAlarmService {
 
     @Override
     public void scheduleNext(long msFromNow) {
-        WidgetAlarmJob.scheduleJobAtAGivenTime( msFromNow );
+        WidgetAlarmJob.scheduleJobAroundGivenTime( msFromNow );
         Timber.i( "Next schedule is around " + new Date( System.currentTimeMillis() + msFromNow ));
     }
 

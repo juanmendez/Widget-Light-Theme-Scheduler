@@ -8,6 +8,7 @@ package info.juanmendez.lightthemescheduler.models;
 
 public class LightTimeStatus {
 
+    public static final int SERVER_ERROR = 10000;
     public static final int NO_INTERNET = 10001;
     public static final int NO_LOCATION_PERMISSION = 10002;
     public static final int NO_LOCATION_AVAILABLE = 10003;

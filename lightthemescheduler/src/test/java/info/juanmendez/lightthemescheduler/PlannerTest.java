@@ -279,7 +279,6 @@ public class PlannerTest extends LightThemeTest{
         assertEquals( proxyResult[0].getNextSchedule(), LocalTimeUtils.getDayAsString( notTodaySunset, 0 ) );
     }
 
-
     /**
      * we have cached another day's lightTime, but while being
      * online there is an issue getting the data.

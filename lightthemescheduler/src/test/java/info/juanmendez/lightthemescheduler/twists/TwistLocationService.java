@@ -39,7 +39,7 @@ public class TwistLocationService implements Twist<LightLocationService> {
                     throw new Exception("LocationService requires permission");
                 }
 
-            } ).when(mLocationService).getLastKnownLocation();
+            } ).when(mLocationService).getLocation();
         }
 
         return mLocationService;

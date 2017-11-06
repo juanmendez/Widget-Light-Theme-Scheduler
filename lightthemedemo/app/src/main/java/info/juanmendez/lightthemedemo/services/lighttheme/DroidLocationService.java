@@ -35,7 +35,7 @@ public class DroidLocationService implements LightLocationService {
 
     @SuppressLint("MissingPermission")
     @Override
-    public Location getLastKnownLocation() {
+    public Location getLocation() {
         if( isGranted() ){
 
             // getting GPS status

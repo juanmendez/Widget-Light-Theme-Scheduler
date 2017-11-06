@@ -33,11 +33,11 @@ public class WidgetAlarmJob extends Job {
         return !action.isEmpty()? Result.SUCCESS:Result.FAILURE;
     }
 
-    public static int scheduleJobAtAGivenTime( long timeFromNow ){
+    public static void scheduleJobAroundGivenTime(long timeFromNow ){
         PersistableBundleCompat extras = new PersistableBundleCompat();
         extras.putString( ACTION, LightThemeManager.ALARM_EXECUTED);
 
-        return new JobRequest.Builder(TAG)
+        new JobRequest.Builder(TAG)
                 .setExecutionWindow( timeFromNow, timeFromNow + (5*60*1000) )
                 .setUpdateCurrent(true)
                 .setExtras( extras )
@@ -45,12 +45,12 @@ public class WidgetAlarmJob extends Job {
                 .schedule();
     }
 
-    public static int scheduleJobWhenOnline( long timeFromNow, long timeFromNowAtTheLatest ){
+    public static void scheduleJobWhenOnline( long timeFromNow, long timeFromNowAtTheLatest ){
 
         PersistableBundleCompat extras = new PersistableBundleCompat();
         extras.putString( ACTION, LightThemeManager.ALARM_EXECUTED_ONLINE);
 
-        return new JobRequest.Builder(TAG)
+        new JobRequest.Builder(TAG)
                 .setExecutionWindow( timeFromNow, timeFromNowAtTheLatest )
                 .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
                 .setRequirementsEnforced(true)

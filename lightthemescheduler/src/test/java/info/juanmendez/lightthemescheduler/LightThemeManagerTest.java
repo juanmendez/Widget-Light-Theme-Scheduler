@@ -24,6 +24,7 @@ import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.doAnswer;
 
 /**
  * Created by Juan Mendez on 10/29/2017.
@@ -206,6 +207,50 @@ public class LightThemeManagerTest extends LightThemeTest{
         verify( twistedAlarm.asMocked() ).cancelIfRunning();
         assertEquals( appLightTime.getStatus(), LightTimeStatus.NO_LOCATION_PERMISSION  );
     }
+
+
+    /**
+     * first time, and there is no location permission
+     */
+    @Test
+    public void testWithoutLocation(){
+
+        LightTime appLightTime = twistedStorage.getLightTime();
+
+        //11pm, we are offline, therefore we are
+        twistedWS.widgets = 1;
+
+        doAnswer( invocation -> {
+            return null;
+        } ).when(twistedLS.asMocked()).getLocation();
+
+        manager.onScheduleRequest();
+
+        verify( twistedAlarm.asMocked() ).scheduleNextWhenOnline();
+        assertEquals( appLightTime.getStatus(), LightTimeStatus.NO_LOCATION_AVAILABLE  );
+    }
+
+    /**
+     * Test with server error
+     */
+     @Test
+     public void testWithServerError(){
+
+         //Real LightApi must return this if there is network error
+         LightTime lightTime = new LightTime();
+         lightTime.setStatus( LightTimeStatus.SERVER_ERROR );
+
+         twistedApi.setToday( lightTime );
+         twistedApi.setTomorrow( lightTime );
+         twistedWS.widgets = 1;
+
+         LightTime appLightTime = twistedStorage.getLightTime();
+
+         manager.onScheduleRequest();
+         verify( twistedAlarm.asMocked() ).scheduleNextWhenOnline();
+         assertEquals( appLightTime.getStatus(), LightTimeStatus.SERVER_ERROR  );
+     }
+
 
     /**
      * User has gone to day mode only. lets update widgetService.

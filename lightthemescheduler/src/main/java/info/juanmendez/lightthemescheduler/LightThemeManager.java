@@ -98,7 +98,9 @@ public class LightThemeManager {
                     msFromNow += 30_000L;
 
                     m.getAlarmService().scheduleNext( msFromNow );
-                }else if( lightTimeResult.getStatus() == LightTimeStatus.NO_INTERNET ){
+                }else if( lightTimeResult.getStatus() == LightTimeStatus.NO_INTERNET ||
+                        lightTimeResult.getStatus() == LightTimeStatus.SERVER_ERROR ||
+                        lightTimeResult.getStatus() == LightTimeStatus.NO_LOCATION_AVAILABLE ){
 
                     lightTimeResult.setNextSchedule("");
                     m.getAlarmService().scheduleNextWhenOnline();

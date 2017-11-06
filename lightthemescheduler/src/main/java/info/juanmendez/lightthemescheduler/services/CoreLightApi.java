@@ -37,7 +37,7 @@ public class CoreLightApi implements LightApi {
 
         if( isSameDay){
             response.onResult( LightTimeUtils.clone(appLightTime) );
-        }else if( m.getNetworkService().isOnline() && m.getLocationService().isGranted() ){
+        }else if( isCallAllowed() ){
              m.getLightTimeApi().generateTodayTimeLight( response );
         }else if( LightTimeUtils.isValid(appLightTime)){
             response.onResult( LightTimeUtils.clonedAsGuessed(appLightTime, 0 ) );
@@ -56,7 +56,7 @@ public class CoreLightApi implements LightApi {
     public void generateTomorrowTimeLight(Response<LightTime> response) {
         LightTime appLightTime = m.getLightTime();
 
-        if( m.getNetworkService().isOnline() && m.getLocationService().isGranted() ){
+        if( isCallAllowed() ){
             m.getLightTimeApi().generateTomorrowTimeLight( response );
         }else if( LightTimeUtils.isValid(appLightTime)){
             response.onResult( LightTimeUtils.clonedAsGuessed(appLightTime, 1 ) );
@@ -70,9 +70,18 @@ public class CoreLightApi implements LightApi {
 
         if( !m.getNetworkService().isOnline()  )
             lightTime.setStatus(LightTimeStatus.NO_INTERNET);
-        else if( !m.getLocationService().isGranted()  )
+        else if( !m.getLocationService().isGranted() )
             lightTime.setStatus(LightTimeStatus.NO_LOCATION_PERMISSION );
+        else if(  m.getLocationService().getLocation() == null ){
+            lightTime.setStatus( LightTimeStatus.NO_LOCATION_AVAILABLE );
+        }
 
         return lightTime;
+    }
+
+    private boolean isCallAllowed(){
+        return  m.getNetworkService().isOnline() &&
+                m.getLocationService().isGranted() &&
+                m.getLocationService().getLocation() != null;
     }
 }

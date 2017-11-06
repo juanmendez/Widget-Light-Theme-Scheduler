@@ -70,18 +70,19 @@ public class ConfigActivity extends AppCompatActivity {
         Bundle extras = intent.getExtras();
         int widgetId;
 
-        /**
-         * What happens is the first widget is added before permission.
-         * So what we do instead is delay 1 s
-         */
-        if( requestCode == validCode ){
-            alarmService.scheduleNext(1000 );
-        }
-
         if (extras != null) {
             widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
             if ( widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+
+                /**
+                 * LightThemeScheduler is told about widget added before permission is granted.
+                 * So LightThemeScheduler needs 1 second delay after to do an update
+                 */
+                if( requestCode == validCode ){
+                    alarmService.scheduleNext(1000 );
+                }
+
                 setResult( RESULT_OK );
             }
         }

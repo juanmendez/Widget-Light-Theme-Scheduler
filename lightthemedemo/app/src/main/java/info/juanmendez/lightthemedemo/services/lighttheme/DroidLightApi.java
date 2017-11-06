@@ -53,15 +53,7 @@ public class DroidLightApi implements LightApi {
 
     private void makeCall(String dateString, Response<LightTime> response) {
 
-        Location location = locationService.getLastKnownLocation();
-
-        if( location == null ){
-            LightTime errorLightTime = new LightTime();
-            errorLightTime.setStatus(LightTimeStatus.NO_LOCATION_AVAILABLE );
-            response.onResult( errorLightTime );
-            return;
-        }
-
+        Location location = locationService.getLocation();
         Call<LightTimeResponse> call = lightTimeCalls.getLightTime(location.getLatitude(), location.getLongitude(), 0, dateString);
 
         call.enqueue(new Callback<LightTimeResponse>() {
@@ -69,22 +61,20 @@ public class DroidLightApi implements LightApi {
             public void onResponse(Call<LightTimeResponse> call, retrofit2.Response<LightTimeResponse> retrofitResponse) {
                 LightTimeResponse sun = retrofitResponse.body();
 
-                if( sun.getStatus() != null) {
-                    if( sun.getStatus().equals("OK") ){
-                        response.onResult(sun.getResults());
-                    }else{
-                        response.onResult(new LightTime());
-                    }
+                if( sun.getStatus() != null && sun.getStatus().equals("OK") ) {
+                    response.onResult(sun.getResults());
                 } else {
                     LightTime lightTime = new LightTime();
-                    lightTime.setStatus( LightTimeStatus.NO_INTERNET );
+                    lightTime.setStatus( LightTimeStatus.SERVER_ERROR);
                     response.onResult(lightTime);
                 }
             }
 
             @Override
             public void onFailure(Call<LightTimeResponse> call, Throwable t) {
-                response.onResult(new LightTime());
+                LightTime lightTime = new LightTime();
+                lightTime.setStatus( LightTimeStatus.SERVER_ERROR);
+                response.onResult(lightTime);
             }
         });
     }
