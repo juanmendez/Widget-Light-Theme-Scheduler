@@ -1,7 +1,7 @@
 # LightTheme-Scheduler
 
-It schedules when to set your widgets to day or night themes. This library is agnostic about what libraries are used in your application. It instead requires implementations to interact with your dependencies.
-All interfaces are found at `LightThemeModule`. Once the module is created it is then assigned to `LightThemeManager`.
+This library has the logic to schedule your widgets for their day or night themes. This library is agnostic about what other libraries are used in your application; although, it requires implementations to interact with your dependencies.
+Each of those implementation interfaces can be found at `LightThemeModule`. Once the module is created it is then assigned to `LightThemeManager`.
 
 ```java
 module = LightThemeModule.create()
@@ -50,6 +50,6 @@ public class RebootReceiver extends BroadcastReceiver {
 ```
 
 `LightThemeManager` doesn't have to be a Singleton or be referenced using dependency injection, but works fine as well.
-The library only requires [Joda Time](http://www.joda.org/joda-time/). Feel free to apply the libraries of your choice.
+The library makes use of [Joda Time](http://www.joda.org/joda-time/). Feel free to apply the libraries of your choice.
 
 Please look into the [demo](/lightthemedemo) for more insights
