@@ -1,11 +1,11 @@
 # LightTheme-Scheduler
 
-A depedency agnostic library to set night-auto theme to widgets. It requires dependencies which are all defined by the library's interfaces, and such instances are included in `LightThemeModule`.
-Once the module is created it is then assigned to `LightThemeManager`.
+It schedules when to set your widgets to day or night themes. This library is agnostic about what libraries are used in your application. It instead requires implementations to interact with your dependencies.
+All interfaces are found at `LightThemeModule`. Once the module is created it is then assigned to `LightThemeManager`.
 
 ```java
 module = LightThemeModule.create()
-    //stores sunrise and sunset. could be in sharedPreferences
+    //stores sunrise and sunset. SharedPreferences can be used for it
     .applyLightTimeStorage( lightTimeStorage )
     //calls webservice or implements a sunrise/sunset generator library
     .applyLightTimeApi( sunriseSunsetApi ) 
@@ -17,7 +17,7 @@ module = LightThemeModule.create()
     .applyWidgetService( widgetService ) 
     //optional for testing, skip in production
     .applyTestableNow( LocalTime.parse("14:00")) 
-    //covers scheduling the next sun event, also schedules a job when user is back online
+    //covers scheduling for the next sun event. It also schedules a job if device was found offline and needs to pull data
     .applyAlarmService( alarmService ); 
 
 mLightThemeManager = new LightThemeManager( module );
