@@ -6,7 +6,8 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
 import info.juanmendez.lightthemedemo.services.sunrise.LightTimeCalls;
-import info.juanmendez.lightthemedemo.services.sunrise.LightTimeResponse;
+import info.juanmendez.lightthemedemo.services.sunrise.Results;
+import info.juanmendez.lightthemedemo.services.sunrise.SunriseSunsetContent;
 import info.juanmendez.lightthemescheduler.models.LightTime;
 import info.juanmendez.lightthemescheduler.models.LightTimeStatus;
 import info.juanmendez.lightthemescheduler.models.Response;
@@ -54,15 +55,19 @@ public class DroidLightApi implements LightApi {
     private void makeCall(String dateString, Response<LightTime> response) {
 
         Location location = locationService.getLocation();
-        Call<LightTimeResponse> call = lightTimeCalls.getLightTime(location.getLatitude(), location.getLongitude(), 0, dateString);
+        Call<SunriseSunsetContent> call = lightTimeCalls.getLightTime(location.getLatitude(), location.getLongitude(), 0, dateString);
 
-        call.enqueue(new Callback<LightTimeResponse>() {
+        call.enqueue(new Callback<SunriseSunsetContent>() {
             @Override
-            public void onResponse(Call<LightTimeResponse> call, retrofit2.Response<LightTimeResponse> retrofitResponse) {
-                LightTimeResponse sun = retrofitResponse.body();
+            public void onResponse(Call<SunriseSunsetContent> call, retrofit2.Response<SunriseSunsetContent> retrofitResponse) {
+                SunriseSunsetContent content = retrofitResponse.body();
 
-                if( sun.getStatus() != null && sun.getStatus().equals("OK") ) {
-                    response.onResult(sun.getResults());
+                if( content.getStatus() != null && content.getStatus().equals("OK") ) {
+                    Results results = content.getResults();
+
+                    //Sunrise/Sunset times must be in UTC
+                    LightTime lightTime = new LightTime( results.getSunrise(), results.getSunset() );
+                    response.onResult(lightTime);
                 } else {
                     LightTime lightTime = new LightTime();
                     lightTime.setStatus( LightTimeStatus.SERVER_ERROR);
@@ -71,7 +76,7 @@ public class DroidLightApi implements LightApi {
             }
 
             @Override
-            public void onFailure(Call<LightTimeResponse> call, Throwable t) {
+            public void onFailure(Call<SunriseSunsetContent> call, Throwable t) {
                 LightTime lightTime = new LightTime();
                 lightTime.setStatus( LightTimeStatus.SERVER_ERROR);
                 response.onResult(lightTime);

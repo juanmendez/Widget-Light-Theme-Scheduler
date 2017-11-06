@@ -1,22 +1,22 @@
 package info.juanmendez.lightthemedemo.services.sunrise;
-import info.juanmendez.lightthemescheduler.models.LightTime;
-
 /**
  * Created by Juan Mendez on 10/18/2017.
  * www.juanmendez.info
  * contact@juanmendez.info
  */
-public class LightTimeResponse {
+public class SunriseSunsetContent
+{
+    private Results results;
 
-    private LightTime results;
     private String status;
 
-    public LightTime getResults ()
+    public Results getResults ()
     {
         return results;
     }
 
-    public void setResults (LightTime results) {
+    public void setResults (Results results)
+    {
         this.results = results;
     }
 
@@ -31,10 +31,8 @@ public class LightTimeResponse {
     }
 
     @Override
-    public String toString() {
-        return "LightThemeManager{" +
-                "results=" + results +
-                ", status='" + status + '\'' +
-                '}';
+    public String toString()
+    {
+        return "ClassPojo [results = "+results+", status = "+status+"]";
     }
 }

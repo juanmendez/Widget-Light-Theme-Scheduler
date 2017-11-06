@@ -55,20 +55,21 @@ public class ConfigActivity extends AppCompatActivity {
                     validCode);
 
         }else{
-            onPermissionResult(true, 0);
+            onPermissionResult(0);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        onPermissionResult(requestCode==validCode, requestCode);
+        onPermissionResult(requestCode);
     }
 
-    private void onPermissionResult( boolean thereIsPermission, int requestCode ){
+    private void onPermissionResult( int requestCode ){
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         int widgetId;
+
 
         if (extras != null) {
             widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);

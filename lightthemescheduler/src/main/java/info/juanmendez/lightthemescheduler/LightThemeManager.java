@@ -50,7 +50,7 @@ public class LightThemeManager {
             }
         }else if( appEvent.equals( AppWidgetManager.ACTION_APPWIDGET_ENABLED) ){
             if( m.getWidgetService().getWidgetsCount() == 1 ){
-                /*m.applyTestableNow( LocalTime.parse("16:38"));*/
+                /*m.applyTestableNow( LocalTime.parse("16:36"));*/
                 planNextSchedule();
             }
         }else if( appEvent.equals( AppWidgetManager.ACTION_APPWIDGET_DELETED) ){
@@ -58,13 +58,13 @@ public class LightThemeManager {
                 m.getAlarmService().cancelIfRunning();
             }
         }else if( appEvent.equals(Intent.ACTION_REBOOT)){
-           /* m.applyTestableNow( LocalTime.parse("16:41"));*/
+            /*m.applyTestableNow( LocalTime.parse("16:40"));*/
             planNextSchedule();
         }else if( appEvent.equals(ALARM_EXECUTED)){
-           /* m.applyTestableNow( LocalTime.parse("16:41"));*/
+            /*m.applyTestableNow( LocalTime.parse("16:40"));*/
             planNextSchedule();
         }else if( appEvent.equals(ALARM_EXECUTED_ONLINE)){
-            /*m.applyTestableNow( LocalTime.parse("16:41"));*/
+            /*m.applyTestableNow( LocalTime.parse("16:40"));*/
             planNextSchedule( );
         }
     }
