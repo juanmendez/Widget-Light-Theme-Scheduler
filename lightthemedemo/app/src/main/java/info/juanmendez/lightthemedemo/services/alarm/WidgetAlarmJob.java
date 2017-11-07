@@ -33,12 +33,17 @@ public class WidgetAlarmJob extends Job {
         return !action.isEmpty()? Result.SUCCESS:Result.FAILURE;
     }
 
+    /**
+     * I chose an inexact alarm. The library is already scheduled with one second delay.
+     * The library doesn't interfere in your alarm preferences.
+     * @param timeFromNow
+     */
     public static void scheduleJobAroundGivenTime(long timeFromNow ){
         PersistableBundleCompat extras = new PersistableBundleCompat();
         extras.putString( ACTION, LightThemeManager.ALARM_EXECUTED);
 
         new JobRequest.Builder(TAG)
-                .setExecutionWindow( timeFromNow, timeFromNow + (5*60*1000) )
+                .setExecutionWindow( timeFromNow, timeFromNow + (15*60*1000) )
                 .setUpdateCurrent(true)
                 .setExtras( extras )
                 .build()
