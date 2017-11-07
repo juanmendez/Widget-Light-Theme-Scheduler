@@ -11,20 +11,25 @@ import android.widget.RadioGroup;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import info.juanmendez.lightthemescheduler.LightThemeManager;
 import info.juanmendez.lightthemedemo.services.lighttheme.DroidLocationService;
 import info.juanmendez.lightthemedemo.services.lighttheme.LightManagerFactory;
+import info.juanmendez.lightthemedemo.services.preferences.LightTimePrefs_;
 import info.juanmendez.lightthemedemo.services.preferences.WidgetPrefs_;
+import info.juanmendez.lightthemescheduler.LightThemeManager;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
 
     @Pref
-    WidgetPrefs_ widgetPrefs;
+    WidgetPrefs_ mWidgetPrefs;
+
+    @Pref
+    LightTimePrefs_ mLightTimePrefs;
 
     @ViewById
     RadioGroup radioGroup;
@@ -41,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     @AfterViews
     public void afterViews(){
 
-        reflectThemeChoice( widgetPrefs.screenOption().get() );
+        reflectThemeChoice( mWidgetPrefs.screenOption().get() );
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             saveThemeChoice(checkedId);
@@ -66,15 +71,15 @@ public class MainActivity extends AppCompatActivity {
     private void saveThemeChoice( int radioButtonId ){
         switch ( radioButtonId){
             case R.id.autoRadioButton:
-                widgetPrefs.screenOption().put( AppCompatDelegate.MODE_NIGHT_AUTO );
+                mWidgetPrefs.screenOption().put( AppCompatDelegate.MODE_NIGHT_AUTO );
                 checkPermissions();
                 break;
             case R.id.dayOnlyRadioButton:
-                widgetPrefs.screenOption().put( AppCompatDelegate.MODE_NIGHT_NO );
+                mWidgetPrefs.screenOption().put( AppCompatDelegate.MODE_NIGHT_NO );
                 notifyThemeManager();
                 break;
             case R.id.nightOnlyRadioButton:
-                widgetPrefs.screenOption().put( AppCompatDelegate.MODE_NIGHT_YES );
+                mWidgetPrefs.screenOption().put( AppCompatDelegate.MODE_NIGHT_YES );
                 notifyThemeManager();
                 break;
         }
@@ -103,5 +108,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    @Click(R.id.clearDataBtn)
+    public void onClearData(){
+        mWidgetPrefs.clear();
+        mLightTimePrefs.clear();
+    }
 }
