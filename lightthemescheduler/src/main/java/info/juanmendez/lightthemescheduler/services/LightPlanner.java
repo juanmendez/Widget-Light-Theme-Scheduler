@@ -89,17 +89,6 @@ public class LightPlanner {
 
     public static int whatSchedule( LocalTime now, LocalTime sunrise, LocalTime sunset ){
 
-        //lets do some rounding of a minute
-        long ms = Math.abs(sunrise.getMillisOfDay() - now.getMillisOfDay());
-        if( ms < 60_000L){
-            sunrise = LocalTime.parse( now.toString() );
-        }
-
-        ms = Math.abs(sunset.getMillisOfDay() - now.getMillisOfDay());
-        if( ms < 60_000L){
-            sunset = LocalTime.parse( now.toString() );
-        }
-
         if( now.isBefore( sunrise )){
             return SUNRISE_SCHEDULE;
         }else if( now.isBefore( sunset) ){
