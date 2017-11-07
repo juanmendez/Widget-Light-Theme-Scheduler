@@ -10,6 +10,6 @@ import info.juanmendez.lightthemescheduler.models.Response;
  */
 
 public interface LightApi {
-    void generateTodayTimeLight(Response<LightTime> respose);
+    void generateTodayTimeLight(Response<LightTime> response);
     void generateTomorrowTimeLight(Response<LightTime> response );
 }
