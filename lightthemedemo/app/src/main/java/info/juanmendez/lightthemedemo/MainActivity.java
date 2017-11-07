@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatDelegate;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
@@ -43,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
     @App
     MyApp app;
 
-    @AfterViews
-    public void afterViews(){
-
+    @Override
+    public void onPause(){
+        super.onPause();
         reflectThemeChoice( mWidgetPrefs.screenOption().get() );
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -57,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         switch ( choiceMade){
             case AppCompatDelegate.MODE_NIGHT_AUTO:
                 autoRadioButton.setChecked(true);
-                checkPermissions();
                 break;
             case AppCompatDelegate.MODE_NIGHT_NO:
                 dayOnlyRadioButton.setChecked(true);

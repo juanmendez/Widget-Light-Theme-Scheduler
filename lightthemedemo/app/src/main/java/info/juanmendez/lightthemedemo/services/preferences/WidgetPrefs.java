@@ -19,7 +19,7 @@ public interface WidgetPrefs {
      * saves user option night-only, day-only, night-auto
      * @return
      */
-    @DefaultInt(AppCompatDelegate.MODE_NIGHT_AUTO)
+    @DefaultInt(AppCompatDelegate.MODE_NIGHT_NO)
     int screenOption();
 
     /**
