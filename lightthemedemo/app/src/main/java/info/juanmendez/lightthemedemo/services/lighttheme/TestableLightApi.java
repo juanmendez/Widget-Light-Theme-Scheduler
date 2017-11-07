@@ -10,7 +10,11 @@ import info.juanmendez.lightthemescheduler.services.LightApi;
  * www.juanmendez.info
  * contact@juanmendez.info
  *
- * When testing lets use static values.
+ * This is a freeby. In case you want to test your app.
+ *
+ * Right now is nov 7, 12:16 US central time.. 6 hours behind UTC
+ * Apparently sunrise is at 12:29 today. I know this is awkward but this is a demo showing how I get to test
+ * the alarm by manipulating today's or tomorrow's times.
  */
 public class TestableLightApi implements LightApi {
     @Override
@@ -21,7 +25,7 @@ public class TestableLightApi implements LightApi {
 
     @Override
     public void generateTomorrowTimeLight(Response<LightTime> response) {
-        LightTime tomorrowLightTime = new LightTime("2017-11-07T18:10:39+00:00","2017-11-08T22:37:02+00:00");
+        LightTime tomorrowLightTime = new LightTime("2017-11-07T18:29:39+00:00","2017-11-08T22:37:02+00:00");
         response.onResult( tomorrowLightTime );
     }
 }
