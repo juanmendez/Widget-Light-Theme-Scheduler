@@ -35,7 +35,7 @@ public class CoreLightApi implements LightApi {
         LightTime appLightTime = m.getLightTime();
         boolean isSameDay = LocalTimeUtils.isSameDay( appLightTime.getSunrise(), m.getNow().toDateTimeToday().toString() );
 
-        if( isSameDay){
+        if( isSameDay ){
             response.onResult( LightTimeUtils.clone(appLightTime) );
         }else if( isCallAllowed() ){
              m.getLightTimeApi().generateTodayTimeLight( response );
