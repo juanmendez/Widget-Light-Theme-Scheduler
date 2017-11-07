@@ -14,7 +14,6 @@ import info.juanmendez.lightthemescheduler.utils.LightTimeUtils;
 
 import static info.juanmendez.lightthemescheduler.utils.LightTimeUtils.getScreenMode;
 
-
 /**
  * Created by Juan Mendez on 10/29/2017.
  * www.juanmendez.info
@@ -41,7 +40,6 @@ public class LightThemeManager {
     public void onAppEvent(@NonNull String appEvent ){
 
         if(appEvent.equals(THEME_OPTION_CHANGED)){
-
             if( m.getWidgetService().getWidgetScreenOption() == AppCompatDelegate.MODE_NIGHT_AUTO ){
                 planNextSchedule();
             }else{
@@ -50,7 +48,6 @@ public class LightThemeManager {
             }
         }else if( appEvent.equals( AppWidgetManager.ACTION_APPWIDGET_ENABLED) ){
             if( m.getWidgetService().getWidgetsCount() == 1 ){
-                /*m.applyTestableNow( LocalTime.parse("16:36"));*/
                 planNextSchedule();
             }
         }else if( appEvent.equals( AppWidgetManager.ACTION_APPWIDGET_DELETED) ){
@@ -58,13 +55,10 @@ public class LightThemeManager {
                 m.getAlarmService().cancelIfRunning();
             }
         }else if( appEvent.equals(Intent.ACTION_REBOOT)){
-            /*m.applyTestableNow( LocalTime.parse("16:40"));*/
             planNextSchedule();
         }else if( appEvent.equals(ALARM_EXECUTED)){
-            /*m.applyTestableNow( LocalTime.parse("16:40"));*/
             planNextSchedule();
         }else if( appEvent.equals(ALARM_EXECUTED_ONLINE)){
-            /*m.applyTestableNow( LocalTime.parse("16:40"));*/
             planNextSchedule( );
         }
     }
@@ -92,10 +86,10 @@ public class LightThemeManager {
 
                     /**
                      * This library found evidence setting the schedule at the expected time can have some drawbacks.
-                     * For preventing miscalculations, lets increase the scheduled time by 30 seconds only.
+                     * For preventing miscalculations, lets increase the scheduled time by 1 second only.
                      */
                     Long msFromNow = LightTimeUtils.getMSFromSchedule( m.getNow(), lightTimeResult);
-                    msFromNow += 30_000L;
+                    msFromNow += 1_000L;
 
                     m.getAlarmService().scheduleNext( msFromNow );
                 }else if( lightTimeResult.getStatus() == LightTimeStatus.NO_INTERNET ||
