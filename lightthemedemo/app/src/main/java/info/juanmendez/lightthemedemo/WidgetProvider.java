@@ -11,9 +11,9 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EReceiver;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import info.juanmendez.lightthemescheduler.models.WidgetScreenStatus;
 import info.juanmendez.lightthemedemo.services.lighttheme.LightManagerFactory;
 import info.juanmendez.lightthemedemo.services.preferences.WidgetPrefs_;
+import info.juanmendez.lightthemescheduler.models.WidgetScreenStatus;
 
 
 /**
@@ -35,7 +35,6 @@ public class WidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        //Timber.i( "%s@widgetEvent", intent.getAction() );
         if ( intent.getAction() == null ) {
 
             int[] widget_ids = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
@@ -62,21 +61,23 @@ public class WidgetProvider extends AppWidgetProvider {
     }
 
     private void updateWidget( Context context, AppWidgetManager manager, int widgetId) {
-        //Timber.i( "udpate widget " + widgetId  );
         if( widgetId > 0 ){
 
             /**
              * The only way to update a widget day-night theme is done by choosing the layout
              */
             RemoteViews widget = new RemoteViews(context.getPackageName(),
-                            isDayMode()? R.layout.widget_layout :
-                            R.layout.widet_layout_night);
+                            isNightMode()?R.layout.widet_layout_night:R.layout.widget_layout);
 
             manager.updateAppWidget(widgetId, widget);
         }
     }
 
-    private boolean isDayMode(){
-        return widgetPrefs.screenMode().get()== WidgetScreenStatus.WIDGET_DAY_SCREEN;
+    /**
+     * if user clears the data, provide day mode.
+     * @return
+     */
+    private boolean isNightMode(){
+        return widgetPrefs.screenMode().get()== WidgetScreenStatus.WIDGET_NIGHT_SCREEN;
     }
 }
