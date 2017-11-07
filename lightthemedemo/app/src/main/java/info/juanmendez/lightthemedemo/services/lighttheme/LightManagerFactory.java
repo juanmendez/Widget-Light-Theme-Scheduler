@@ -43,6 +43,7 @@ public class LightManagerFactory {
        m = LightThemeModule.create()
                .applyLightTimeStorage( lightTimeStorage )
                .applyLightTimeApi( sunriseSunsetApi )
+               //.applyLightTimeApi( new TestableLightApi() ) if you want to test your app against the library
                .applyLocationService(  locationService )
                .applyNetworkService( networkService )
                .applyWidgetService( widgetService )
