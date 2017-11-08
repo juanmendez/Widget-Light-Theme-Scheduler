@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
@@ -42,9 +43,8 @@ public class MainActivity extends AppCompatActivity {
     @App
     MyApp app;
 
-    @Override
-    public void onPause(){
-        super.onPause();
+    @AfterViews
+    void afterViews(){
         reflectThemeChoice( mWidgetPrefs.screenOption().get() );
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
