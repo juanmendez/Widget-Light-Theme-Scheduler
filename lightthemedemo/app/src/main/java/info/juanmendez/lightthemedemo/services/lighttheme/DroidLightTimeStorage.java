@@ -34,9 +34,11 @@ public class DroidLightTimeStorage implements LightTimeStorage {
 
     @Override
     public void saveLightTime(LightTime lightTime) {
-        prefs.sunrise().put( lightTime.getSunrise() );
-        prefs.sunset().put( lightTime.getSunset() );
-        prefs.nextSchedule().put( lightTime.getNextSchedule() );
-        prefs.status().put( lightTime.getStatus() );
+        prefs.edit().
+                sunrise().put( lightTime.getSunrise() )
+                .sunset().put( lightTime.getSunset() )
+                .nextSchedule().put( lightTime.getNextSchedule() )
+                .status().put( lightTime.getStatus() )
+            .apply();
     }
 }

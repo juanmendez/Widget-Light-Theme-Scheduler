@@ -26,10 +26,10 @@ import info.juanmendez.lightthemescheduler.LightThemeManager;
 public class MainActivity extends AppCompatActivity {
 
     @Pref
-    WidgetPrefs_ mWidgetPrefs;
+    WidgetPrefs_ widgetPrefs;
 
     @Pref
-    LightTimePrefs_ mLightTimePrefs;
+    LightTimePrefs_ lightPrefs;
 
     @ViewById
     RadioGroup radioGroup;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     @AfterViews
     void afterViews(){
-        reflectThemeChoice( mWidgetPrefs.screenOption().get() );
+        reflectThemeChoice( widgetPrefs.screenOption().get() );
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             saveThemeChoice(checkedId);
@@ -69,15 +69,15 @@ public class MainActivity extends AppCompatActivity {
     private void saveThemeChoice( int radioButtonId ){
         switch ( radioButtonId){
             case R.id.autoRadioButton:
-                mWidgetPrefs.screenOption().put( AppCompatDelegate.MODE_NIGHT_AUTO );
+                widgetPrefs.screenOption().put( AppCompatDelegate.MODE_NIGHT_AUTO );
                 checkPermissions();
                 break;
             case R.id.dayOnlyRadioButton:
-                mWidgetPrefs.screenOption().put( AppCompatDelegate.MODE_NIGHT_NO );
+                widgetPrefs.screenOption().put( AppCompatDelegate.MODE_NIGHT_NO );
                 notifyThemeManager();
                 break;
             case R.id.nightOnlyRadioButton:
-                mWidgetPrefs.screenOption().put( AppCompatDelegate.MODE_NIGHT_YES );
+                widgetPrefs.screenOption().put( AppCompatDelegate.MODE_NIGHT_YES );
                 notifyThemeManager();
                 break;
         }
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Click(R.id.clearDataBtn)
     public void onClearData(){
-        mWidgetPrefs.clear();
-        mLightTimePrefs.clear();
+        widgetPrefs.clear();
+        lightPrefs.clear();
     }
 }
