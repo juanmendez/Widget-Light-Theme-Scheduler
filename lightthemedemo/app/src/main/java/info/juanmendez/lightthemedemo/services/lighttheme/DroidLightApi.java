@@ -4,6 +4,7 @@ import android.location.Location;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
+import org.joda.time.LocalDate;
 
 import info.juanmendez.lightthemedemo.services.sunrise.LightTimeCalls;
 import info.juanmendez.lightthemedemo.services.sunrise.Results;
@@ -44,12 +45,12 @@ public class DroidLightApi implements LightApi {
 
     @Override
     public void generateTodayTimeLight(Response<LightTime> response) {
-        makeCall("today", response);
+        makeCall(LocalDate.now().toString(), response);
     }
 
     @Override
     public void generateTomorrowTimeLight(Response<LightTime> response) {
-        makeCall("tomorrow", response);
+        makeCall(LocalDate.now().plusDays(1).toString(), response);
     }
 
     private void makeCall(String dateString, Response<LightTime> response) {
