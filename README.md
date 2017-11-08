@@ -11,13 +11,15 @@ module = LightThemeModule.create()
     .applyLightTimeApi( sunriseSunsetApi ) 
     //returns last known location, and if app has location permissions
     .applyLocationService(  locationService ) 
-    //returns networkstate if online, but can be ignored if not using online access for sunrise/sunset
+    //returns networkstate if online, 
+    //but can be ignored if not using online access for sunrise/sunset
     .applyNetworkService( networkService ) 
     //provides number of widgets, and saves the widget theme for day or night
     .applyWidgetService( widgetService ) 
     //optional for testing, skip in production
     .applyTestableNow( LocalTime.parse("14:00")) 
-    //covers scheduling for the next sun event. It also schedules a job if device was found offline and needs to pull data
+    //covers scheduling for the next sun event. 
+    //It also schedules a job if device was found offline and needs to pull data
     .applyAlarmService( alarmService ); 
 
 mLightThemeManager = new LightThemeManager( module );
