@@ -19,13 +19,13 @@ import info.juanmendez.lightthemescheduler.services.LightApi;
 public class TestableLightApi implements LightApi {
     @Override
     public void generateTodayTimeLight(Response<LightTime> response) {
-        LightTime todayLightTime = new LightTime("2017-11-07T12:31:26+00:00", "2017-11-07T17:55:00+00:00");
+        LightTime todayLightTime = new LightTime("2017-11-07T12:31:26+00:00", "2017-11-08T01:30:00+00:00");
         response.onResult( todayLightTime );
     }
 
     @Override
     public void generateTomorrowTimeLight(Response<LightTime> response) {
-        LightTime tomorrowLightTime = new LightTime("2017-11-07T18:29:39+00:00","2017-11-08T22:37:02+00:00");
+        LightTime tomorrowLightTime = new LightTime("2017-11-08T12:31:26+00:00","2017-11-08T22:37:02+00:00");
         response.onResult( tomorrowLightTime );
     }
 }
