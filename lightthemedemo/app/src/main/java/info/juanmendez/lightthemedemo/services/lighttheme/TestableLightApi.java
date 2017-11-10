@@ -1,8 +1,12 @@
 package info.juanmendez.lightthemedemo.services.lighttheme;
 
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
+
 import info.juanmendez.lightthemescheduler.models.LightTime;
 import info.juanmendez.lightthemescheduler.models.Response;
 import info.juanmendez.lightthemescheduler.services.LightApi;
+import info.juanmendez.lightthemescheduler.utils.LocalTimeUtils;
 
 
 /**
@@ -17,15 +21,30 @@ import info.juanmendez.lightthemescheduler.services.LightApi;
  * the alarm by manipulating today's or tomorrow's times.
  */
 public class TestableLightApi implements LightApi {
+    LocalDateTime mDateTime;
+
+    public TestableLightApi(String parcelableTime) {
+        mDateTime = LocalTime.parse(parcelableTime).toDateTimeToday().toLocalDateTime();
+    }
+
     @Override
     public void generateTodayTimeLight(Response<LightTime> response) {
-        LightTime todayLightTime = new LightTime("2017-11-07T12:31:26+00:00", "2017-11-08T01:30:00+00:00");
-        response.onResult( todayLightTime );
+        //sunrise 3 hours ago
+        //sunset 10 minute from now
+        LightTime lightTime = new LightTime( getUTC( mDateTime.minusHours(3) ) , getUTC(mDateTime.plusMinutes(10)) );
+        response.onResult( lightTime );
     }
 
     @Override
     public void generateTomorrowTimeLight(Response<LightTime> response) {
-        LightTime tomorrowLightTime = new LightTime("2017-11-08T12:31:26+00:00","2017-11-08T22:37:02+00:00");
-        response.onResult( tomorrowLightTime );
+
+        //sunrise 25 minutes from now.
+        //sunset 45 minutes from now
+        LightTime lightTime = new LightTime( getUTC( mDateTime.plusMinutes(25)) , getUTC(mDateTime.plusMinutes(45)) );
+        response.onResult( lightTime );
+    }
+
+    private String getUTC( LocalDateTime localTime ){
+        return LocalTimeUtils.getUTC( localTime.toDateTime() ).toString();
     }
 }

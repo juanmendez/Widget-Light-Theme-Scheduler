@@ -42,8 +42,8 @@ public class LightManagerFactory {
    public void afterInject(){
        m = LightThemeModule.create()
                .applyLightTimeStorage( lightTimeStorage )
+               //.applyLightTimeApi( new TestableLightApi( "16:51" )
                .applyLightTimeApi( sunriseSunsetApi )
-               //.applyLightTimeApi( new TestableLightApi() )
                .applyLocationService(  locationService )
                .applyNetworkService( networkService )
                .applyWidgetService( widgetService )
