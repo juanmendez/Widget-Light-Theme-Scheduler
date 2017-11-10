@@ -43,7 +43,7 @@ public class WidgetAlarmJob extends Job {
         extras.putString( ACTION, LightThemeManager.ALARM_EXECUTED);
 
         new JobRequest.Builder(TAG)
-                .setExecutionWindow( timeFromNow, timeFromNow + (15*60*1000) )
+                .setExecutionWindow( timeFromNow, timeFromNow + (5*60*1000) )
                 .setUpdateCurrent(true)
                 .setExtras( extras )
                 .build()
