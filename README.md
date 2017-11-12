@@ -1,4 +1,4 @@
-# Widget-LightTheme-Scheduler
+# Widget-Light-Theme-Scheduler
 
 This library has the logic to schedule your widgets for their day or night themes. This library is agnostic about what other libraries are used in your application; although, it requires implementations to interact with your dependencies.
 Each of those implementation interfaces can be found at `LightThemeModule`. Once the module is created it is then assigned to `LightThemeManager`.
