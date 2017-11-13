@@ -54,3 +54,7 @@ public class RebootReceiver extends BroadcastReceiver {
 The library makes use of [Joda Time](http://www.joda.org/joda-time/). Feel free to apply the libraries of your choice.
 
 Please look into the [demo](/lightthemedemo) for more insights
+
+Watch how it works live:
+
+[![Alt text](https://img.youtube.com/vi/wV-A3olVAj4/0.jpg)](https://www.youtube.com/watch?v=wV-A3olVAj4)
