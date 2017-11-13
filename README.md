@@ -55,6 +55,6 @@ The library makes use of [Joda Time](http://www.joda.org/joda-time/). Feel free 
 
 Please look into the [demo](/lightthemedemo) for more insights
 
-Watch how it works live:
+[Watch this short video on Youtube on how it works:](https://www.youtube.com/watch?v=wV-A3olVAj4)
 
 [![Alt text](https://img.youtube.com/vi/wV-A3olVAj4/0.jpg)](https://www.youtube.com/watch?v=wV-A3olVAj4)
