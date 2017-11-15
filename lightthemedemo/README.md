@@ -14,3 +14,5 @@ This demo uses SharedPreferences defined by AndroidAnnotations, and can be found
 
 The implementations of `LightLocationService` and `LightNetworkService` can be pretty much copied. This demo shows how to update `LightThemeModule` in its `MainActivity` when changing to day-only, night-only, or auto.
 Also look into `ConfigActivity` which pops up prior to including any widget, but remains visible if user hasn't granted location permissions.
+
+If you use AndroidJob, don't forget to implement `jobCreator` as found in `MyApp`, consult AndroidJob documentation
