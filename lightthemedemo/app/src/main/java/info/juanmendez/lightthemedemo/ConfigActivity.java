@@ -7,15 +7,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import info.juanmendez.lightthemedemo.services.lighttheme.DroidAlarmService;
 import info.juanmendez.lightthemedemo.services.lighttheme.DroidLocationService;
 import info.juanmendez.lightthemedemo.services.lighttheme.LightManagerFactory;
+import info.juanmendez.lightthemedemo.services.preferences.WidgetPrefs_;
 
 /**
  * Created by Juan Mendez on 10/28/2017.
@@ -30,10 +33,13 @@ public class ConfigActivity extends AppCompatActivity {
     MyApp app;
 
     @Bean
-    LightManagerFactory clientBuilder;
+    LightManagerFactory mClientBuilder;
 
     @Bean
-    DroidAlarmService alarmService;
+    DroidAlarmService mAlarmService;
+
+    @Pref
+    WidgetPrefs_ mPrefs;
 
     int validCode = 1;
 
@@ -48,14 +54,18 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     private void checkPermissions(){
-        if (!DroidLocationService.isLocationGranted(this)) {
+
+        /**
+         * check permissions only if widget is configured to night-auto. 
+         */
+        if (!DroidLocationService.isLocationGranted(this) && mPrefs.screenOption().get() == AppCompatDelegate.MODE_NIGHT_AUTO ) {
 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     validCode);
 
         }else{
-            onPermissionResult(0);
+            doComplete();
         }
     }
 
@@ -81,13 +91,16 @@ public class ConfigActivity extends AppCompatActivity {
                  * So LightThemeScheduler needs 1 second delay after to do an update
                  */
                 if( requestCode == validCode ){
-                    alarmService.scheduleNext(1000 );
+                    mAlarmService.scheduleNext(1000 );
                 }
-
-                setResult( RESULT_OK );
             }
         }
 
+        doComplete();
+    }
+
+    private void doComplete(){
+        setResult( RESULT_OK );
         finish();
     }
 }
